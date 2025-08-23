@@ -74,6 +74,7 @@ class SonarrApi {
   
   Future<bool> testConnection() async {
     try {
+
       final response = await _dio.get('/api/v3/system/status');
       return response.statusCode == 200;
     } catch (e) {

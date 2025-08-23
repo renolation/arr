@@ -21,7 +21,8 @@ class HiveDatabase {
     Hive.registerAdapter(ImageHiveAdapter());
     Hive.registerAdapter(RatingsHiveAdapter());
     Hive.registerAdapter(MediaTypeAdapter());
-    
+    Hive.registerAdapter(ServiceTypeAdapter());
+
     // Open boxes
     await Hive.openBox<ServiceConfig>(servicesBox);
     await Hive.openBox<MovieHive>(radarrCacheBox);

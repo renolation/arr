@@ -107,74 +107,76 @@ class HomePage extends ConsumerWidget {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.dashboard,
-                size: 100,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              const SizedBox(height: 24),
-              Text(
-                'Welcome to *arr Stack Manager',
-                style: Theme.of(context).textTheme.headlineMedium,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Manage your Sonarr and Radarr services from one place',
-                style: Theme.of(context).textTheme.bodyLarge,
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 32),
-              ElevatedButton.icon(
-                onPressed: () {
-                  // Navigate to settings
-                  final scaffold = context.findAncestorStateOfType<_MainScreenState>();
-                  scaffold?.setState(() {
-                    scaffold._selectedIndex = 3;
-                  });
-                },
-                icon: const Icon(Icons.add),
-                label: const Text('Configure Services'),
-              ),
-              const SizedBox(height: 48),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Quick Tips',
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      const SizedBox(height: 16),
-                      const ListTile(
-                        leading: Icon(Icons.settings),
-                        title: Text('Configure your services'),
-                        subtitle: Text('Add your Sonarr and Radarr endpoints in Settings'),
-                      ),
-                      const ListTile(
-                        leading: Icon(Icons.tv),
-                        title: Text('Browse TV Shows'),
-                        subtitle: Text('View and manage your TV show library'),
-                      ),
-                      const ListTile(
-                        leading: Icon(Icons.movie),
-                        title: Text('Browse Movies'),
-                        subtitle: Text('View and manage your movie collection'),
-                      ),
-                      const ListTile(
-                        leading: Icon(Icons.offline_bolt),
-                        title: Text('Offline Support'),
-                        subtitle: Text('Your media is cached for offline viewing'),
-                      ),
-                    ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.dashboard,
+                  size: 100,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                const SizedBox(height: 24),
+                Text(
+                  'Welcome to *arr Stack Manager',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Manage your Sonarr and Radarr services from one place',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 32),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    // Navigate to settings
+                    final scaffold = context.findAncestorStateOfType<_MainScreenState>();
+                    scaffold?.setState(() {
+                      scaffold._selectedIndex = 3;
+                    });
+                  },
+                  icon: const Icon(Icons.add),
+                  label: const Text('Configure Services'),
+                ),
+                const SizedBox(height: 48),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Quick Tips',
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        const SizedBox(height: 16),
+                        const ListTile(
+                          leading: Icon(Icons.settings),
+                          title: Text('Configure your services'),
+                          subtitle: Text('Add your Sonarr and Radarr endpoints in Settings'),
+                        ),
+                        const ListTile(
+                          leading: Icon(Icons.tv),
+                          title: Text('Browse TV Shows'),
+                          subtitle: Text('View and manage your TV show library'),
+                        ),
+                        const ListTile(
+                          leading: Icon(Icons.movie),
+                          title: Text('Browse Movies'),
+                          subtitle: Text('View and manage your movie collection'),
+                        ),
+                        const ListTile(
+                          leading: Icon(Icons.offline_bolt),
+                          title: Text('Offline Support'),
+                          subtitle: Text('Your media is cached for offline viewing'),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -134,26 +134,26 @@ class SeriesDetailSheet extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
               ],
-              // if (series.ratings != null) ...[
-              //   Text(
-              //     'Ratings',
-              //     style: Theme.of(context).textTheme.titleLarge,
-              //   ),
-              //   const SizedBox(height: 8),
-              //   if (series.ratings!.imdb != null)
-              //     _RatingRow(
-              //       label: 'IMDb',
-              //       rating: series.ratings!.imdb!,
-              //       votes: series.ratings!.imdbVotes,
-              //     ),
-              //   if (series.ratings!.tmdb != null)
-              //     _RatingRow(
-              //       label: 'TMDB',
-              //       rating: series.ratings!.tmdb!,
-              //       votes: series.ratings!.tmdbVotes,
-              //     ),
-              //   const SizedBox(height: 16),
-              // ],
+              if (series.ratings != null) ...[
+                Text(
+                  'Ratings',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 8),
+                if (series.ratings!.imdb != null)
+                  _RatingRow(
+                    label: 'IMDb',
+                    rating: series.ratings!.imdb!,
+                    votes: series.ratings!.imdbVotes,
+                  ),
+                if (series.ratings!.tmdb != null)
+                  _RatingRow(
+                    label: 'TMDB',
+                    rating: series.ratings!.tmdb!,
+                    votes: series.ratings!.tmdbVotes,
+                  ),
+                const SizedBox(height: 16),
+              ],
               Text(
                 'Statistics',
                 style: Theme.of(context).textTheme.titleLarge,

@@ -49,13 +49,15 @@ class SeriesHiveAdapter extends TypeAdapter<SeriesHive> {
       sizeOnDisk: fields[29] as int?,
       lastCached: fields[30] as DateTime?,
       serviceId: fields[31] as String?,
+      year: fields[32] as int?,
+      ratings: fields[33] as RatingsHive?,
     );
   }
 
   @override
   void write(BinaryWriter writer, SeriesHive obj) {
     writer
-      ..writeByte(32)
+      ..writeByte(34)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -119,7 +121,11 @@ class SeriesHiveAdapter extends TypeAdapter<SeriesHive> {
       ..writeByte(30)
       ..write(obj.lastCached)
       ..writeByte(31)
-      ..write(obj.serviceId);
+      ..write(obj.serviceId)
+      ..writeByte(32)
+      ..write(obj.year)
+      ..writeByte(33)
+      ..write(obj.ratings);
   }
 
   @override

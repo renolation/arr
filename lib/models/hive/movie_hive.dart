@@ -263,13 +263,13 @@ class RatingsHive extends HiveObject {
   factory RatingsHive.fromRatings(Ratings ratings) {
     return RatingsHive(
       imdb: ratings.imdb?.value,
-      imdbVotes: ratings.imdb!.votes!.toInt(),
+      imdbVotes: ratings.imdb?.votes!.toInt(),
       tmdb: ratings.tmdb?.value,
-      tmdbVotes: ratings.tmdb!.votes!.toInt(),
+      tmdbVotes: ratings.tmdb?.votes!.toInt(),
       metacritic: ratings.metacritic?.value,
-      metacriticVotes: ratings.metacritic!.votes!.toInt(),
+      metacriticVotes: ratings.metacritic?.votes!.toInt(),
       rottenTomatoes: ratings.rottenTomatoes?.value,
-      rottenTomatoesVotes: ratings.rottenTomatoes!.votes!.toInt(),
+      rottenTomatoesVotes: ratings.rottenTomatoes?.votes!.toInt(),
     );
   }
 }

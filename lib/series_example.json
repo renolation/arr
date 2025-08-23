@@ -1,0 +1,929 @@
+[
+  {
+    "title": "Breaking Bad",
+    "alternateTitles": [],
+    "sortTitle": "breaking bad",
+    "status": "ended",
+    "ended": true,
+    "overview": "When Walter White, a chemistry teacher, is diagnosed with Stage III cancer and given a prognosis of two years left to live, he chooses to enter a dangerous world of drugs and crime with the intent to secure his family's financial security.",
+    "previousAiring": "2008-03-10T01:00:00Z",
+    "network": "AMC",
+    "airTime": "21:00",
+    "images": [
+      {
+        "coverType": "banner",
+        "url": "/MediaCover/1/banner.jpg?lastWrite=638812443175900419",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/graphical/81189-g21.jpg"
+      },
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/1/poster.jpg?lastWrite=638812443176090419",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/posters/81189-10.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/1/fanart.jpg?lastWrite=638812443176230419",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/fanart/original/81189-21.jpg"
+      },
+      {
+        "coverType": "clearlogo",
+        "url": "/MediaCover/1/clearlogo.png?lastWrite=638812443176360419",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/81189/clearlogo/611b4df33bac5.png"
+      }
+    ],
+    "originalLanguage": {
+      "id": 1,
+      "name": "English"
+    },
+    "seasons": [
+      {
+        "seasonNumber": 5,
+        "monitored": false,
+        "statistics": {
+          "episodeFileCount": 16,
+          "episodeCount": 16,
+          "totalEpisodeCount": 16,
+          "sizeOnDisk": 33681195041,
+          "releaseGroups": [
+            "Silence"
+          ],
+          "percentOfEpisodes": 100
+        }
+      },
+      {
+        "seasonNumber": 4,
+        "monitored": false,
+        "statistics": {
+          "episodeFileCount": 13,
+          "episodeCount": 13,
+          "totalEpisodeCount": 13,
+          "sizeOnDisk": 25939790401,
+          "releaseGroups": [
+            "Silence"
+          ],
+          "percentOfEpisodes": 100
+        }
+      },
+      {
+        "seasonNumber": 3,
+        "monitored": false,
+        "statistics": {
+          "episodeFileCount": 13,
+          "episodeCount": 13,
+          "totalEpisodeCount": 13,
+          "sizeOnDisk": 25625214745,
+          "releaseGroups": [
+            "Silence"
+          ],
+          "percentOfEpisodes": 100
+        }
+      },
+      {
+        "seasonNumber": 2,
+        "monitored": false,
+        "statistics": {
+          "episodeFileCount": 13,
+          "episodeCount": 13,
+          "totalEpisodeCount": 13,
+          "sizeOnDisk": 27878386572,
+          "releaseGroups": [
+            "Silence"
+          ],
+          "percentOfEpisodes": 100
+        }
+      },
+      {
+        "seasonNumber": 1,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2008-03-10T01:00:00Z",
+          "episodeFileCount": 7,
+          "episodeCount": 7,
+          "totalEpisodeCount": 7,
+          "sizeOnDisk": 15852676727,
+          "releaseGroups": [
+            "Silence"
+          ],
+          "percentOfEpisodes": 100
+        }
+      },
+      {
+        "seasonNumber": 0,
+        "monitored": false,
+        "statistics": {
+          "episodeFileCount": 0,
+          "episodeCount": 0,
+          "totalEpisodeCount": 18,
+          "sizeOnDisk": 0,
+          "releaseGroups": [],
+          "percentOfEpisodes": 0
+        }
+      }
+    ],
+    "year": 2008,
+    "path": "/data/media/tv/Breaking Bad",
+    "qualityProfileId": 6,
+    "seasonFolder": true,
+    "monitored": true,
+    "monitorNewItems": "all",
+    "useSceneNumbering": false,
+    "runtime": 48,
+    "tvdbId": 81189,
+    "tvRageId": 18164,
+    "tvMazeId": 169,
+    "tmdbId": 1396,
+    "firstAired": "2008-01-20T00:00:00Z",
+    "lastAired": "2013-09-29T00:00:00Z",
+    "seriesType": "standard",
+    "cleanTitle": "breakingbad",
+    "imdbId": "tt0903747",
+    "titleSlug": "breaking-bad",
+    "rootFolderPath": "/data/media/tv",
+    "certification": "TV-MA",
+    "genres": [
+      "Crime",
+      "Drama",
+      "Thriller",
+      "Western"
+    ],
+    "tags": [],
+    "added": "2025-04-26T06:05:17Z",
+    "ratings": {
+      "votes": 2364108,
+      "value": 9.5
+    },
+    "statistics": {
+      "seasonCount": 5,
+      "episodeFileCount": 62,
+      "episodeCount": 62,
+      "totalEpisodeCount": 80,
+      "sizeOnDisk": 128977263486,
+      "releaseGroups": [
+        "Silence"
+      ],
+      "percentOfEpisodes": 100
+    },
+    "languageProfileId": 1,
+    "id": 1
+  },
+  {
+    "title": "The Sopranos",
+    "alternateTitles": [
+      {
+        "title": "Die Sopranos",
+        "seasonNumber": -1
+      },
+      {
+        "title": "Los Soprano",
+        "seasonNumber": -1
+      },
+      {
+        "title": "I Soprano",
+        "seasonNumber": -1
+      }
+    ],
+    "sortTitle": "sopranos",
+    "status": "ended",
+    "ended": true,
+    "overview": "New Jersey mob boss Tony Soprano deals with personal and professional issues in his home and business life that affect his mental state, leading him to seek professional psychiatric counseling.",
+    "previousAiring": "2007-06-11T01:00:00Z",
+    "network": "HBO",
+    "airTime": "21:00",
+    "images": [
+      {
+        "coverType": "banner",
+        "url": "/MediaCover/2/banner.jpg?lastWrite=638812671847373713",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/graphical/75299-g6.jpg"
+      },
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/2/poster.jpg?lastWrite=638812671847523712",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/posters/75299-17.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/2/fanart.jpg?lastWrite=638812671847753712",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/fanart/original/75299-13.jpg"
+      },
+      {
+        "coverType": "clearlogo",
+        "url": "/MediaCover/2/clearlogo.png?lastWrite=638812671848113711",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/75299/clearlogo/611b5efa3c8e0.png"
+      }
+    ],
+    "originalLanguage": {
+      "id": 1,
+      "name": "English"
+    },
+    "seasons": [
+      {
+        "seasonNumber": 0,
+        "monitored": false,
+        "statistics": {
+          "episodeFileCount": 0,
+          "episodeCount": 0,
+          "totalEpisodeCount": 5,
+          "sizeOnDisk": 0,
+          "releaseGroups": [],
+          "percentOfEpisodes": 0
+        }
+      },
+      {
+        "seasonNumber": 1,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "1999-04-05T01:00:00Z",
+          "episodeFileCount": 13,
+          "episodeCount": 13,
+          "totalEpisodeCount": 13,
+          "sizeOnDisk": 11324016110,
+          "releaseGroups": [
+            "RARBG"
+          ],
+          "percentOfEpisodes": 100
+        }
+      },
+      {
+        "seasonNumber": 2,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2000-04-10T01:00:00Z",
+          "episodeFileCount": 13,
+          "episodeCount": 13,
+          "totalEpisodeCount": 13,
+          "sizeOnDisk": 11659526903,
+          "releaseGroups": [
+            "RARBG"
+          ],
+          "percentOfEpisodes": 100
+        }
+      },
+      {
+        "seasonNumber": 3,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2001-05-21T01:00:00Z",
+          "episodeFileCount": 13,
+          "episodeCount": 13,
+          "totalEpisodeCount": 13,
+          "sizeOnDisk": 12073884462,
+          "releaseGroups": [
+            "RARBG"
+          ],
+          "percentOfEpisodes": 100
+        }
+      },
+      {
+        "seasonNumber": 4,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2002-12-09T02:00:00Z",
+          "episodeFileCount": 13,
+          "episodeCount": 13,
+          "totalEpisodeCount": 13,
+          "sizeOnDisk": 12358591835,
+          "releaseGroups": [
+            "RARBG"
+          ],
+          "percentOfEpisodes": 100
+        }
+      },
+      {
+        "seasonNumber": 5,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2004-06-07T01:00:00Z",
+          "episodeFileCount": 13,
+          "episodeCount": 13,
+          "totalEpisodeCount": 13,
+          "sizeOnDisk": 11833375632,
+          "releaseGroups": [
+            "RARBG"
+          ],
+          "percentOfEpisodes": 100
+        }
+      },
+      {
+        "seasonNumber": 6,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2007-06-11T01:00:00Z",
+          "episodeFileCount": 21,
+          "episodeCount": 21,
+          "totalEpisodeCount": 21,
+          "sizeOnDisk": 19238017671,
+          "releaseGroups": [
+            "RARBG"
+          ],
+          "percentOfEpisodes": 100
+        }
+      }
+    ],
+    "year": 1999,
+    "path": "/data/media/tv/The Sopranos",
+    "qualityProfileId": 1,
+    "seasonFolder": true,
+    "monitored": true,
+    "monitorNewItems": "all",
+    "useSceneNumbering": false,
+    "runtime": 54,
+    "tvdbId": 75299,
+    "tvRageId": 6206,
+    "tvMazeId": 527,
+    "tmdbId": 1398,
+    "firstAired": "1999-01-10T00:00:00Z",
+    "lastAired": "2007-06-10T00:00:00Z",
+    "seriesType": "standard",
+    "cleanTitle": "thesopranos",
+    "imdbId": "tt0141842",
+    "titleSlug": "the-sopranos",
+    "rootFolderPath": "/data/media/tv",
+    "certification": "TV-MA",
+    "genres": [
+      "Crime",
+      "Drama",
+      "Family"
+    ],
+    "tags": [],
+    "added": "2025-04-26T12:26:24Z",
+    "ratings": {
+      "votes": 534130,
+      "value": 9.2
+    },
+    "statistics": {
+      "seasonCount": 6,
+      "episodeFileCount": 86,
+      "episodeCount": 86,
+      "totalEpisodeCount": 91,
+      "sizeOnDisk": 78487412613,
+      "releaseGroups": [
+        "RARBG"
+      ],
+      "percentOfEpisodes": 100
+    },
+    "languageProfileId": 1,
+    "id": 2
+  },
+  {
+    "title": "Nine Puzzles",
+    "alternateTitles": [],
+    "sortTitle": "nine puzzles",
+    "status": "ended",
+    "ended": true,
+    "overview": "After discovering the body of her murdered uncle, Yoon E-na becomes a profiler to uncover the truth behind what happened that night. A decade later, Detective Han-saem still suspects E-na was responsible, and when a series of murders begins to occur, each linked to a corresponding puzzle piece, Han-saem will follow his instincts to track down the killer.",
+    "previousAiring": "2025-06-04T20:55:00Z",
+    "network": "Disney+",
+    "airTime": "16:00",
+    "images": [
+      {
+        "coverType": "banner",
+        "url": "/MediaCover/3/banner.jpg?lastWrite=638841332297534450",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/435341/banners/682d99fc8a01e.jpg"
+      },
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/3/poster.jpg?lastWrite=638841332297754450",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/435341/posters/681b6d867a758.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/3/fanart.jpg?lastWrite=638841332297944450",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/435341/backgrounds/67b937f34f955.jpg"
+      }
+    ],
+    "originalLanguage": {
+      "id": 21,
+      "name": "Korean"
+    },
+    "seasons": [
+      {
+        "seasonNumber": 1,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2025-06-04T20:55:00Z",
+          "episodeFileCount": 11,
+          "episodeCount": 11,
+          "totalEpisodeCount": 11,
+          "sizeOnDisk": 23756857187,
+          "releaseGroups": [
+            "EDITH",
+            "Kit"
+          ],
+          "percentOfEpisodes": 100
+        }
+      }
+    ],
+    "year": 2025,
+    "path": "/data/media/tv/Nine Puzzles (2025) [tvdbid-435341]",
+    "qualityProfileId": 7,
+    "seasonFolder": false,
+    "monitored": true,
+    "monitorNewItems": "all",
+    "useSceneNumbering": false,
+    "runtime": 55,
+    "tvdbId": 435341,
+    "tvRageId": 0,
+    "tvMazeId": 81529,
+    "tmdbId": 227191,
+    "firstAired": "2025-05-21T00:00:00Z",
+    "lastAired": "2025-06-04T00:00:00Z",
+    "seriesType": "standard",
+    "cleanTitle": "ninepuzzles",
+    "imdbId": "tt29927351",
+    "titleSlug": "nine-puzzles",
+    "rootFolderPath": "/data/media/tv",
+    "certification": "16+",
+    "genres": [
+      "Crime",
+      "Drama",
+      "Mystery",
+      "Suspense",
+      "Thriller"
+    ],
+    "tags": [],
+    "added": "2025-05-29T16:33:49Z",
+    "ratings": {
+      "votes": 2650,
+      "value": 7.8
+    },
+    "statistics": {
+      "seasonCount": 1,
+      "episodeFileCount": 11,
+      "episodeCount": 11,
+      "totalEpisodeCount": 11,
+      "sizeOnDisk": 23756857187,
+      "releaseGroups": [
+        "EDITH",
+        "Kit"
+      ],
+      "percentOfEpisodes": 100
+    },
+    "languageProfileId": 1,
+    "id": 3
+  },
+  {
+    "title": "Lovely Runner",
+    "alternateTitles": [
+      {
+        "title": "Lovely Runner (Korean: 선재 업고 튀어)",
+        "seasonNumber": -1
+      }
+    ],
+    "sortTitle": "lovely runner",
+    "status": "ended",
+    "ended": true,
+    "overview": "Im Sol is devastated by the sudden and tragic death of her idol Ryu Sun-Jae, a former swimmer turned K-pop star. But in the midst of her grief, she magically travels back to 2008 - when Sun-Jae was only 19 years old! Sol is delighted that she can help him escape his sad future fate, and makes it her mission to change the future ... and maybe even find true love in the process. Will her attempts to change the course of the past succeed - or could they have unexpected consequences?",
+    "previousAiring": "2024-05-28T11:45:00Z",
+    "network": "tvN",
+    "airTime": "20:45",
+    "images": [
+      {
+        "coverType": "banner",
+        "url": "/MediaCover/4/banner.jpg?lastWrite=638841700828735443",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/432989/banners/66184aab0b730.jpg"
+      },
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/4/poster.jpg?lastWrite=638841700829025443",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/432989/posters/65fde91758810.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/4/fanart.jpg?lastWrite=638841700829325443",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/432989/backgrounds/661475e3a0e63.jpg"
+      }
+    ],
+    "originalLanguage": {
+      "id": 21,
+      "name": "Korean"
+    },
+    "seasons": [
+      {
+        "seasonNumber": 1,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2024-05-28T11:45:00Z",
+          "episodeFileCount": 0,
+          "episodeCount": 16,
+          "totalEpisodeCount": 16,
+          "sizeOnDisk": 0,
+          "releaseGroups": [],
+          "percentOfEpisodes": 0
+        }
+      }
+    ],
+    "year": 2024,
+    "path": "/data/media/tv/Lovely Runner (2024) [tvdbid-432989]",
+    "qualityProfileId": 7,
+    "seasonFolder": true,
+    "monitored": true,
+    "monitorNewItems": "all",
+    "useSceneNumbering": false,
+    "runtime": 65,
+    "tvdbId": 432989,
+    "tvRageId": 0,
+    "tvMazeId": 75084,
+    "tmdbId": 230923,
+    "firstAired": "2024-04-08T00:00:00Z",
+    "lastAired": "2024-05-28T00:00:00Z",
+    "seriesType": "standard",
+    "cleanTitle": "lovelyrunner",
+    "imdbId": "tt31324295",
+    "titleSlug": "lovely-runner",
+    "rootFolderPath": "/data/media/tv",
+    "certification": "14",
+    "genres": [
+      "Drama",
+      "Fantasy",
+      "Romance"
+    ],
+    "tags": [],
+    "added": "2025-05-30T02:48:02Z",
+    "ratings": {
+      "votes": 11984,
+      "value": 8.6
+    },
+    "statistics": {
+      "seasonCount": 1,
+      "episodeFileCount": 0,
+      "episodeCount": 16,
+      "totalEpisodeCount": 16,
+      "sizeOnDisk": 0,
+      "releaseGroups": [],
+      "percentOfEpisodes": 0
+    },
+    "languageProfileId": 1,
+    "id": 4
+  },
+  {
+    "title": "Gods of Honour",
+    "alternateTitles": [],
+    "sortTitle": "gods of honour",
+    "status": "ended",
+    "ended": true,
+    "overview": "Nar Jar was a 'Fire Master' in his previous life, but was killed by Lee Ching. After reincarnation, he ironically becomes Ching's third son. But he is very much affected by his old memories and cannot forgive his father. Ching also keeps his distance from him because of his exotic nature and eventually sends him away with excuses. Luckily, he is saved by some kind people and becomes a General when he is still a teenager. Meanwhile, the Shang Dynasty emperor Zhou abandons his empire for his mistress Tangie and puts the empire in jeopardy. With help from his friends and family, Nar Jar fights against Zhou's army, but the cunning Tangie plays a trick on Nar Jar that forces him to face his father in combat. Between father and son, who will win this great battle?",
+    "previousAiring": "2001-07-23T11:30:00Z",
+    "network": "TVB Jade",
+    "airTime": "19:30",
+    "images": [
+      {
+        "coverType": "banner",
+        "url": "/MediaCover/5/banner.jpg?lastWrite=638857618419321556",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/262891/banners/628b38a0ecaa5.jpg"
+      },
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/5/poster.jpg?lastWrite=638857618419451556",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/posters/262891-1.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/5/fanart.jpg?lastWrite=638857618419601556",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/fanart/original/262891-1.jpg"
+      }
+    ],
+    "originalLanguage": {
+      "id": 10,
+      "name": "Chinese"
+    },
+    "seasons": [
+      {
+        "seasonNumber": 1,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2001-07-23T11:30:00Z",
+          "episodeFileCount": 40,
+          "episodeCount": 40,
+          "totalEpisodeCount": 40,
+          "sizeOnDisk": 56090810965,
+          "releaseGroups": [
+            "HDCTV"
+          ],
+          "percentOfEpisodes": 100
+        }
+      }
+    ],
+    "year": 2001,
+    "path": "/data/media/tv/Gods of Honour (2001) [tvdbid-262891]",
+    "qualityProfileId": 1,
+    "seasonFolder": true,
+    "monitored": true,
+    "monitorNewItems": "all",
+    "useSceneNumbering": false,
+    "runtime": 45,
+    "tvdbId": 262891,
+    "tvRageId": 14559,
+    "tvMazeId": 0,
+    "tmdbId": 32404,
+    "firstAired": "2001-07-23T00:00:00Z",
+    "lastAired": "2001-07-23T00:00:00Z",
+    "seriesType": "standard",
+    "cleanTitle": "godshonour",
+    "imdbId": "tt0260931",
+    "titleSlug": "gods-of-honour",
+    "rootFolderPath": "/data/media/tv",
+    "genres": [
+      "Action",
+      "Adventure",
+      "Comedy",
+      "Drama",
+      "Fantasy",
+      "History",
+      "Romance"
+    ],
+    "tags": [],
+    "added": "2025-06-17T12:57:21Z",
+    "ratings": {
+      "votes": 178,
+      "value": 7.1
+    },
+    "statistics": {
+      "seasonCount": 1,
+      "episodeFileCount": 40,
+      "episodeCount": 40,
+      "totalEpisodeCount": 40,
+      "sizeOnDisk": 56090810965,
+      "releaseGroups": [
+        "HDCTV"
+      ],
+      "percentOfEpisodes": 100
+    },
+    "languageProfileId": 1,
+    "id": 5
+  },
+  {
+    "title": "Heavenly Sword and Dragon Sabre (2003)",
+    "alternateTitles": [],
+    "sortTitle": "heavenly sword and dragon sabre 2003",
+    "status": "ended",
+    "ended": true,
+    "overview": "Based on the popular novel by Jin Yong Kam Yung. He also wrote Legend of the Condor Heroes and Return of the Condor Heroes. The Heavenly Sword and Dragon Sabre takes place during 14th Century China during the Mongolian Yuan Dynasty, roughly 100 years after the events of Return of the Condor Heroes. After decades of struggles, famine, and bitterness which the Chinese citizens blamed on the Yuan Dynasty's misgovernment, the Martial Arts sects have begun to rebel. Prince Ruyong asks Cheng Kun, a Shaolin monk with an ulterior motive, for a plan on how to deal with the rebels.\r\n\r\n\"The wielder of Heavenly Sword and/or Dragon Sabre rules the world.\"\r\n\r\nThis well known legend in the Martial Arts community is the impetus for the tale of Zhang Wuji. The story begins with how his parents met (episodes 1-3), then tells his trials as an adolescent (episodes 4-8), proceeds to relate his rise to prominence (episodes 9-23) and reveals the secret behind Heavenly Sword and Dragon Sabre (episode 23), and ends with the confluence of Wuji's love life, the Martial Arts sects' long standing grudges, and cruel fate.",
+    "previousAiring": "2003-02-28T11:15:00Z",
+    "network": "CTS",
+    "airTime": "19:30",
+    "images": [
+      {
+        "coverType": "banner",
+        "url": "/MediaCover/6/banner.jpg?lastWrite=638863256608960273",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/graphical/166141-g.jpg"
+      },
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/6/poster.jpg?lastWrite=638863256609400273",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/posters/166141-1.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/6/fanart.jpg?lastWrite=638863256620230272",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/fanart/original/166141-2.jpg"
+      }
+    ],
+    "originalLanguage": {
+      "id": 10,
+      "name": "Chinese"
+    },
+    "seasons": [
+      {
+        "seasonNumber": 1,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2003-02-28T11:15:00Z",
+          "episodeFileCount": 40,
+          "episodeCount": 40,
+          "totalEpisodeCount": 40,
+          "sizeOnDisk": 52703314427,
+          "releaseGroups": [],
+          "percentOfEpisodes": 100
+        }
+      }
+    ],
+    "year": 2002,
+    "path": "/data/media/tv/Heavenly Sword and Dragon Sabre (2003) [tvdbid-166141]",
+    "qualityProfileId": 7,
+    "seasonFolder": true,
+    "monitored": true,
+    "monitorNewItems": "all",
+    "useSceneNumbering": false,
+    "runtime": 45,
+    "tvdbId": 166141,
+    "tvRageId": 5340,
+    "tvMazeId": 0,
+    "tmdbId": 31952,
+    "firstAired": "2002-12-25T00:00:00Z",
+    "lastAired": "2003-02-28T00:00:00Z",
+    "seriesType": "standard",
+    "cleanTitle": "heavenlysworddragonsabre2003",
+    "imdbId": "tt1471140",
+    "titleSlug": "heavenly-sword-and-dragon-sabre-2003",
+    "rootFolderPath": "/data/media/tv",
+    "genres": [
+      "Drama"
+    ],
+    "tags": [],
+    "added": "2025-06-24T01:34:20Z",
+    "ratings": {
+      "votes": 472,
+      "value": 7.3
+    },
+    "statistics": {
+      "seasonCount": 1,
+      "episodeFileCount": 40,
+      "episodeCount": 40,
+      "totalEpisodeCount": 40,
+      "sizeOnDisk": 52703314427,
+      "releaseGroups": [],
+      "percentOfEpisodes": 100
+    },
+    "languageProfileId": 1,
+    "id": 6
+  },
+  {
+    "title": "Demi-Gods and Semi-Devils (2003)",
+    "alternateTitles": [],
+    "sortTitle": "demigods and semidevils 2003",
+    "status": "ended",
+    "ended": true,
+    "overview": "Qiao Feng's story is his quest to find his real identity and the mystery surrounding an event that occured 30 years prior that left him as an orphan. Duan Yu's story covers his meetings with many of his half sisters that he did not know he had (thanks to his adventurous dad during his young days) and the battle with Duan Yuan Qing as the rightful ruler of Dali. Xu Zhu is a lowly Shaolin Monk who gets caught in the middle of an internal struggle of the Care Free Sect, one of the most powerful and secretative sects around. Their stories take place during the Northern Song Dynasty and across warring kingdoms of Song, Liao, Dali, and Western Xia.",
+    "previousAiring": "2003-12-10T16:00:00Z",
+    "network": "CCTV",
+    "images": [
+      {
+        "coverType": "banner",
+        "url": "/MediaCover/8/banner.jpg?lastWrite=638901601264973516",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/graphical/116251-g2.jpg"
+      },
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/8/poster.jpg?lastWrite=638901601265123516",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/posters/116251-5.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/8/fanart.jpg?lastWrite=638901601277623515",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/fanart/original/116251-2.jpg"
+      }
+    ],
+    "originalLanguage": {
+      "id": 10,
+      "name": "Chinese"
+    },
+    "seasons": [
+      {
+        "seasonNumber": 1,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2003-12-10T16:00:00Z",
+          "episodeFileCount": 40,
+          "episodeCount": 40,
+          "totalEpisodeCount": 40,
+          "sizeOnDisk": 117124279762,
+          "releaseGroups": [
+            "nhl"
+          ],
+          "percentOfEpisodes": 100
+        }
+      }
+    ],
+    "year": 2003,
+    "path": "/data/media/tv/Demi-Gods and Semi-Devils (2003) [tvdbid-116251]",
+    "qualityProfileId": 7,
+    "seasonFolder": true,
+    "monitored": true,
+    "monitorNewItems": "all",
+    "useSceneNumbering": false,
+    "runtime": 50,
+    "tvdbId": 116251,
+    "tvRageId": 0,
+    "tvMazeId": 0,
+    "tmdbId": 31959,
+    "firstAired": "2003-12-11T00:00:00Z",
+    "lastAired": "2003-12-11T00:00:00Z",
+    "seriesType": "standard",
+    "cleanTitle": "demigodssemidevils2003",
+    "imdbId": "tt0404679",
+    "titleSlug": "demi-gods-and-semi-devils-2003",
+    "rootFolderPath": "/data/media/tv",
+    "certification": "TV-PG",
+    "genres": [
+      "Action",
+      "Adventure",
+      "Fantasy",
+      "History"
+    ],
+    "tags": [],
+    "added": "2025-08-07T10:42:06Z",
+    "ratings": {
+      "votes": 767,
+      "value": 7.7
+    },
+    "statistics": {
+      "seasonCount": 1,
+      "episodeFileCount": 40,
+      "episodeCount": 40,
+      "totalEpisodeCount": 40,
+      "sizeOnDisk": 117124279762,
+      "releaseGroups": [
+        "nhl"
+      ],
+      "percentOfEpisodes": 100
+    },
+    "languageProfileId": 1,
+    "id": 8
+  },
+  {
+    "title": "The First Frost",
+    "alternateTitles": [
+      {
+        "title": "Nan hong",
+        "seasonNumber": -1
+      }
+    ],
+    "sortTitle": "first frost",
+    "status": "ended",
+    "ended": true,
+    "overview": "After Wen Yifan has a chance encounter with her childhood crush, complicated feelings surface when the two wind up living together.",
+    "previousAiring": "2025-03-10T04:00:00Z",
+    "network": "Youku",
+    "airTime": "12:00",
+    "images": [
+      {
+        "coverType": "banner",
+        "url": "/MediaCover/9/banner.jpg?lastWrite=638909235219893347",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/437909/banners/67b4e8d0e87c1.jpg"
+      },
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/9/poster.jpg?lastWrite=638909235232183346",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/437909/posters/67b42516e2d42.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/9/fanart.jpg?lastWrite=638909235246783345",
+        "remoteUrl": "https://artworks.thetvdb.com/banners/v4/series/437909/backgrounds/67b42b82d664c.jpg"
+      }
+    ],
+    "originalLanguage": {
+      "id": 10,
+      "name": "Chinese"
+    },
+    "seasons": [
+      {
+        "seasonNumber": 1,
+        "monitored": true,
+        "statistics": {
+          "previousAiring": "2025-03-10T04:00:00Z",
+          "episodeFileCount": 32,
+          "episodeCount": 32,
+          "totalEpisodeCount": 32,
+          "sizeOnDisk": 55775457345,
+          "releaseGroups": [
+            "playWEB"
+          ],
+          "percentOfEpisodes": 100
+        }
+      }
+    ],
+    "year": 2025,
+    "path": "/data/media/tv/The First Frost (2025) [tvdbid-437909]",
+    "qualityProfileId": 7,
+    "seasonFolder": false,
+    "monitored": true,
+    "monitorNewItems": "all",
+    "useSceneNumbering": false,
+    "runtime": 45,
+    "tvdbId": 437909,
+    "tvRageId": 0,
+    "tvMazeId": 69795,
+    "tmdbId": 250060,
+    "firstAired": "2025-02-18T00:00:00Z",
+    "lastAired": "2025-03-10T00:00:00Z",
+    "seriesType": "standard",
+    "cleanTitle": "thefirstfrost",
+    "imdbId": "tt31887832",
+    "titleSlug": "the-first-frost",
+    "rootFolderPath": "/data/media/tv",
+    "genres": [
+      "Drama",
+      "Romance"
+    ],
+    "tags": [],
+    "added": "2025-08-16T06:45:20Z",
+    "ratings": {
+      "votes": 2978,
+      "value": 8.4
+    },
+    "statistics": {
+      "seasonCount": 1,
+      "episodeFileCount": 32,
+      "episodeCount": 32,
+      "totalEpisodeCount": 32,
+      "sizeOnDisk": 55775457345,
+      "releaseGroups": [
+        "playWEB"
+      ],
+      "percentOfEpisodes": 100
+    },
+    "languageProfileId": 1,
+    "id": 9
+  }
+]

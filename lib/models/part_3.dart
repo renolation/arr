@@ -4,7 +4,33 @@
 // ========================================
 
 import 'package:arr/models/part_1.dart';
+import 'package:arr/models/part_4.dart';
 import 'package:equatable/equatable.dart';
+
+// Helper function to parse series ratings which have a simpler structure
+Ratings? _parseSeriesRatings(dynamic ratingsJson) {
+  if (ratingsJson == null) return null;
+  
+  // Series ratings come as simple {"votes": 123, "value": 9.5}
+  if (ratingsJson is Map<String, dynamic>) {
+    final votes = ratingsJson['votes'] as double?;
+    final value = (ratingsJson['value'] as num?)?.toDouble();
+    
+    if (value != null) {
+      // Create a simplified Ratings object with just TMDB data
+      return Ratings(
+        tmdb: Rating(value: value, votes: votes),
+      );
+    }
+  }
+  
+  // Try to parse as full Ratings object if it's in that format
+  try {
+    return Ratings.fromJson(ratingsJson as Map<String, dynamic>);
+  } catch (e) {
+    return null;
+  }
+}
 
 // ========================================
 // Series Resource
@@ -47,6 +73,7 @@ class SeriesResource extends Equatable {
   final bool? useSceneNumbering;
   final SeriesStatistics? statistics;
   final int? year;
+  final Ratings? ratings;
 
   const SeriesResource({
     this.id,
@@ -85,10 +112,11 @@ class SeriesResource extends Equatable {
     this.useSceneNumbering,
     this.statistics,
     this.year,
+    this.ratings,
   });
 
   @override
-  List<Object?> get props => [id, title, alternateTitles, sortTitle, status, overview, network, airTime, images, seasonCount, totalEpisodeCount, episodeCount, episodeFileCount, sizeOnDisk, seriesType, seasons, added, qualityProfileId, languageProfileId, runtime, tvdbId, tvRageId, tvMazeId, firstAired, lastInfoSync, cleanTitle, imdbId, titleSlug, rootFolderPath, certification, genres, tags, monitored, useSceneNumbering, statistics, year];
+  List<Object?> get props => [id, title, alternateTitles, sortTitle, status, overview, network, airTime, images, seasonCount, totalEpisodeCount, episodeCount, episodeFileCount, sizeOnDisk, seriesType, seasons, added, qualityProfileId, languageProfileId, runtime, tvdbId, tvRageId, tvMazeId, firstAired, lastInfoSync, cleanTitle, imdbId, titleSlug, rootFolderPath, certification, genres, tags, monitored, useSceneNumbering, statistics, year, ratings];
 
   factory SeriesResource.fromJson(Map<String, dynamic> json) {
     return SeriesResource(
@@ -134,6 +162,7 @@ class SeriesResource extends Equatable {
       useSceneNumbering: json['useSceneNumbering'] as bool?,
       statistics: json['statistics'] != null ? SeriesStatistics.fromJson(json['statistics'] as Map<String, dynamic>) : null,
       year: json['year'] as int?,
+      ratings: _parseSeriesRatings(json['ratings']),
     );
   }
 
@@ -175,6 +204,7 @@ class SeriesResource extends Equatable {
       'useSceneNumbering': useSceneNumbering,
       'statistics': statistics?.toJson(),
       'year': year,
+      'ratings': ratings?.toJson(),
     };
   }
 
@@ -215,6 +245,7 @@ class SeriesResource extends Equatable {
     bool? useSceneNumbering,
     SeriesStatistics? statistics,
     int? year,
+    Ratings? ratings,
   }) {
     return SeriesResource(
       id: id ?? this.id,
@@ -253,6 +284,7 @@ class SeriesResource extends Equatable {
       useSceneNumbering: useSceneNumbering ?? this.useSceneNumbering,
       statistics: statistics ?? this.statistics,
       year: year ?? this.year,
+      ratings: ratings ?? this.ratings,
     );
   }
 }
@@ -842,7 +874,7 @@ class SeriesStatistics extends Equatable {
   final int? episodeCount;
   final int? totalEpisodeCount;
   final int? sizeOnDisk;
-  final double? releaseGroups;
+  final List<String>? releaseGroups;
   final double? percentOfEpisodes;
 
   const SeriesStatistics({
@@ -865,7 +897,7 @@ class SeriesStatistics extends Equatable {
       episodeCount: json['episodeCount'] as int?,
       totalEpisodeCount: json['totalEpisodeCount'] as int?,
       sizeOnDisk: json['sizeOnDisk'] as int?,
-      releaseGroups: (json['releaseGroups'] as num?)?.toDouble(),
+      releaseGroups: (json['releaseGroups'] as List<dynamic>?)?.cast<String>(),
       percentOfEpisodes: (json['percentOfEpisodes'] as num?)?.toDouble(),
     );
   }
@@ -888,7 +920,7 @@ class SeriesStatistics extends Equatable {
     int? episodeCount,
     int? totalEpisodeCount,
     int? sizeOnDisk,
-    double? releaseGroups,
+    List<String>? releaseGroups,
     double? percentOfEpisodes,
   }) {
     return SeriesStatistics(

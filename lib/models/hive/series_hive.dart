@@ -105,6 +105,9 @@ class SeriesHive extends HiveObject {
 
   @HiveField(32)
   int? year;
+  
+  @HiveField(33)
+  RatingsHive? ratings;
 
   SeriesHive({
     this.id,
@@ -140,6 +143,7 @@ class SeriesHive extends HiveObject {
     this.lastCached,
     this.serviceId,
     this.year,
+    this.ratings,
   });
   
   factory SeriesHive.fromSeriesResource(SeriesResource series, String serviceId) {
@@ -177,6 +181,7 @@ class SeriesHive extends HiveObject {
       lastCached: DateTime.now(),
       serviceId: serviceId,
       year: series.year,
+      ratings: series.ratings != null ? RatingsHive.fromRatings(series.ratings!) : null,
     );
   }
   
