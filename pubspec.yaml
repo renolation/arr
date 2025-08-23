@@ -20,7 +20,7 @@ version: 1.0.0+1
 
 environment:
   sdk: ^3.8.1
-
+  flutter: ">=3.0.0"
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
@@ -35,6 +35,11 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
 
+  flutter_riverpod: ^3.0.0-dev.17
+  riverpod_annotation: ^3.0.0-dev.17
+  equatable: ^2.0.7
+  retrofit: ^4.7.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -45,6 +50,10 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  build_runner:
+  custom_lint:
+  riverpod_generator: ^3.0.0-dev.17
+  riverpod_lint: ^3.0.0-dev.17
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
