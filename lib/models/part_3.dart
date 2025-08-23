@@ -13,7 +13,7 @@ Ratings? _parseSeriesRatings(dynamic ratingsJson) {
   
   // Series ratings come as simple {"votes": 123, "value": 9.5}
   if (ratingsJson is Map<String, dynamic>) {
-    final votes = ratingsJson['votes'] as double?;
+    final votes = (ratingsJson['votes'] as num?)?.toDouble();
     final value = (ratingsJson['value'] as num?)?.toDouble();
     
     if (value != null) {
@@ -1067,7 +1067,7 @@ class MediaInfoResource extends Equatable {
 
   factory MediaInfoResource.fromJson(Map<String, dynamic> json) {
     return MediaInfoResource(
-      audioChannels: json['audioChannels'] as String?,
+      audioChannels: json['audioChannels'].toString() as String?,
       audioCodec: json['audioCodec'] as String?,
       audioLanguages: json['audioLanguages'] as String?,
       height: json['height'] as int?,
@@ -1075,7 +1075,7 @@ class MediaInfoResource extends Equatable {
       scanType: json['scanType'] as String?,
       subtitles: json['subtitles'] as String?,
       videoCodec: json['videoCodec'] as String?,
-      videoFps: json['videoFps'] as String?,
+      videoFps: json['videoFps'].toString() as String?,
       videoDynamicRange: json['videoDynamicRange'] as String?,
       videoDynamicRangeType: json['videoDynamicRangeType'] as String?,
       width: json['width'] as int?,

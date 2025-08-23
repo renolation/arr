@@ -1,0 +1,1588 @@
+[
+  {
+    "title": "Harry Potter and the Philosopher's Stone",
+    "originalTitle": "Harry Potter and the Philosopher's Stone",
+    "originalLanguage": {
+      "id": 1,
+      "name": "English"
+    },
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "Хари Потър и философският камък",
+        "id": 13
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "Hari Poter i Kamen mudrosti",
+        "id": 14
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "Garri Potter i filosofskiy kamen'",
+        "id": 15
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "ہیری پوٹر اور فلسفی کا پتھر",
+        "id": 16
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "O Chári Póter kai i Filosofikí Líthos",
+        "id": 17
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "Hari Poter i Kamenot na mudrosta",
+        "id": 18
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "Harri Potter i filosofsʹkyy kaminʹ",
+        "id": 19
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "Harry Potter and the Sorcerer's Stone",
+        "id": 20
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "해리포터와 마법사의 돌",
+        "id": 21
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "ハリーポッターと賢者の石",
+        "id": 22
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "הרי פותר ואבן החכמים",
+        "id": 23
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "Harry Potter à l'école des sorciers",
+        "id": 24
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "Harry Potter dhe Guri Filozofal",
+        "id": 25
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "Harry Potter ja tarkade kivi",
+        "id": 26
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "哈利·波特与魔法石",
+        "id": 27
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "Harry Potter en de Steen der Wijzen",
+        "id": 28
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "Harry Potter y la Piedra Filosofal",
+        "id": 29
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "แฮร์รี่ พอตเตอร์กับศิลาอาถรรพ์",
+        "id": 30
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "هاري بوتر وحجر الفيلسوف",
+        "id": 31
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "Harry Potter (1) à l'école des sorciers",
+        "id": 32
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "Harry Potter e a Pedra Filosofal",
+        "id": 33
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "Harry Potter e la pietra filosofale",
+        "id": 34
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "Harry Potter und der Stein der Weisen",
+        "id": 35
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "Harry Potter 1",
+        "id": 36
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "Harry Potter 1 - The Sorcerer's Stone",
+        "id": 37
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 2,
+        "title": "Հարրի Փոթերը և Փիլիսոփայական Քարը",
+        "id": 38
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "harry potter philosopher s stone",
+    "sizeOnDisk": 3146650573,
+    "status": "released",
+    "overview": "Harry Potter has lived under the stairs at his aunt and uncle's house his whole life. But on his 11th birthday, he learns he's a powerful wizard—with a place waiting for him at the Hogwarts School of Witchcraft and Wizardry. As he learns to harness his newfound powers with the help of the school's kindly headmaster, Harry uncovers the truth about his parents' deaths—and about the villain who's to blame.",
+    "inCinemas": "2001-11-16T00:00:00Z",
+    "physicalRelease": "2002-04-29T00:00:00Z",
+    "digitalRelease": "2004-11-25T00:00:00Z",
+    "releaseDate": "2002-04-29T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/3/poster.jpg?lastWrite=638908499239964197",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/wuMc08IPKEatf9rnMNXvIDxqP4W.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/3/fanart.jpg?lastWrite=638908499242264197",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/bfh9Z3Ghz4FOJAfLOAhmc3ccnHU.jpg"
+      }
+    ],
+    "website": "https://www.warnerbros.com/movies/harry-potter-and-sorcerers-stone/",
+    "year": 2001,
+    "youTubeTrailerId": "l91Km49W9qI",
+    "studio": "Warner Bros. Pictures",
+    "path": "/data/media/movies/Harry Potter and the Philosophers Stone (2001) [imdbid-tt0241527] -",
+    "qualityProfileId": 7,
+    "hasFile": true,
+    "movieFileId": 3,
+    "monitored": true,
+    "minimumAvailability": "released",
+    "isAvailable": true,
+    "folderName": "/data/media/movies/Harry Potter and the Philosophers Stone (2001) [imdbid-tt0241527] -",
+    "runtime": 152,
+    "cleanTitle": "harrypotterphilosophersstone",
+    "imdbId": "tt0241527",
+    "tmdbId": 671,
+    "titleSlug": "671",
+    "rootFolderPath": "/data/media/movies",
+    "certification": "PG",
+    "genres": [
+      "Adventure",
+      "Fantasy"
+    ],
+    "tags": [],
+    "added": "2025-04-26T17:38:59Z",
+    "ratings": {
+      "imdb": {
+        "votes": 913893,
+        "value": 7.7,
+        "type": "user"
+      },
+      "tmdb": {
+        "votes": 28485,
+        "value": 7.9,
+        "type": "user"
+      },
+      "metacritic": {
+        "votes": 0,
+        "value": 65,
+        "type": "user"
+      },
+      "rottenTomatoes": {
+        "votes": 0,
+        "value": 80,
+        "type": "user"
+      },
+      "trakt": {
+        "votes": 53622,
+        "value": 8.01274,
+        "type": "user"
+      }
+    },
+    "movieFile": {
+      "movieId": 3,
+      "relativePath": "Harry Potter and the Sorcerer's Stone 2001 1080p bluray YTS.mp4",
+      "path": "/data/media/movies/Harry Potter and the Philosophers Stone (2001) [imdbid-tt0241527] -/Harry Potter and the Sorcerer's Stone 2001 1080p bluray YTS.mp4",
+      "size": 3146650573,
+      "dateAdded": "2025-04-26T17:45:09Z",
+      "sceneName": "Harry Potter and the Sorcerer's Stone 2001 1080p bluray YTS",
+      "releaseGroup": "YTS",
+      "edition": "EXTENDED",
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        }
+      ],
+      "quality": {
+        "quality": {
+          "id": 7,
+          "name": "Bluray-1080p",
+          "source": "bluray",
+          "resolution": 1080,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 2,
+          "real": 0,
+          "isRepack": true
+        }
+      },
+      "indexerFlags": 1,
+      "mediaInfo": {
+        "audioBitrate": 384000,
+        "audioChannels": 5.1,
+        "audioCodec": "AAC",
+        "audioLanguages": "und",
+        "audioStreamCount": 1,
+        "videoBitDepth": 8,
+        "videoBitrate": 2249650,
+        "videoCodec": "x264",
+        "videoFps": 23.976,
+        "videoDynamicRange": "",
+        "videoDynamicRangeType": "",
+        "resolution": "1920x796",
+        "runTime": "2:38:50",
+        "scanType": "Progressive",
+        "subtitles": ""
+      },
+      "originalFilePath": "Harry Potter And The Sorcerers Stone (2001) [EXTENDED] [REPACK] [1080p] [BluRay] [5.1] [YTS.MX]/Harry.Potter.And.The.Sorcerers.Stone.2001.EXTENDED.REPACK.1080p.BluRay.x264.AAC5.1-[YTS.MX].mp4",
+      "qualityCutoffNotMet": false,
+      "id": 3
+    },
+    "collection": {
+      "title": "Harry Potter Collection",
+      "tmdbId": 1241
+    },
+    "popularity": 32.0549,
+    "lastSearchTime": "2025-04-26T17:39:04Z",
+    "statistics": {
+      "movieFileCount": 1,
+      "sizeOnDisk": 3146650573,
+      "releaseGroups": [
+        "YTS"
+      ]
+    },
+    "id": 3
+  },
+  {
+    "title": "The Match",
+    "originalTitle": "승부",
+    "originalLanguage": {
+      "id": 21,
+      "name": "Korean"
+    },
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 10,
+        "title": "Eşleşme",
+        "id": 39
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 10,
+        "title": "المباراة",
+        "id": 40
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 10,
+        "title": "el partido",
+        "id": 41
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 10,
+        "title": "matchen",
+        "id": 42
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 10,
+        "title": "le match",
+        "id": 43
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 10,
+        "title": "Seungbu",
+        "id": 66
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "match",
+    "sizeOnDisk": 5389761195,
+    "status": "released",
+    "overview": "When a legendary Go master loses his title to a one-time friend and protégé, he sets out to reclaim it in a high-stakes battle of wits and skill.",
+    "inCinemas": "2025-03-26T00:00:00Z",
+    "digitalRelease": "2025-05-07T00:00:00Z",
+    "releaseDate": "2025-05-07T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/4/poster.jpg?lastWrite=638844687468864246",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/epI43M0kT1FNr2qPXOoke4ux8U1.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/4/fanart.jpg?lastWrite=638826539529892507",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/tVCg0HYPLFVYljiQXJCWTY43LJR.jpg"
+      }
+    ],
+    "website": "https://www.netflix.com/title/81640991",
+    "year": 2025,
+    "youTubeTrailerId": "",
+    "studio": "Moonlight Film",
+    "path": "/data/media/movies/The Match (2025) [imdbid-tt13498824] -",
+    "qualityProfileId": 7,
+    "hasFile": true,
+    "movieFileId": 4,
+    "monitored": true,
+    "minimumAvailability": "released",
+    "isAvailable": true,
+    "folderName": "/data/media/movies/The Match (2025) [imdbid-tt13498824] -",
+    "runtime": 115,
+    "cleanTitle": "thematch",
+    "imdbId": "tt13498824",
+    "tmdbId": 760497,
+    "titleSlug": "760497",
+    "rootFolderPath": "/data/media/movies",
+    "genres": [
+      "Drama"
+    ],
+    "tags": [],
+    "added": "2025-05-12T13:39:12Z",
+    "ratings": {
+      "imdb": {
+        "votes": 1762,
+        "value": 6.9,
+        "type": "user"
+      },
+      "tmdb": {
+        "votes": 46,
+        "value": 7.315,
+        "type": "user"
+      }
+    },
+    "movieFile": {
+      "movieId": 4,
+      "relativePath": "The Match 2025 1080p NF WEB-DL DUAL H264-FLUX.mkv",
+      "path": "/data/media/movies/The Match (2025) [imdbid-tt13498824] -/The Match 2025 1080p NF WEB-DL DUAL H264-FLUX.mkv",
+      "size": 5389761195,
+      "dateAdded": "2025-05-12T13:48:40Z",
+      "sceneName": "The Match 2025 1080p NF WEB-DL DUAL H264-FLUX",
+      "releaseGroup": "FLUX",
+      "edition": "",
+      "languages": [
+        {
+          "id": 21,
+          "name": "Korean"
+        },
+        {
+          "id": 1,
+          "name": "English"
+        }
+      ],
+      "quality": {
+        "quality": {
+          "id": 3,
+          "name": "WEBDL-1080p",
+          "source": "webdl",
+          "resolution": 1080,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "indexerFlags": 1,
+      "mediaInfo": {
+        "audioBitrate": 640000,
+        "audioChannels": 5.1,
+        "audioCodec": "EAC3",
+        "audioLanguages": "kor/eng",
+        "audioStreamCount": 2,
+        "videoBitDepth": 8,
+        "videoBitrate": 0,
+        "videoCodec": "x264",
+        "videoFps": 23.976,
+        "videoDynamicRange": "",
+        "videoDynamicRangeType": "",
+        "resolution": "1920x1080",
+        "runTime": "1:56:02",
+        "scanType": "Progressive",
+        "subtitles": "kor/kor/kor/eng/eng/eng/eng/ara/cze/dan/ger/gre/spa/spa/fin/fil/fre/heb/hrv/hun/ind/ita/jpn/may/nob/dut/pol/por/por/rum/rus/swe/tha/tur/ukr/vie/chi/chi"
+      },
+      "originalFilePath": "www.UIndex.org    -    The Match 2025 1080p NF WEB-DL DUAL H264-FLUX/The Match 2025 1080p NF WEB-DL DUAL H264-FLUX.mkv",
+      "qualityCutoffNotMet": false,
+      "id": 4
+    },
+    "popularity": 2.9838,
+    "lastSearchTime": "2025-05-12T13:40:32Z",
+    "statistics": {
+      "movieFileCount": 1,
+      "sizeOnDisk": 5389761195,
+      "releaseGroups": [
+        "FLUX"
+      ]
+    },
+    "id": 4
+  },
+  {
+    "title": "Final Destination Bloodlines",
+    "originalTitle": "Final Destination Bloodlines",
+    "originalLanguage": {
+      "id": 1,
+      "name": "English"
+    },
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 11,
+        "title": "파이널 데스티네이션 6",
+        "id": 46
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 11,
+        "title": "Destination ultime liens de sang",
+        "id": 47
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 11,
+        "title": "Premonição 6: Laços de Sangue",
+        "id": 48
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 11,
+        "title": "Premonição 6",
+        "id": 49
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 11,
+        "title": "Destino final: Lazos de sangre",
+        "id": 50
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 11,
+        "title": "फाइनल डेस्टिनेशन: ब्लडलाइन्स",
+        "id": 53
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 11,
+        "title": "Пункт назначения: Узы крови",
+        "id": 54
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 11,
+        "title": "Пункт назначения: Кровные узы",
+        "id": 58
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 11,
+        "title": "絕命終結站 血脈",
+        "id": 60
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 11,
+        "title": "Destino Final 6: Lazos De Sangre",
+        "id": 63
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 11,
+        "title": "අවසාන ගමනාන්තය 6: රුධිර රේඛා",
+        "id": 64
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 11,
+        "title": "الوجهة النهائية 6: خطوط الدم",
+        "id": 65
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 11,
+        "title": "ไฟนอลเดสติเนชั่น ทายาทโกงตาย",
+        "id": 78
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 11,
+        "title": "Final Destination 6",
+        "id": 118
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 11,
+        "title": "ファイナル・デスティネーション：ブラッドライン",
+        "id": 121
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 11,
+        "title": "死神来了6",
+        "id": 122
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "final destination bloodlines",
+    "sizeOnDisk": 1970739005,
+    "status": "released",
+    "overview": "Plagued by a violent recurring nightmare, college student Stefanie heads home to track down the one person who might be able to break the cycle and save her family from the grisly demise that inevitably awaits them all.",
+    "inCinemas": "2025-05-14T00:00:00Z",
+    "physicalRelease": "2025-07-22T00:00:00Z",
+    "digitalRelease": "2025-06-16T00:00:00Z",
+    "releaseDate": "2025-06-16T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/5/poster.jpg?lastWrite=638832597577927559",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/6WxhEvFsauuACfv8HyoVX6mZKFj.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/5/fanart.jpg?lastWrite=638837773508206062",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/uIpJPDNFoeX0TVml9smPrs9KUVx.jpg"
+      }
+    ],
+    "website": "https://www.finaldestinationmovie.com",
+    "year": 2025,
+    "youTubeTrailerId": "xitSoRbHJ50",
+    "studio": "New Line Cinema",
+    "path": "/data/media/movies/Final Destination Bloodlines (2025) [imdbid-tt9619824] -",
+    "qualityProfileId": 7,
+    "hasFile": true,
+    "movieFileId": 6,
+    "monitored": true,
+    "minimumAvailability": "released",
+    "isAvailable": true,
+    "folderName": "/data/media/movies/Final Destination Bloodlines (2025) [imdbid-tt9619824] -",
+    "runtime": 110,
+    "cleanTitle": "finaldestinationbloodlines",
+    "imdbId": "tt9619824",
+    "tmdbId": 574475,
+    "titleSlug": "574475",
+    "rootFolderPath": "/data/media/movies",
+    "certification": "R",
+    "genres": [
+      "Horror",
+      "Mystery"
+    ],
+    "tags": [],
+    "added": "2025-05-19T13:55:56Z",
+    "ratings": {
+      "imdb": {
+        "votes": 115479,
+        "value": 6.8,
+        "type": "user"
+      },
+      "tmdb": {
+        "votes": 2000,
+        "value": 7.158,
+        "type": "user"
+      },
+      "metacritic": {
+        "votes": 0,
+        "value": 73,
+        "type": "user"
+      },
+      "rottenTomatoes": {
+        "votes": 0,
+        "value": 92,
+        "type": "user"
+      },
+      "trakt": {
+        "votes": 8800,
+        "value": 7.03182,
+        "type": "user"
+      }
+    },
+    "movieFile": {
+      "movieId": 5,
+      "relativePath": "Final Destination Bloodlines 2025 1080p PROPER WEB DL HEVC x265 5.mkv",
+      "path": "/data/media/movies/Final Destination Bloodlines (2025) [imdbid-tt9619824] -/Final Destination Bloodlines 2025 1080p PROPER WEB DL HEVC x265 5.mkv",
+      "size": 1970739005,
+      "dateAdded": "2025-06-17T18:16:10Z",
+      "sceneName": "Final Destination Bloodlines 2025 1080p PROPER WEB DL HEVC x265 5",
+      "edition": "",
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        }
+      ],
+      "quality": {
+        "quality": {
+          "id": 3,
+          "name": "WEBDL-1080p",
+          "source": "webdl",
+          "resolution": 1080,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 2,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "indexerFlags": 1,
+      "mediaInfo": {
+        "audioBitrate": 0,
+        "audioChannels": 5.1,
+        "audioCodec": "AAC",
+        "audioLanguages": "eng",
+        "audioStreamCount": 1,
+        "videoBitDepth": 8,
+        "videoBitrate": 0,
+        "videoCodec": "x265",
+        "videoFps": 23.976,
+        "videoDynamicRange": "",
+        "videoDynamicRangeType": "",
+        "resolution": "1920x800",
+        "runTime": "1:49:47",
+        "scanType": "Progressive",
+        "subtitles": "eng/eng/ara/bul/cze/dan/gre/spa/spa/spa/est/fin/fre/fre/heb/hun/ind/kor/lit/lav/dut/nor/pol/por/por/por/rus/slo/slv/swe/tha/tur/chi/chi"
+      },
+      "originalFilePath": "Final Destination Bloodlines 2025 1080p PROPER WEB-DL HEVC x265 5.1 BONE.mkv",
+      "qualityCutoffNotMet": false,
+      "id": 6
+    },
+    "collection": {
+      "title": "Final Destination Collection",
+      "tmdbId": 8864
+    },
+    "popularity": 90.2324,
+    "statistics": {
+      "movieFileCount": 1,
+      "sizeOnDisk": 1970739005,
+      "releaseGroups": []
+    },
+    "id": 5
+  },
+  {
+    "title": "28 Days Later",
+    "originalTitle": "28 Days Later",
+    "originalLanguage": {
+      "id": 1,
+      "name": "English"
+    },
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 17,
+        "title": "28 Tage später",
+        "id": 67
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 17,
+        "title": "28 päivää myöhemmin",
+        "id": 68
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 17,
+        "title": "Devastación: 28 días después",
+        "id": 69
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 17,
+        "title": "Exterminio",
+        "id": 70
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 17,
+        "title": "Extermínio: Os Dias Estão Contados",
+        "id": 71
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 17,
+        "title": "28 dager senere",
+        "id": 72
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 17,
+        "title": "28日後",
+        "id": 73
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 17,
+        "title": "28 วันให้หลัง เชื้อเขมือบคน",
+        "id": 74
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 17,
+        "title": "28 يوما لاحقا",
+        "id": 75
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 17,
+        "title": "28 giorni dopo",
+        "id": 76
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 17,
+        "title": "28 жылдан кейін",
+        "id": 79
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "28 days later",
+    "sizeOnDisk": 5820779282,
+    "status": "released",
+    "overview": "Twenty-eight days after a killer virus was accidentally unleashed from a British research facility, a small group of London survivors are caught in a desperate struggle to protect themselves from the infected. Carried by animals and humans, the virus turns those it infects into homicidal maniacs -- and it's absolutely impossible to contain.",
+    "inCinemas": "2002-10-31T00:00:00Z",
+    "physicalRelease": "2003-06-04T00:00:00Z",
+    "digitalRelease": "2008-02-23T00:00:00Z",
+    "releaseDate": "2003-06-04T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/6/poster.jpg?lastWrite=638913652668078841",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/sQckQRt17VaWbo39GIu0TMOiszq.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/6/fanart.jpg?lastWrite=638898270580677737",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/x085XrfEmU31QeXgMFttmuoGr0Y.jpg"
+      }
+    ],
+    "website": "https://www.sonypictures.com/movies/28dayslater",
+    "year": 2002,
+    "youTubeTrailerId": "mWEhfF27O0c",
+    "studio": "DNA Films",
+    "path": "/data/media/movies/28 Days Later (2002) [imdbid-tt0289043] -",
+    "qualityProfileId": 7,
+    "hasFile": true,
+    "movieFileId": 7,
+    "monitored": true,
+    "minimumAvailability": "released",
+    "isAvailable": true,
+    "folderName": "/data/media/movies/28 Days Later (2002) [imdbid-tt0289043] -",
+    "runtime": 113,
+    "cleanTitle": "28dayslater",
+    "imdbId": "tt0289043",
+    "tmdbId": 170,
+    "titleSlug": "170",
+    "rootFolderPath": "/data/media/movies",
+    "certification": "R",
+    "genres": [
+      "Horror",
+      "Thriller",
+      "Science Fiction"
+    ],
+    "tags": [],
+    "added": "2025-06-18T13:19:30Z",
+    "ratings": {
+      "imdb": {
+        "votes": 512740,
+        "value": 7.5,
+        "type": "user"
+      },
+      "tmdb": {
+        "votes": 7718,
+        "value": 7.237,
+        "type": "user"
+      },
+      "metacritic": {
+        "votes": 0,
+        "value": 73,
+        "type": "user"
+      },
+      "rottenTomatoes": {
+        "votes": 0,
+        "value": 87,
+        "type": "user"
+      },
+      "trakt": {
+        "votes": 19639,
+        "value": 7.55008,
+        "type": "user"
+      }
+    },
+    "movieFile": {
+      "movieId": 6,
+      "relativePath": "28 Days Later... (2002) (1080p BluRay x265 HEVC 10bit AAC 5.1 Ti.mkv",
+      "path": "/data/media/movies/28 Days Later (2002) [imdbid-tt0289043] -/28 Days Later... (2002) (1080p BluRay x265 HEVC 10bit AAC 5.1 Ti.mkv",
+      "size": 5820779282,
+      "dateAdded": "2025-06-18T13:46:31Z",
+      "sceneName": "28 Days Later... (2002) (1080p BluRay x265 HEVC 10bit AAC 5.1 Ti",
+      "releaseGroup": "Tigole",
+      "edition": "",
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        }
+      ],
+      "quality": {
+        "quality": {
+          "id": 7,
+          "name": "Bluray-1080p",
+          "source": "bluray",
+          "resolution": 1080,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "indexerFlags": 1,
+      "mediaInfo": {
+        "audioBitrate": 0,
+        "audioChannels": 5.1,
+        "audioCodec": "AAC",
+        "audioLanguages": "eng/eng",
+        "audioStreamCount": 2,
+        "videoBitDepth": 10,
+        "videoBitrate": 0,
+        "videoCodec": "x265",
+        "videoFps": 23.976,
+        "videoDynamicRange": "",
+        "videoDynamicRangeType": "",
+        "resolution": "1920x1040",
+        "runTime": "1:57:34",
+        "scanType": "Progressive",
+        "subtitles": "eng/bul/chi/hrv/cze/dan/dut/fin/fre/fre/ger/ger/ger/gre/heb/hun/ice/ita/ita/nob/pol/por/rum/rus/rus/spa/spa/swe/tha/tur"
+      },
+      "originalFilePath": "28 Days Later... (2002) (1080p BluRay x265 HEVC 10bit AAC 5.1 Tigole)/28 Days Later... (2002) (1080p BluRay x265 10bit Tigole).mkv",
+      "qualityCutoffNotMet": false,
+      "id": 7
+    },
+    "collection": {
+      "title": "28 Days/Weeks Later Collection",
+      "tmdbId": 1565
+    },
+    "popularity": 19.187,
+    "lastSearchTime": "2025-06-18T13:20:41Z",
+    "statistics": {
+      "movieFileCount": 1,
+      "sizeOnDisk": 5820779282,
+      "releaseGroups": [
+        "Tigole"
+      ]
+    },
+    "id": 6
+  },
+  {
+    "title": "28 Weeks Later",
+    "originalTitle": "28 Weeks Later",
+    "originalLanguage": {
+      "id": 1,
+      "name": "English"
+    },
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 18,
+        "title": "Twenty Eight Weeks Later",
+        "id": 80
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 18,
+        "title": "28 Wochen später",
+        "id": 81
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 18,
+        "title": "28 tygodni później",
+        "id": 82
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 18,
+        "title": "28 viikkoa myöhemmin",
+        "id": 83
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 18,
+        "title": "28 週後",
+        "id": 84
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 18,
+        "title": "28 Days Later 2",
+        "id": 85
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 18,
+        "title": "28 أسبوعا لاحقا",
+        "id": 86
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 18,
+        "title": "28 semanas después",
+        "id": 87
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 18,
+        "title": "มหาภัยเชื้อนรกถล่มเมือง",
+        "id": 88
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "28 weeks later",
+    "sizeOnDisk": 29452016384,
+    "status": "released",
+    "overview": "Twenty-eight weeks after the spread of a deadly rage virus, the inhabitants of the British Isles have lost their battle against the onslaught, as the virus has killed everyone there. Six months later, a group of Americans dare to set foot on the Isles, convinced the danger has passed. But it soon becomes all too clear that the scourge continues to live, waiting to pounce on its next victims.",
+    "inCinemas": "2007-04-26T00:00:00Z",
+    "physicalRelease": "2007-11-14T00:00:00Z",
+    "digitalRelease": "2007-08-30T00:00:00Z",
+    "releaseDate": "2007-08-30T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/7/poster.jpg?lastWrite=638862850734067063",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/oix0aNv1lvW3nUGspUyvSIBlpbs.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/7/fanart.jpg?lastWrite=638862850735197063",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/83ownpZPvBHJD5UVNShzQfa3LaW.jpg"
+      }
+    ],
+    "website": "",
+    "year": 2007,
+    "youTubeTrailerId": "gPOt4mAEfBE",
+    "studio": "DNA Films",
+    "path": "/data/media/movies/28 Weeks Later (2007) [imdbid-tt0463854] -",
+    "qualityProfileId": 4,
+    "hasFile": true,
+    "movieFileId": 8,
+    "monitored": true,
+    "minimumAvailability": "released",
+    "isAvailable": true,
+    "folderName": "/data/media/movies/28 Weeks Later (2007) [imdbid-tt0463854] -",
+    "runtime": 100,
+    "cleanTitle": "28weekslater",
+    "imdbId": "tt0463854",
+    "tmdbId": 1562,
+    "titleSlug": "1562",
+    "rootFolderPath": "/data/media/movies",
+    "certification": "R",
+    "genres": [
+      "Horror",
+      "Thriller",
+      "Science Fiction"
+    ],
+    "tags": [],
+    "added": "2025-06-23T14:17:52Z",
+    "ratings": {
+      "imdb": {
+        "votes": 338921,
+        "value": 6.9,
+        "type": "user"
+      },
+      "tmdb": {
+        "votes": 4982,
+        "value": 6.6,
+        "type": "user"
+      },
+      "metacritic": {
+        "votes": 0,
+        "value": 78,
+        "type": "user"
+      },
+      "rottenTomatoes": {
+        "votes": 0,
+        "value": 73,
+        "type": "user"
+      },
+      "trakt": {
+        "votes": 11977,
+        "value": 6.90607,
+        "type": "user"
+      }
+    },
+    "movieFile": {
+      "movieId": 7,
+      "relativePath": "28 Weeks Later 2007 BluRay 1080p REMUX AVC DTS HD MA 5 1 LEGi0N.mkv",
+      "path": "/data/media/movies/28 Weeks Later (2007) [imdbid-tt0463854] -/28 Weeks Later 2007 BluRay 1080p REMUX AVC DTS HD MA 5 1 LEGi0N.mkv",
+      "size": 29452016384,
+      "dateAdded": "2025-06-23T14:59:35Z",
+      "sceneName": "28 Weeks Later 2007 BluRay 1080p REMUX AVC DTS HD MA 5 1 LEGi0N",
+      "releaseGroup": "LEGi0N",
+      "edition": "",
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        }
+      ],
+      "quality": {
+        "quality": {
+          "id": 30,
+          "name": "Remux-1080p",
+          "source": "bluray",
+          "resolution": 1080,
+          "modifier": "remux"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "indexerFlags": 1,
+      "mediaInfo": {
+        "audioBitrate": 4083673,
+        "audioChannels": 5.1,
+        "audioCodec": "DTS-HD MA",
+        "audioLanguages": "eng/eng",
+        "audioStreamCount": 2,
+        "videoBitDepth": 8,
+        "videoBitrate": 34730268,
+        "videoCodec": "AVC",
+        "videoFps": 23.976,
+        "videoDynamicRange": "",
+        "videoDynamicRangeType": "",
+        "resolution": "1920x1080",
+        "runTime": "1:40:06",
+        "scanType": "Progressive",
+        "subtitles": "eng/eng/ger/spa/dan/fin/nor/swe"
+      },
+      "originalFilePath": "28 Weeks Later 2007 BluRay 1080p REMUX AVC DTS-HD MA 5.1-LEGi0N/28.Weeks.Later.2007.BluRay.1080p.REMUX.AVC.DTS-HD.MA 5.1-LEGi0N.mkv",
+      "qualityCutoffNotMet": false,
+      "id": 8
+    },
+    "collection": {
+      "title": "28 Days/Weeks Later Collection",
+      "tmdbId": 1565
+    },
+    "popularity": 13.8861,
+    "lastSearchTime": "2025-06-23T14:17:54Z",
+    "statistics": {
+      "movieFileCount": 1,
+      "sizeOnDisk": 29452016384,
+      "releaseGroups": [
+        "LEGi0N"
+      ]
+    },
+    "id": 7
+  },
+  {
+    "title": "50 First Dates",
+    "originalTitle": "50 First Dates",
+    "originalLanguage": {
+      "id": 1,
+      "name": "English"
+    },
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 22,
+        "title": "Como si fuera la primera vez",
+        "id": 89
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 22,
+        "title": "Cheotkisuman 50baenjjae",
+        "id": 90
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 22,
+        "title": "Mereu la prima întâlnire",
+        "id": 91
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 22,
+        "title": "50 pŭrvi sreshti",
+        "id": 92
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 22,
+        "title": "Káthe Forá, Próti Forá",
+        "id": 93
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 22,
+        "title": "50 pervykh potseluyev",
+        "id": 94
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 22,
+        "title": "Pedeset prvih sastanaka",
+        "id": 95
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 22,
+        "title": "50 pershykh potsilunkiv",
+        "id": 96
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 22,
+        "title": "50 krát a stále po prvý raz",
+        "id": 97
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 22,
+        "title": "50 เดท จีบเธอไม่เคยจำ",
+        "id": 98
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 22,
+        "title": "50回目のファースト・キス",
+        "id": 99
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 22,
+        "title": "50x a stále poprvé",
+        "id": 100
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 22,
+        "title": "첫키스만 50번째",
+        "id": 101
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 22,
+        "title": "50 առաջին ժամադրությունները",
+        "id": 102
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "50 first dates",
+    "sizeOnDisk": 5672693037,
+    "status": "released",
+    "overview": "Henry is a player skilled at seducing women. But when this veterinarian meets Lucy, a girl with a quirky problem when it comes to total recall, he realizes it's possible to fall in love all over again…and again, and again. That's because the delightful Lucy has no short-term memory, so Henry must woo her day after day until he finally sweeps her off her feet.",
+    "inCinemas": "2004-02-13T00:00:00Z",
+    "physicalRelease": "2004-06-15T00:00:00Z",
+    "digitalRelease": "2007-01-03T00:00:00Z",
+    "releaseDate": "2004-06-15T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/8/poster.jpg?lastWrite=638897406864304839",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/4T0cSswKtXk37r0QbqoLbTtlbO1.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/8/fanart.jpg?lastWrite=638871904344109949",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/vUuMauTTlsp7LB9dN9phXA0i9Nd.jpg"
+      }
+    ],
+    "website": "",
+    "year": 2004,
+    "youTubeTrailerId": "17KJk3ErIx0",
+    "studio": "Columbia Pictures",
+    "path": "/data/media/movies/50 First Dates (2004) [imdbid-tt0343660] -",
+    "qualityProfileId": 7,
+    "hasFile": true,
+    "movieFileId": 9,
+    "monitored": true,
+    "minimumAvailability": "released",
+    "isAvailable": true,
+    "folderName": "/data/media/movies/50 First Dates (2004) [imdbid-tt0343660] -",
+    "runtime": 99,
+    "cleanTitle": "50firstdates",
+    "imdbId": "tt0343660",
+    "tmdbId": 1824,
+    "titleSlug": "1824",
+    "rootFolderPath": "/data/media/movies",
+    "certification": "PG-13",
+    "genres": [
+      "Comedy",
+      "Romance"
+    ],
+    "tags": [],
+    "added": "2025-07-04T01:47:13Z",
+    "ratings": {
+      "imdb": {
+        "votes": 402086,
+        "value": 6.8,
+        "type": "user"
+      },
+      "tmdb": {
+        "votes": 7396,
+        "value": 6.9,
+        "type": "user"
+      },
+      "metacritic": {
+        "votes": 0,
+        "value": 48,
+        "type": "user"
+      },
+      "rottenTomatoes": {
+        "votes": 0,
+        "value": 45,
+        "type": "user"
+      },
+      "trakt": {
+        "votes": 13628,
+        "value": 7.17259,
+        "type": "user"
+      }
+    },
+    "movieFile": {
+      "movieId": 8,
+      "relativePath": "50 First Dates 2004 1080p BluRay x265 HEVC 10bit AAC 5 1 Tigole QxR.mkv",
+      "path": "/data/media/movies/50 First Dates (2004) [imdbid-tt0343660] -/50 First Dates 2004 1080p BluRay x265 HEVC 10bit AAC 5 1 Tigole QxR.mkv",
+      "size": 5672693037,
+      "dateAdded": "2025-07-04T02:13:45Z",
+      "sceneName": "50 First Dates 2004 1080p BluRay x265 HEVC 10bit AAC 5 1 Tigole QxR",
+      "releaseGroup": "Tigole",
+      "edition": "",
+      "languages": [
+        {
+          "id": 1,
+          "name": "English"
+        }
+      ],
+      "quality": {
+        "quality": {
+          "id": 7,
+          "name": "Bluray-1080p",
+          "source": "bluray",
+          "resolution": 1080,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 1,
+          "real": 0,
+          "isRepack": false
+        }
+      },
+      "indexerFlags": 1,
+      "mediaInfo": {
+        "audioBitrate": 461042,
+        "audioChannels": 5.1,
+        "audioCodec": "AAC",
+        "audioLanguages": "eng/eng",
+        "audioStreamCount": 2,
+        "videoBitDepth": 10,
+        "videoBitrate": 6999471,
+        "videoCodec": "x265",
+        "videoFps": 23.976,
+        "videoDynamicRange": "",
+        "videoDynamicRangeType": "",
+        "resolution": "1920x800",
+        "runTime": "1:39:04",
+        "scanType": "Progressive",
+        "subtitles": "eng/bul/chi/hrv/cze/hun/ice/pol/por/por/rum/srp/slv/spa/spa/tha"
+      },
+      "originalFilePath": "50 First Dates (2004) (1080p BluRay x265 HEVC 10bit AAC 5.1 Tigole)/50 First Dates (2004) (1080p BluRay x265 10bit Tigole).mkv",
+      "qualityCutoffNotMet": false,
+      "id": 9
+    },
+    "popularity": 8.6408,
+    "lastSearchTime": "2025-07-04T01:47:14Z",
+    "statistics": {
+      "movieFileCount": 1,
+      "sizeOnDisk": 5672693037,
+      "releaseGroups": [
+        "Tigole"
+      ]
+    },
+    "id": 8
+  },
+  {
+    "title": "Ne Zha 2",
+    "originalTitle": "哪吒之魔童闹海",
+    "originalLanguage": {
+      "id": 10,
+      "name": "Chinese"
+    },
+    "alternateTitles": [
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 23,
+        "title": "哪吒2之魔童闹海",
+        "id": 103
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 23,
+        "title": "Na Tra: Ma Đồng Náo Hải",
+        "id": 104
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 23,
+        "title": "哪吒2",
+        "id": 105
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 23,
+        "title": "Nézhā zhī Mótóng nào hǎi",
+        "id": 106
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 23,
+        "title": "Nézhā èr",
+        "id": 107
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 23,
+        "title": "哪吒贰之魔童闹海",
+        "id": 109
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 23,
+        "title": "哪吒之魔童鬧海",
+        "id": 110
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 23,
+        "title": "Nezha: O Renascimento da Alma",
+        "id": 112
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 23,
+        "title": "ناچا٢",
+        "id": 113
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 23,
+        "title": "Nezha 2: O Renascimento da Alma",
+        "id": 114
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 23,
+        "title": "Ne Zha II",
+        "id": 115
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 23,
+        "title": "نژا 2",
+        "id": 117
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 23,
+        "title": "Nezha: The demon child churns the sea",
+        "id": 119
+      },
+      {
+        "sourceType": "tmdb",
+        "movieMetadataId": 23,
+        "title": "나타 2",
+        "id": 120
+      }
+    ],
+    "secondaryYearSourceId": 0,
+    "sortTitle": "ne zha 2",
+    "sizeOnDisk": 9145386184,
+    "status": "released",
+    "overview": "After a catastrophic event leaves their bodies destroyed, Ne Zha and Ao Bing are granted a fragile second chance at life. As tensions rise between the dragon clans and celestial forces, the two must undergo a series of perilous trials that will test their bond, challenge their identities, and decide the fate of both mortals and immortals.",
+    "inCinemas": "2025-01-29T00:00:00Z",
+    "digitalRelease": "2025-08-02T00:00:00Z",
+    "releaseDate": "2025-08-02T00:00:00Z",
+    "images": [
+      {
+        "coverType": "poster",
+        "url": "/MediaCover/9/poster.jpg?lastWrite=638913652670438841",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/cb5NyNrqiCNNoDkA8FfxHAtypdG.jpg"
+      },
+      {
+        "coverType": "fanart",
+        "url": "/MediaCover/9/fanart.jpg?lastWrite=638913652677448840",
+        "remoteUrl": "https://image.tmdb.org/t/p/original/c9xmB53umjnrCMS4pZz11clF3yJ.jpg"
+      }
+    ],
+    "website": "https://a24films.com/films/ne-zha-2",
+    "year": 2025,
+    "youTubeTrailerId": "ETlOSBR92Fs",
+    "studio": "Chengdu Coco Cartoon",
+    "path": "/data/media/movies/Ne Zha 2 (2025) [imdbid-tt34956443] -",
+    "qualityProfileId": 7,
+    "hasFile": true,
+    "movieFileId": 10,
+    "monitored": true,
+    "minimumAvailability": "released",
+    "isAvailable": true,
+    "folderName": "/data/media/movies/Ne Zha 2 (2025) [imdbid-tt34956443] -",
+    "runtime": 144,
+    "cleanTitle": "nezha2",
+    "imdbId": "tt34956443",
+    "tmdbId": 980477,
+    "titleSlug": "980477",
+    "rootFolderPath": "/data/media/movies",
+    "certification": "NR",
+    "genres": [
+      "Animation",
+      "Fantasy",
+      "Adventure",
+      "Action"
+    ],
+    "tags": [],
+    "added": "2025-08-01T04:23:18Z",
+    "ratings": {
+      "imdb": {
+        "votes": 14031,
+        "value": 8.1,
+        "type": "user"
+      },
+      "tmdb": {
+        "votes": 306,
+        "value": 8,
+        "type": "user"
+      },
+      "metacritic": {
+        "votes": 0,
+        "value": 63,
+        "type": "user"
+      },
+      "rottenTomatoes": {
+        "votes": 0,
+        "value": 94,
+        "type": "user"
+      },
+      "trakt": {
+        "votes": 507,
+        "value": 8.18146,
+        "type": "user"
+      }
+    },
+    "movieFile": {
+      "movieId": 9,
+      "relativePath": "Ne Zha 2 2025 REPACK 2160p WTV WEB DL DDP5 1 Atmos DV HDR HFR H 2.mkv",
+      "path": "/data/media/movies/Ne Zha 2 (2025) [imdbid-tt34956443] -/Ne Zha 2 2025 REPACK 2160p WTV WEB DL DDP5 1 Atmos DV HDR HFR H 2.mkv",
+      "size": 9145386184,
+      "dateAdded": "2025-08-07T06:57:19Z",
+      "sceneName": "Ne Zha 2 2025 REPACK 2160p WTV WEB DL DDP5 1 Atmos DV HDR HFR H 2",
+      "edition": "",
+      "languages": [
+        {
+          "id": 10,
+          "name": "Chinese"
+        }
+      ],
+      "quality": {
+        "quality": {
+          "id": 18,
+          "name": "WEBDL-2160p",
+          "source": "webdl",
+          "resolution": 2160,
+          "modifier": "none"
+        },
+        "revision": {
+          "version": 2,
+          "real": 0,
+          "isRepack": true
+        }
+      },
+      "indexerFlags": 1,
+      "mediaInfo": {
+        "audioBitrate": 768000,
+        "audioChannels": 5.1,
+        "audioCodec": "EAC3 Atmos",
+        "audioLanguages": "chi",
+        "audioStreamCount": 1,
+        "videoBitDepth": 10,
+        "videoBitrate": 0,
+        "videoCodec": "x265",
+        "videoFps": 60,
+        "videoDynamicRange": "HDR",
+        "videoDynamicRangeType": "HDR10",
+        "resolution": "3840x1610",
+        "runTime": "2:24:17",
+        "scanType": "Progressive",
+        "subtitles": "eng/vie/chi"
+      },
+      "originalFilePath": "Ne.Zha.2.2025.REPACK.2160p.WTV.WEB-DL.DDP5.1.Atmos.DV.HDR.HFR.H.265.AZO.mkv",
+      "qualityCutoffNotMet": false,
+      "id": 10
+    },
+    "collection": {
+      "title": "Ne Zha Collection",
+      "tmdbId": 1449595
+    },
+    "popularity": 146.9121,
+    "lastSearchTime": "2025-08-07T06:43:23Z",
+    "statistics": {
+      "movieFileCount": 1,
+      "sizeOnDisk": 9145386184,
+      "releaseGroups": []
+    },
+    "id": 9
+  }
+]

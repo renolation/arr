@@ -57,17 +57,25 @@ class CollectionMovieResource extends Equatable {
   ];
 
   factory CollectionMovieResource.fromJson(Map<String, dynamic> json) {
+    // Helper function to safely parse integers
+    int? parseIntSafe(dynamic value) {
+      if (value == null) return null;
+      if (value is int) return value;
+      if (value is String) return int.tryParse(value);
+      return null;
+    }
+    
     return CollectionMovieResource(
-      tmdbId: json['tmdbId'] as int?,
+      tmdbId: parseIntSafe(json['tmdbId']),
       imdbId: json['imdbId'] as String?,
       title: json['title'] as String?,
       cleanTitle: json['cleanTitle'] as String?,
       sortTitle: json['sortTitle'] as String?,
       status: json['status'] as String?,
       overview: json['overview'] as String?,
-      runtime: json['runtime'] as int?,
+      runtime: parseIntSafe(json['runtime']),
       images: (json['images'] as List<dynamic>?)?.map((e) => MediaCover.fromJson(e as Map<String, dynamic>)).toList(),
-      year: json['year'] as int?,
+      year: parseIntSafe(json['year']),
       ratings: json['ratings'] != null ? Ratings.fromJson(json['ratings'] as Map<String, dynamic>) : null,
       genres: (json['genres'] as List<dynamic>?)?.cast<String>(),
       folder: json['folder'] as String?,
@@ -148,9 +156,17 @@ class MovieStatisticsResource extends Equatable {
   List<Object?> get props => [movieFileCount, sizeOnDisk, releaseGroups];
 
   factory MovieStatisticsResource.fromJson(Map<String, dynamic> json) {
+    // Helper function to safely parse integers
+    int? parseIntSafe(dynamic value) {
+      if (value == null) return null;
+      if (value is int) return value;
+      if (value is String) return int.tryParse(value);
+      return null;
+    }
+    
     return MovieStatisticsResource(
-      movieFileCount: json['movieFileCount'] as int?,
-      sizeOnDisk: json['sizeOnDisk'] as int?,
+      movieFileCount: parseIntSafe(json['movieFileCount']),
+      sizeOnDisk: parseIntSafe(json['sizeOnDisk']),
       releaseGroups: (json['releaseGroups'] as List<dynamic>?)?.cast<String>(),
     );
   }

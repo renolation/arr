@@ -95,15 +95,23 @@ class MovieResource extends Equatable {
   List<Object?> get props => [id, title, alternateTitles, secondaryYearSourceId, sortTitle, sizeOnDisk, status, overview, inCinemas, physicalRelease, digitalRelease, images, website, downloaded, year, hasFile, youTubeTrailerId, studio, path, qualityProfileId, monitored, minimumAvailability, isAvailable, folderName, runtime, cleanTitle, imdbId, tmdbId, titleSlug, certification, genres, tags, added, ratings, movieFile, collection, statistics];
 
   factory MovieResource.fromJson(Map<String, dynamic> json) {
+    // Helper function to safely parse int from either int or string
+    int? parseIntSafe(dynamic value) {
+      if (value == null) return null;
+      if (value is int) return value;
+      if (value is String) return int.tryParse(value);
+      return null;
+    }
+    
     return MovieResource(
-      id: json['id'] as int?,
+      id: parseIntSafe(json['id']),
       title: json['title'] as String?,
       alternateTitles: (json['alternateTitles'] as List<dynamic>?)
           ?.map((e) => AlternativeTitleResource.fromJson(e as Map<String, dynamic>))
           .toList(),
-      secondaryYearSourceId: json['secondaryYearSourceId'] as int?,
+      secondaryYearSourceId: parseIntSafe(json['secondaryYearSourceId']),
       sortTitle: json['sortTitle'] as String?,
-      sizeOnDisk: json['sizeOnDisk'] as int?,
+      sizeOnDisk: parseIntSafe(json['sizeOnDisk']),
       status: json['status'] as String?,
       overview: json['overview'] as String?,
       inCinemas: json['inCinemas'] != null ? DateTime.parse(json['inCinemas'] as String) : null,
@@ -114,20 +122,20 @@ class MovieResource extends Equatable {
           .toList(),
       website: json['website'] as String?,
       downloaded: json['downloaded'] as bool?,
-      year: json['year'] as int?,
+      year: parseIntSafe(json['year']),
       hasFile: json['hasFile'] as bool?,
       youTubeTrailerId: json['youTubeTrailerId'] as String?,
       studio: json['studio'] as String?,
       path: json['path'] as String?,
-      qualityProfileId: json['qualityProfileId'] as int?,
+      qualityProfileId: parseIntSafe(json['qualityProfileId']),
       monitored: json['monitored'] as bool?,
       minimumAvailability: json['minimumAvailability'] as String?,
       isAvailable: json['isAvailable'] as bool?,
       folderName: json['folderName'] as String?,
-      runtime: json['runtime'] as int?,
+      runtime: parseIntSafe(json['runtime']),
       cleanTitle: json['cleanTitle'] as String?,
       imdbId: json['imdbId'] as String?,
-      tmdbId: json['tmdbId'] as int?,
+      tmdbId: parseIntSafe(json['tmdbId']),
       titleSlug: json['titleSlug'] as String?,
       certification: json['certification'] as String?,
       genres: (json['genres'] as List<dynamic>?)?.cast<String>(),
@@ -272,7 +280,7 @@ class AlternativeTitleResource extends Equatable {
   final int? movieMetadataId;
   final String? title;
   final String? cleanTitle;
-  final int? sourceType;
+  final String? sourceType;
   final int? sourceId;
   final int? votes;
   final int? voteCount;
@@ -299,7 +307,7 @@ class AlternativeTitleResource extends Equatable {
       movieMetadataId: json['movieMetadataId'] as int?,
       title: json['title'] as String?,
       cleanTitle: json['cleanTitle'] as String?,
-      sourceType: json['sourceType'] as int?,
+      sourceType: json['sourceType'] as String?,
       sourceId: json['sourceId'] as int?,
       votes: json['votes'] as int?,
       voteCount: json['voteCount'] as int?,
@@ -326,7 +334,7 @@ class AlternativeTitleResource extends Equatable {
     int? movieMetadataId,
     String? title,
     String? cleanTitle,
-    int? sourceType,
+    String? sourceType,
     int? sourceId,
     int? votes,
     int? voteCount,
@@ -387,25 +395,33 @@ class CollectionResource extends Equatable {
   List<Object?> get props => [id, title, sortTitle, tmdbId, images, overview, monitored, rootFolderPath, qualityProfileId, searchOnAdd, minimumAvailability, tags, movies, missingMovies];
 
   factory CollectionResource.fromJson(Map<String, dynamic> json) {
+    // Helper function to safely parse integers
+    int? parseIntSafe(dynamic value) {
+      if (value == null) return null;
+      if (value is int) return value;
+      if (value is String) return int.tryParse(value);
+      return null;
+    }
+    
     return CollectionResource(
-      id: json['id'] as int?,
+      id: parseIntSafe(json['id']),
       title: json['title'] as String?,
       sortTitle: json['sortTitle'] as String?,
-      tmdbId: json['tmdbId'] as int?,
+      tmdbId: parseIntSafe(json['tmdbId']),
       images: (json['images'] as List<dynamic>?)
           ?.map((e) => MediaCover.fromJson(e as Map<String, dynamic>))
           .toList(),
       overview: json['overview'] as String?,
       monitored: json['monitored'] as bool?,
       rootFolderPath: json['rootFolderPath'] as String?,
-      qualityProfileId: json['qualityProfileId'] as int?,
+      qualityProfileId: parseIntSafe(json['qualityProfileId']),
       searchOnAdd: json['searchOnAdd'] as bool?,
       minimumAvailability: json['minimumAvailability'] as String?,
       tags: (json['tags'] as List<dynamic>?)?.cast<String>(),
       movies: (json['movies'] as List<dynamic>?)
           ?.map((e) => CollectionMovieResource.fromJson(e as Map<String, dynamic>))
           .toList(),
-      missingMovies: json['missingMovies'] as int?,
+      missingMovies: parseIntSafe(json['missingMovies']),
     );
   }
 
@@ -761,15 +777,23 @@ class MovieFileResource extends Equatable {
   List<Object?> get props => [id, movieId, relativePath, path, size, dateAdded, sceneName, indexerFlags, quality, mediaInfo, originalFilePath, qualityCutoffNotMet, languages, releaseGroup, edition];
 
   factory MovieFileResource.fromJson(Map<String, dynamic> json) {
+    // Helper function to safely parse integers
+    int? parseIntSafe(dynamic value) {
+      if (value == null) return null;
+      if (value is int) return value;
+      if (value is String) return int.tryParse(value);
+      return null;
+    }
+    
     return MovieFileResource(
-      id: json['id'] as int?,
-      movieId: json['movieId'] as int?,
+      id: parseIntSafe(json['id']),
+      movieId: parseIntSafe(json['movieId']),
       relativePath: json['relativePath'] as String?,
       path: json['path'] as String?,
-      size: json['size'] as int?,
+      size: parseIntSafe(json['size']),
       dateAdded: json['dateAdded'] != null ? DateTime.parse(json['dateAdded'] as String) : null,
       sceneName: json['sceneName'] as String?,
-      indexerFlags: json['indexerFlags'] as int?,
+      indexerFlags: parseIntSafe(json['indexerFlags']),
       quality: json['quality'] != null ? QualityModel.fromJson(json['quality'] as Map<String, dynamic>) : null,
       mediaInfo: json['mediaInfo'] != null ? MediaInfoResource.fromJson(json['mediaInfo'] as Map<String, dynamic>) : null,
       originalFilePath: json['originalFilePath'] as String?,
