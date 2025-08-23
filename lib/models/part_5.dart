@@ -1,3 +1,4 @@
+import 'package:arr/models/part_3.dart';
 import 'package:equatable/equatable.dart';
 import 'part_4.dart';
 

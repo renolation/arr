@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.8.1
+  sdk: ">=3.0.0 <4.0.0"
   flutter: ">=3.0.0"
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -35,10 +35,34 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
 
-  flutter_riverpod: ^3.0.0-dev.17
-  riverpod_annotation: ^3.0.0-dev.17
+  # State Management
+  flutter_riverpod: ^2.5.0
+  riverpod_annotation: ^2.3.5
+  
+  # Local Database
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  
+  # Networking
+  dio: ^5.4.0
+  retrofit: ^4.1.0
+  
+  # Navigation
+  go_router: ^13.0.0
+  
+  # Security
+  flutter_secure_storage: ^9.0.0
+  
+  # Image Caching
+  cached_network_image: ^3.3.1
+  
+  # Serialization
+  json_annotation: ^4.8.1
+  freezed_annotation: ^2.4.1
+  
+  # Utilities
   equatable: ^2.0.7
-  retrofit: ^4.7.1
+  path_provider: ^2.1.2
 
 dev_dependencies:
   flutter_test:
@@ -49,11 +73,17 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^5.0.0
-  build_runner:
+  flutter_lints: ^3.0.0
+  build_runner: ^2.4.8
   custom_lint:
-  riverpod_generator: ^3.0.0-dev.17
-  riverpod_lint: ^3.0.0-dev.17
+  riverpod_generator: ^2.4.0
+  riverpod_lint: ^2.3.0
+  
+  # Code Generation
+  hive_generator: ^2.0.1
+  freezed: ^2.4.7
+  json_serializable: ^6.7.1
+  retrofit_generator: ^7.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

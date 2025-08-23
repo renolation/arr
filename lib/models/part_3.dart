@@ -46,6 +46,7 @@ class SeriesResource extends Equatable {
   final bool? monitored;
   final bool? useSceneNumbering;
   final SeriesStatistics? statistics;
+  final int? year;
 
   const SeriesResource({
     this.id,
@@ -83,10 +84,11 @@ class SeriesResource extends Equatable {
     this.monitored,
     this.useSceneNumbering,
     this.statistics,
+    this.year,
   });
 
   @override
-  List<Object?> get props => [id, title, alternateTitles, sortTitle, status, overview, network, airTime, images, seasonCount, totalEpisodeCount, episodeCount, episodeFileCount, sizeOnDisk, seriesType, seasons, added, qualityProfileId, languageProfileId, runtime, tvdbId, tvRageId, tvMazeId, firstAired, lastInfoSync, cleanTitle, imdbId, titleSlug, rootFolderPath, certification, genres, tags, monitored, useSceneNumbering, statistics];
+  List<Object?> get props => [id, title, alternateTitles, sortTitle, status, overview, network, airTime, images, seasonCount, totalEpisodeCount, episodeCount, episodeFileCount, sizeOnDisk, seriesType, seasons, added, qualityProfileId, languageProfileId, runtime, tvdbId, tvRageId, tvMazeId, firstAired, lastInfoSync, cleanTitle, imdbId, titleSlug, rootFolderPath, certification, genres, tags, monitored, useSceneNumbering, statistics, year];
 
   factory SeriesResource.fromJson(Map<String, dynamic> json) {
     return SeriesResource(
@@ -131,6 +133,7 @@ class SeriesResource extends Equatable {
       monitored: json['monitored'] as bool?,
       useSceneNumbering: json['useSceneNumbering'] as bool?,
       statistics: json['statistics'] != null ? SeriesStatistics.fromJson(json['statistics'] as Map<String, dynamic>) : null,
+      year: json['year'] as int?,
     );
   }
 
@@ -171,6 +174,7 @@ class SeriesResource extends Equatable {
       'monitored': monitored,
       'useSceneNumbering': useSceneNumbering,
       'statistics': statistics?.toJson(),
+      'year': year,
     };
   }
 
@@ -210,6 +214,7 @@ class SeriesResource extends Equatable {
     bool? monitored,
     bool? useSceneNumbering,
     SeriesStatistics? statistics,
+    int? year,
   }) {
     return SeriesResource(
       id: id ?? this.id,
@@ -247,6 +252,7 @@ class SeriesResource extends Equatable {
       monitored: monitored ?? this.monitored,
       useSceneNumbering: useSceneNumbering ?? this.useSceneNumbering,
       statistics: statistics ?? this.statistics,
+      year: year ?? this.year,
     );
   }
 }
