@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:arr/models/hive/service_config.dart';
 import 'package:arr/providers/service_providers.dart';
 import 'package:arr/features/settings/widgets/service_config_dialog.dart';
+import 'package:arr/providers/theme_provider.dart';
 
 import '../../../providers/radarr_providers.dart';
 import '../../../providers/sonarr_providers.dart';
@@ -30,6 +31,9 @@ class SettingsPage extends ConsumerWidget {
               label: const Text('Add Service'),
             ),
           ),
+          const Divider(),
+          _buildSectionHeader(context, 'Appearance'),
+          _buildThemeSelector(context, ref),
           const Divider(),
           _buildSectionHeader(context, 'Cache Management'),
           ListTile(
@@ -202,6 +206,53 @@ class SettingsPage extends ConsumerWidget {
         ],
       ),
     );
+  }
+  
+  Widget _buildThemeSelector(BuildContext context, WidgetRef ref) {
+    final currentTheme = ref.watch(themeProvider);
+    
+    return ListTile(
+      leading: const Icon(Icons.dark_mode),
+      title: const Text('Theme'),
+      subtitle: Text(_getThemeDisplayName(currentTheme)),
+      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+      onTap: () async {
+        final selected = await showDialog<AppThemeMode>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Choose Theme'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: AppThemeMode.values.map((mode) {
+                return RadioListTile<AppThemeMode>(
+                  title: Text(_getThemeDisplayName(mode)),
+                  value: mode,
+                  groupValue: currentTheme,
+                  onChanged: (value) {
+                    Navigator.of(context).pop(value);
+                  },
+                );
+              }).toList(),
+            ),
+          ),
+        );
+        
+        if (selected != null) {
+          await ref.read(themeProvider.notifier).setTheme(selected);
+        }
+      },
+    );
+  }
+  
+  String _getThemeDisplayName(AppThemeMode mode) {
+    switch (mode) {
+      case AppThemeMode.system:
+        return 'System (Auto)';
+      case AppThemeMode.light:
+        return 'Light';
+      case AppThemeMode.dark:
+        return 'Dark';
+    }
   }
   
   Future<void> _clearCache(BuildContext context, WidgetRef ref) async {
