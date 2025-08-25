@@ -1,4 +1,3 @@
-<!-- .claude/agents/flutter-widget-expert.md -->
 ---
 name: flutter-widget-expert
 description: Expert Flutter widget developer. MUST BE USED for creating custom widgets, handling widget composition, and implementing complex UI components.

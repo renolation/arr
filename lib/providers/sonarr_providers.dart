@@ -11,6 +11,10 @@ final sonarrCacheBoxProvider = Provider<Box<SeriesHive>>((ref) {
   return Hive.box<SeriesHive>(HiveDatabase.sonarrCacheBox);
 });
 
+final episodeCacheBoxProvider = Provider<Box<EpisodeHive>>((ref) {
+  return Hive.box<EpisodeHive>(HiveDatabase.episodeCacheBox);
+});
+
 final seriesListProvider = FutureProvider<List<SeriesHive>>((ref) async {
   final api = ref.watch(sonarrApiProvider);
   final service = ref.watch(currentSonarrServiceProvider);
@@ -83,6 +87,91 @@ final seriesDetailProvider = FutureProvider.family<SeriesHive?, int>((ref, serie
     }
     return cachedData;
   }
+});
+
+final seriesEpisodesProvider = FutureProvider.family<List<EpisodeHive>, int>((ref, seriesId) async {
+  final api = ref.watch(sonarrApiProvider);
+  final service = ref.watch(currentSonarrServiceProvider);
+  final cacheBox = ref.watch(episodeCacheBoxProvider);
+  
+  if (service == null) return [];
+  
+  // Filter cached episodes for this series and service
+  final cachedEpisodes = cacheBox.values
+      .where((episode) => episode.seriesId == seriesId && episode.serviceId == service.id)
+      .toList()
+    ..sort((a, b) {
+      // Sort by season number, then episode number
+      final seasonComparison = (a.seasonNumber ?? 0).compareTo(b.seasonNumber ?? 0);
+      if (seasonComparison != 0) return seasonComparison;
+      return (a.episodeNumber ?? 0).compareTo(b.episodeNumber ?? 0);
+    });
+  
+  if (api == null) {
+    // Return cached data if no API is available
+    return cachedEpisodes;
+  }
+  
+  try {
+    // Try to fetch from API
+    final episodes = await api.getEpisodesBySeries(seriesId);
+    
+    // Update cache
+    final cachedEpisodesList = <EpisodeHive>[];
+    for (final episode in episodes) {
+      final hiveModel = EpisodeHive.fromEpisodeResource(episode, service.id);
+      final cacheKey = '${service.id}_${episode.seriesId}_${episode.id}';
+      await cacheBox.put(cacheKey, hiveModel);
+      cachedEpisodesList.add(hiveModel);
+    }
+    
+    // Clean up old cached episodes for this series that are no longer returned by API
+    final currentEpisodeIds = episodes.map((e) => e.id).toSet();
+    final keysToDelete = <String>[];
+    for (final entry in cacheBox.toMap().entries) {
+      final episode = entry.value;
+      if (episode.seriesId == seriesId && episode.serviceId == service.id) {
+        if (!currentEpisodeIds.contains(episode.id)) {
+          keysToDelete.add(entry.key);
+        }
+      }
+    }
+    for (final key in keysToDelete) {
+      await cacheBox.delete(key);
+    }
+    
+    return cachedEpisodesList..sort((a, b) {
+      // Sort by season number, then episode number
+      final seasonComparison = (a.seasonNumber ?? 0).compareTo(b.seasonNumber ?? 0);
+      if (seasonComparison != 0) return seasonComparison;
+      return (a.episodeNumber ?? 0).compareTo(b.episodeNumber ?? 0);
+    });
+  } catch (e) {
+    // If API call fails, return cached data
+    if (cachedEpisodes.isEmpty) {
+      throw Exception('No cached episodes available for series $seriesId. Error: $e');
+    }
+    
+    return cachedEpisodes;
+  }
+});
+
+final seriesEpisodesBySeasonProvider = Provider.family<Map<int, List<EpisodeHive>>, int>((ref, seriesId) {
+  final episodes = ref.watch(seriesEpisodesProvider(seriesId)).valueOrNull ?? [];
+  
+  final episodesBySeason = <int, List<EpisodeHive>>{};
+  for (final episode in episodes) {
+    final season = episode.seasonNumber ?? 0;
+    episodesBySeason[season] ??= [];
+    episodesBySeason[season]!.add(episode);
+  }
+  
+  // Sort episodes within each season by episode number
+  for (final seasonEpisodes in episodesBySeason.values) {
+    seasonEpisodes.sort((a, b) => (a.episodeNumber ?? 0).compareTo(b.episodeNumber ?? 0));
+  }
+  
+  return episodesBySeason;
 });
 
 final seriesSearchProvider = StateProvider<String>((ref) => '');

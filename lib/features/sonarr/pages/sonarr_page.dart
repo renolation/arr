@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:go_router/go_router.dart';
 import 'package:arr/providers/sonarr_providers.dart';
 import 'package:arr/models/hive/series_hive.dart';
-import 'package:arr/features/sonarr/widgets/series_detail_sheet.dart';
 
 class SonarrPage extends ConsumerWidget {
   const SonarrPage({super.key});
@@ -195,11 +195,7 @@ class _SeriesGridItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          builder: (context) => SeriesDetailSheet(series: series),
-        );
+        context.push('/sonarr/series/${series.id}', extra: series);
       },
       child: Card(
         clipBehavior: Clip.antiAlias,

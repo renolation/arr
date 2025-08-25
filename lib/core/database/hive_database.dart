@@ -8,6 +8,7 @@ class HiveDatabase {
   static const String servicesBox = 'servicesBox';
   static const String sonarrCacheBox = 'sonarrCacheBox';
   static const String radarrCacheBox = 'radarrCacheBox';
+  static const String episodeCacheBox = 'episodeCacheBox';
   static const String settingsBox = 'settingsBox';
 
   static Future<void> init() async {
@@ -27,13 +28,16 @@ class HiveDatabase {
     await Hive.openBox<ServiceConfig>(servicesBox);
     await Hive.openBox<MovieHive>(radarrCacheBox);
     await Hive.openBox<SeriesHive>(sonarrCacheBox);
+    await Hive.openBox<EpisodeHive>(episodeCacheBox);
     await Hive.openBox(settingsBox);
   }
   
   static Future<void> clearCache() async {
     final sonarrBox = Hive.box<SeriesHive>(sonarrCacheBox);
     final radarrBox = Hive.box<MovieHive>(radarrCacheBox);
+    final episodeBox = Hive.box<EpisodeHive>(episodeCacheBox);
     await sonarrBox.clear();
     await radarrBox.clear();
+    await episodeBox.clear();
   }
 }

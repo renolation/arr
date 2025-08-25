@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:go_router/go_router.dart';
 import 'package:arr/providers/radarr_providers.dart';
 import 'package:arr/models/hive/movie_hive.dart';
-import 'package:arr/features/radarr/widgets/movie_detail_sheet.dart';
 
 class RadarrPage extends ConsumerWidget {
   const RadarrPage({super.key});
@@ -194,11 +194,7 @@ class _MovieGridItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          builder: (context) => MovieDetailSheet(movie: movie),
-        );
+        context.push('/radarr/movie/${movie.id}', extra: movie);
       },
       child: Card(
         clipBehavior: Clip.antiAlias,
