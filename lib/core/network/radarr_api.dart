@@ -1,17 +1,23 @@
-import '../../features/settings/domain/entities/service_config.dart';
-import 'base_service_api.dart';
+import 'package:arr/core/constants/api_constants.dart';
+import 'package:arr/features/settings/domain/entities/service_config.dart';
+import 'package:arr/services/api/base_api_service.dart';
 
 /// Radarr API service for movie management
-class RadarrApi extends BaseServiceApi {
+class RadarrApi extends BaseApiService {
+  final ServiceConfig config;
+
   RadarrApi({
-    required ServiceConfig config,
-    Duration connectTimeout = const Duration(seconds: 30),
-    Duration receiveTimeout = const Duration(seconds: 30),
+    required this.config,
+    Duration? connectTimeout,
+    Duration? receiveTimeout,
+    Duration? sendTimeout,
   }) : super(
-          config: config,
-          apiBasePath: '/api/v3',
+          baseUrl: config.baseUrl,
+          apiKey: config.apiKey ?? '',
+          apiBasePath: ApiConstants.radarrBasePath,
           connectTimeout: connectTimeout,
           receiveTimeout: receiveTimeout,
+          sendTimeout: sendTimeout,
         );
 
   /// Get all movies
@@ -182,5 +188,16 @@ class RadarrApi extends BaseServiceApi {
   /// Delete exclusion
   Future<void> deleteExclusion(int id) async {
     await delete('/exclusions/$id');
+  }
+
+  /// Test connection to this Radarr instance
+  @override
+  Future<bool> testConnection() async {
+    try {
+      final response = await get('/system/status');
+      return response.statusCode == 200;
+    } catch (_) {
+      return false;
+    }
   }
 }

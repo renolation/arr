@@ -1,17 +1,23 @@
-import '../../features/settings/domain/entities/service_config.dart';
-import 'base_service_api.dart';
+import 'package:arr/core/constants/api_constants.dart';
+import 'package:arr/features/settings/domain/entities/service_config.dart';
+import 'package:arr/services/api/base_api_service.dart';
 
 /// Overseerr/Jellyseerr API service for media requests management
-class OverseerrApi extends BaseServiceApi {
+class OverseerrApi extends BaseApiService {
+  final ServiceConfig config;
+
   OverseerrApi({
-    required ServiceConfig config,
-    Duration connectTimeout = const Duration(seconds: 30),
-    Duration receiveTimeout = const Duration(seconds: 30),
+    required this.config,
+    Duration? connectTimeout,
+    Duration? receiveTimeout,
+    Duration? sendTimeout,
   }) : super(
-          config: config,
-          apiBasePath: '/api/v1',
+          baseUrl: config.baseUrl,
+          apiKey: config.apiKey ?? '',
+          apiBasePath: ApiConstants.overseerrBasePath,
           connectTimeout: connectTimeout,
           receiveTimeout: receiveTimeout,
+          sendTimeout: sendTimeout,
         );
 
   /// Get all requests
@@ -165,7 +171,6 @@ class OverseerrApi extends BaseServiceApi {
     }
   }
 
-  @override
   Future<Map<String, dynamic>> getSystemStatus() async {
     return await getStatus();
   }

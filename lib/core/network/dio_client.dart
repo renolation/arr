@@ -318,6 +318,17 @@ class DioClient {
     _dio.options.headers[ApiConstants.authorizationHeader] = apiKey;
   }
 
+  /// Set HTTP Basic authentication header
+  void setBasicAuth(String username, String password) {
+    final credentials = base64Encode(utf8.encode('$username:$password'));
+    _dio.options.headers['Authorization'] = 'Basic $credentials';
+  }
+
+  /// Set Bearer token authentication header
+  void setBearerToken(String token) {
+    _dio.options.headers['Authorization'] = 'Bearer $token';
+  }
+
   /// Set base URL for the client
   void setBaseUrl(String baseUrl) {
     _dio.options.baseUrl = baseUrl;

@@ -2,6 +2,9 @@ import 'package:dio/dio.dart';
 import '../../core/network/dio_client.dart';
 import '../../core/errors/exceptions.dart';
 
+/// Supported authentication types for services
+enum AuthType { none, apiKey, basic, bearer }
+
 /// Abstract base class for all *arr API services
 ///
 /// Provides common functionality for API authentication, request handling,
@@ -9,13 +12,29 @@ import '../../core/errors/exceptions.dart';
 abstract class BaseApiService {
   final DioClient _dioClient;
   final String baseUrl;
-  final String apiKey;
   final String apiBasePath;
+
+  /// API key based auth (X-Api-Key header)
+  final String apiKey;
+
+  /// Optional username/password for basic auth
+  final String? username;
+  final String? password;
+
+  /// Optional bearer token auth
+  final String? bearerToken;
+
+  /// Which auth strategy to use
+  final AuthType authType;
 
   BaseApiService({
     required this.baseUrl,
     required this.apiKey,
     required this.apiBasePath,
+    this.authType = AuthType.apiKey,
+    this.username,
+    this.password,
+    this.bearerToken,
     Duration? connectTimeout,
     Duration? receiveTimeout,
     Duration? sendTimeout,
@@ -27,10 +46,24 @@ abstract class BaseApiService {
     _configureClient();
   }
 
-  /// Configure the Dio client with base URL and API key
+  /// Configure the Dio client with base URL and auth
   void _configureClient() {
     _dioClient.setBaseUrl('$baseUrl$apiBasePath');
-    _dioClient.setApiKey(apiKey);
+
+    switch (authType) {
+      case AuthType.apiKey:
+        _dioClient.setApiKey(apiKey);
+        break;
+      case AuthType.basic:
+        _dioClient.setBasicAuth(username ?? '', password ?? '');
+        break;
+      case AuthType.bearer:
+        _dioClient.setBearerToken(bearerToken ?? '');
+        break;
+      case AuthType.none:
+        _dioClient.clearApiKey();
+        break;
+    }
   }
 
   /// Update API configuration
