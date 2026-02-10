@@ -4,33 +4,40 @@ import 'package:arr/core/database/hive_database.dart';
 import 'package:arr/core/router/app_router.dart';
 import 'package:arr/providers/theme_provider.dart';
 
-// App Color Palette
+// App Color Palette - Matching HTML Design Specifications
 class AppColors {
-  // Light theme - Green palette
-  static const Color lightestGreen = Color(0xFFECFAE5);   // #ECFAE5 - Lightest green
-  static const Color lightGreen = Color(0xFFDDF6D2);      // #DDF6D2 - Light green
-  static const Color mediumLightGreen = Color(0xFFCAE8BD); // #CAE8BD - Medium light green
-  static const Color mediumGreen = Color(0xFFB0DB9C);     // #B0DB9C - Medium green
-  
-  // Dark theme - Deep forest/emerald green tones
-  static const Color deepForestGreen = Color(0xFF0A2A1A); // Deep forest background
-  static const Color forestGreen = Color(0xFF1A4A2E);     // Forest green surface
-  static const Color emeraldGreen = Color(0xFF2E7D47);    // Emerald green primary
-  static const Color darkEmerald = Color(0xFF1F5F35);     // Dark emerald variant
-  static const Color mintGreen = Color(0xFF7FD99F);       // Mint green accent
-  
-  // Neutral colors for text and surfaces
-  static const Color nearBlack = Color(0xFF0D1F14);       // Very dark green-tinted black
-  static const Color nearWhite = Color(0xFFFAFDFA);       // Very light green-tinted white
-  static const Color mediumGray = Color(0xFF6B8471);      // Green-tinted gray
+  // Primary color from HTML (#1392ec)
+  static const Color primary = Color(0xFF1392EC);
+
+  // Light theme colors
+  static const Color backgroundLight = Color(0xFFF6F7F8); // #f6f7f8
+  static const Color surfaceLight = Color(0xFFFFFFFF); // #ffffff
+  static const Color borderLight = Color(0xFFE2E8F0);
+
+  // Dark theme colors
+  static const Color backgroundDark = Color(0xFF101A22); // #101a22
+  static const Color surfaceDark = Color(0xFF18242E); // #18242e
+  static const Color cardDark = Color(0xFF16202A); // #16202a
+  static const Color borderDark = Color(0xFF2A3B4D); // #2a3b4d
+
+  // Status colors
+  static const Color accentGreen = Color(0xFF22C55E); // #22c55e
+  static const Color accentYellow = Color(0xFFEAB308); // #eab308
+  static const Color accentRed = Color(0xFFEF4444); // #ef4444
+
+  // Text colors
+  static const Color textPrimaryLight = Color(0xFF0F172A);
+  static const Color textSecondaryLight = Color(0xFF64748B);
+  static const Color textPrimaryDark = Color(0xFFF1F5F9);
+  static const Color textSecondaryDark = Color(0xFF94A3B8);
 }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Initialize Hive database
-  await HiveDatabase.init();
-  
+
+  // Initialize Hive database (clear old data if schema changes)
+  await HiveDatabase.init(clearOldData: true);
+
   runApp(
     const ProviderScope(
       child: ArrApp(),
@@ -44,7 +51,6 @@ class ArrApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider);
-    
     return MaterialApp.router(
       title: '*arr Stack Manager',
       debugShowCheckedModeBanner: false,
@@ -55,101 +61,123 @@ class ArrApp extends ConsumerWidget {
     );
   }
 
-  // Light Theme Configuration
+  // Light Theme Configuration - Matching HTML Design
   static final ThemeData _lightTheme = ThemeData(
-    colorScheme:  ColorScheme.light(
-      // Primary colors - medium green as primary
-      primary: AppColors.mediumGreen,
-      onPrimary: AppColors.nearBlack,
-      primaryContainer: AppColors.lightGreen,
-      onPrimaryContainer: AppColors.nearBlack,
-      
-      // Secondary colors - medium light green for accents
-      secondary: AppColors.mediumLightGreen,
-      onSecondary: AppColors.nearBlack,
-      secondaryContainer: AppColors.lightestGreen,
-      onSecondaryContainer: AppColors.nearBlack,
-      
-      // Tertiary colors - deeper green variations
-      tertiary: AppColors.mediumLightGreen,
-      onTertiary: AppColors.nearBlack,
-      tertiaryContainer: AppColors.lightGreen,
-      onTertiaryContainer: AppColors.nearBlack,
-      
-      // Error colors
-      error: Colors.red.shade600,
-      onError: Colors.white,
-      errorContainer: Colors.red.shade100,
-      onErrorContainer: Colors.red.shade800,
-      
-      // Surface colors - lightest green as main background
-      surface: AppColors.lightestGreen,
-      onSurface: AppColors.nearBlack,
-      surfaceVariant: AppColors.lightGreen,
-      onSurfaceVariant: AppColors.nearBlack,
-      
-      // Background
-      background: AppColors.lightestGreen,
-      onBackground: AppColors.nearBlack,
-      
-      // Outline and shadow
-      outline: AppColors.mediumGreen,
-      shadow: AppColors.nearBlack.withOpacity(0.1),
-    ),
     useMaterial3: true,
+    brightness: Brightness.light,
+    colorScheme: ColorScheme.light(
+      primary: AppColors.primary,
+      onPrimary: Colors.white,
+      primaryContainer: AppColors.primary.withOpacity(0.1),
+      onPrimaryContainer: AppColors.primary,
+      secondary: AppColors.primary,
+      onSecondary: Colors.white,
+      error: AppColors.accentRed,
+      onError: Colors.white,
+      background: AppColors.backgroundLight,
+      onBackground: AppColors.textPrimaryLight,
+      surface: AppColors.surfaceLight,
+      onSurface: AppColors.textPrimaryLight,
+      surfaceVariant: AppColors.backgroundLight,
+      onSurfaceVariant: AppColors.textSecondaryLight,
+      outline: AppColors.borderLight,
+    ),
+    scaffoldBackgroundColor: AppColors.backgroundLight,
+    appBarTheme: AppBarTheme(
+      backgroundColor: AppColors.backgroundLight.withOpacity(0.95),
+      foregroundColor: AppColors.textPrimaryLight,
+      elevation: 0,
+      centerTitle: false,
+      titleTextStyle: const TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+        letterSpacing: -0.5,
+        color: AppColors.textPrimaryLight,
+      ),
+    ),
+    cardTheme: CardThemeData(
+      color: AppColors.surfaceLight,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4), // 0.25rem
+        side: const BorderSide(color: AppColors.borderLight, width: 1),
+      ),
+    ),
     navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: AppColors.mediumGreen.withOpacity(0.95),
-      indicatorColor: AppColors.lightGreen,
-      surfaceTintColor: Colors.transparent,
+      backgroundColor: AppColors.surfaceLight,
+      elevation: 0,
+      indicatorColor: AppColors.primary.withOpacity(0.1),
+      labelTextStyle: WidgetStateProperty.all(
+        const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+      ),
+    ),
+    chipTheme: ChipThemeData(
+      backgroundColor: AppColors.backgroundLight,
+      selectedColor: AppColors.backgroundDark,
+      labelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(9999), // full
+      ),
     ),
   );
 
-  // Dark Theme Configuration
+  // Dark Theme Configuration - Matching HTML Design
   static final ThemeData _darkTheme = ThemeData(
-    colorScheme:  ColorScheme.dark(
-      // Primary colors - emerald green as primary
-      primary: AppColors.emeraldGreen,
-      onPrimary: AppColors.nearWhite,
-      primaryContainer: AppColors.darkEmerald,
-      onPrimaryContainer: AppColors.mintGreen,
-      
-      // Secondary colors - mint green for accents
-      secondary: AppColors.mintGreen,
-      onSecondary: AppColors.nearBlack,
-      secondaryContainer: AppColors.forestGreen,
-      onSecondaryContainer: AppColors.mintGreen,
-      
-      // Tertiary colors - forest green variations
-      tertiary: AppColors.forestGreen,
-      onTertiary: AppColors.nearWhite,
-      tertiaryContainer: AppColors.darkEmerald,
-      onTertiaryContainer: AppColors.mintGreen,
-      
-      // Error colors
-      error: Colors.red.shade300,
-      onError: Colors.red.shade900,
-      errorContainer: Colors.red.shade900,
-      onErrorContainer: Colors.red.shade100,
-      
-      // Surface colors - deep forest green background
-      surface: AppColors.deepForestGreen,
-      onSurface: AppColors.nearWhite,
-      surfaceVariant: AppColors.forestGreen,
-      onSurfaceVariant: AppColors.nearWhite,
-      
-      // Background
-      background: AppColors.deepForestGreen,
-      onBackground: AppColors.nearWhite,
-      
-      // Outline and shadow
-      outline: AppColors.emeraldGreen,
-      shadow: Colors.black.withOpacity(0.4),
-    ),
     useMaterial3: true,
+    brightness: Brightness.dark,
+    colorScheme: ColorScheme.dark(
+      primary: AppColors.primary,
+      onPrimary: Colors.white,
+      primaryContainer: AppColors.primary.withOpacity(0.1),
+      onPrimaryContainer: AppColors.primary,
+      secondary: AppColors.primary,
+      onSecondary: Colors.white,
+      error: AppColors.accentRed,
+      onError: Colors.white,
+      background: AppColors.backgroundDark,
+      onBackground: AppColors.textPrimaryDark,
+      surface: AppColors.surfaceDark,
+      onSurface: AppColors.textPrimaryDark,
+      surfaceVariant: AppColors.cardDark,
+      onSurfaceVariant: AppColors.textSecondaryDark,
+      outline: AppColors.borderDark,
+    ),
+    scaffoldBackgroundColor: AppColors.backgroundDark,
+    appBarTheme: AppBarTheme(
+      backgroundColor: AppColors.backgroundDark.withOpacity(0.95),
+      foregroundColor: AppColors.textPrimaryDark,
+      elevation: 0,
+      centerTitle: false,
+      titleTextStyle: const TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+        letterSpacing: -0.5,
+        color: AppColors.textPrimaryDark,
+      ),
+    ),
+    cardTheme: CardThemeData(
+      color: AppColors.cardDark,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4), // 0.25rem
+        side: const BorderSide(color: AppColors.borderDark, width: 1),
+      ),
+    ),
     navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: AppColors.forestGreen.withOpacity(0.95),
-      indicatorColor: AppColors.emeraldGreen,
-      surfaceTintColor: Colors.transparent,
+      backgroundColor: AppColors.surfaceDark,
+      elevation: 0,
+      indicatorColor: AppColors.primary.withOpacity(0.1),
+      labelTextStyle: WidgetStateProperty.all(
+        const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+      ),
+    ),
+    chipTheme: ChipThemeData(
+      backgroundColor: AppColors.surfaceDark,
+      selectedColor: AppColors.backgroundDark,
+      labelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(9999), // full
+      ),
     ),
   );
 }

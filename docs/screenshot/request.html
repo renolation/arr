@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Requests &amp; Discovery</title>
+<script type="text/javascript" nonce="4a0c1c338de84087b4ee8663124" src="//local.adguard.org?ts=1770683218457&amp;type=content-script&amp;dmn=contribution.usercontent.google.com&amp;url=https%3A%2F%2Fcontribution.usercontent.google.com%2Fdownload%3Fc%3DCgthaWRhX2NvZGVmeBJ8Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpbCiVodG1sX2E3ODU4OWY5NWVkNTQ2MjJhN2FmZjQ5YTg0OGYwMGMyEgsSBxDeg7nxlhgYAZIBJAoKcHJvamVjdF9pZBIWQhQxNjUyOTQwMTgzNTY1NzU3MzA1Ng%26filename%3D%26opi%3D89354086&amp;app=org.mozilla.firefox&amp;css=3&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=1"></script><script type="text/javascript" nonce="4a0c1c338de84087b4ee8663124" src="//local.adguard.org?ts=1770683218457&amp;name=AdGuard%20Extra&amp;type=user-script"></script><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#1392ec",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101a22",
+              "surface-dark": "#18242e",
+              "surface-light": "#ffffff",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        /* Custom scrollbar hiding for horizontal scroll */
+        .hide-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-900 dark:text-gray-100 min-h-screen pb-24 selection:bg-primary selection:text-white">
+<!-- Header Section -->
+<header class="sticky top-0 z-50 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm pt-12 pb-4 px-6 border-b border-gray-200 dark:border-gray-800">
+<div class="flex justify-between items-end">
+<div>
+<h1 class="text-4xl font-bold tracking-tight">Requests</h1>
+<p class="text-sm text-gray-500 dark:text-gray-400 font-medium mt-1">Manage &amp; Discover Content</p>
+</div>
+<button class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+<span class="material-icons text-2xl">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="space-y-8 pt-6">
+<!-- Pending Requests Section -->
+<section class="pl-6">
+<div class="flex justify-between items-center pr-6 mb-4">
+<h2 class="text-xl font-bold uppercase tracking-wide">Needs Approval</h2>
+<span class="bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">3</span>
+</div>
+<!-- Horizontal Carousel -->
+<div class="flex overflow-x-auto gap-4 pb-4 pr-6 hide-scroll snap-x snap-mandatory">
+<!-- Request Card 1 -->
+<div class="snap-start shrink-0 w-[85vw] max-w-[340px] bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-sm flex">
+<div class="w-1/3 relative h-full">
+<img alt="Dune Part Two Movie Poster" class="h-full w-full object-cover absolute inset-0" data-alt="Dune Part Two Movie Poster" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2Vf7yLV_blQjz2F3PlSJv8KJq9zAxrm0cMUJ36_0oSbRmX6jQBZSz2N-0YPkAKCHSOxhLXMSFCu63WWTGbbE9eqegi53iLtLRnZoiwMn-gDzcHyjX8hYBD9hf2CnoODJX29dWRzDrd-tFKUsOslkujWyusjqL-ECsk54lO2gYgE_Qq7iyVZ7LotJQiUAVopFPSb6uf1yTax1ICRKjI1tCGzAMYnhr30zF0uZwoZdzecY51ZMf8bv0uM0LNpGfyPhLZjqKra4V_7R2"/>
+</div>
+<div class="w-2/3 p-4 flex flex-col justify-between">
+<div>
+<div class="flex items-start justify-between">
+<h3 class="font-bold text-lg leading-tight line-clamp-2">Dune: Part Two</h3>
+</div>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-1">2024 • Sci-Fi</p>
+<div class="flex items-center gap-2 mt-3">
+<div class="w-6 h-6 rounded-full bg-gradient-to-tr from-purple-500 to-pink-500 flex items-center justify-center text-[10px] text-white font-bold">JD</div>
+<span class="text-xs text-gray-500 dark:text-gray-400">Req. by <span class="text-gray-800 dark:text-gray-200 font-medium">John Doe</span></span>
+</div>
+</div>
+<div class="flex gap-2 mt-4">
+<button class="flex-1 bg-primary hover:bg-primary/90 text-white text-sm font-bold py-2 rounded transition-colors">Approve</button>
+<button class="flex-1 border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 text-sm font-medium py-2 rounded transition-colors">Deny</button>
+</div>
+</div>
+</div>
+<!-- Request Card 2 -->
+<div class="snap-start shrink-0 w-[85vw] max-w-[340px] bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-sm flex">
+<div class="w-1/3 relative h-full">
+<img alt="The Bear Season 3 Poster" class="h-full w-full object-cover absolute inset-0" data-alt="The Bear Season 3 Poster" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-FKdqLwRsYRZ_HkaogOlyqMLeLfUI-wHNZR7J_aglBPZMd53-DZd0qFGCk1d87udUVK9KMRWz4s_7CUz1d0SknAnADHTDptPZu-ZN19Un-4BHtHZyy7R3in5Pr7A4XwhHJk5LlVNvkHxWq1WhDY7jG7Wn1ooBV2Ou_Uk9VujxPSK0MKWdVoS2wMUvLxjp8dYkaTZWwM_bgbvJY8ShbzTiLmtWx9ulqcWZ-KXZ0YsRkJqNyc_2tf6c7U6E8xxC6u3TWZOInqTunlpl"/>
+</div>
+<div class="w-2/3 p-4 flex flex-col justify-between">
+<div>
+<div class="flex items-start justify-between">
+<h3 class="font-bold text-lg leading-tight line-clamp-2">The Bear</h3>
+</div>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Season 3 • Drama</p>
+<div class="flex items-center gap-2 mt-3">
+<div class="w-6 h-6 rounded-full bg-gradient-to-tr from-green-500 to-teal-500 flex items-center justify-center text-[10px] text-white font-bold">AL</div>
+<span class="text-xs text-gray-500 dark:text-gray-400">Req. by <span class="text-gray-800 dark:text-gray-200 font-medium">Alice L.</span></span>
+</div>
+</div>
+<div class="flex gap-2 mt-4">
+<button class="flex-1 bg-primary hover:bg-primary/90 text-white text-sm font-bold py-2 rounded transition-colors">Approve</button>
+<button class="flex-1 border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 text-sm font-medium py-2 rounded transition-colors">Deny</button>
+</div>
+</div>
+</div>
+<!-- Request Card 3 -->
+<div class="snap-start shrink-0 w-[85vw] max-w-[340px] bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-sm flex">
+<div class="w-1/3 relative h-full">
+<img alt="Aquaman Poster" class="h-full w-full object-cover absolute inset-0" data-alt="Aquaman Poster" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTmHfXpe9YB__DQ15ExYOiXV0xpkVSasKBQECo7xbnomne0C2RQmb5lnfVrgtGMRC8pktogCqaxaXdQ_Pzex5AZIo2yj7b2u2eL0lIKoaNF-uD_JjuJOlDWKcqRAvgNcBsQkKKwmYTpjHMd2-DQT6nuDEw98ViKzAE_XxaloqhaWNDrXQDZIpP3mY0bpE5Klh2EU3pMnd63ymSLKG0cBiCtOU8b6Qx6Oj4-ldh_4Uc8z03FFpFEMyEPsYCQZbx466GITNkHKEwFN9f"/>
+</div>
+<div class="w-2/3 p-4 flex flex-col justify-between">
+<div>
+<div class="flex items-start justify-between">
+<h3 class="font-bold text-lg leading-tight line-clamp-2">Aquaman</h3>
+</div>
+<p class="text-sm text-gray-500 dark:text-gray-400 mt-1">2023 • Action</p>
+<div class="flex items-center gap-2 mt-3">
+<div class="w-6 h-6 rounded-full bg-gradient-to-tr from-orange-500 to-yellow-500 flex items-center justify-center text-[10px] text-white font-bold">MK</div>
+<span class="text-xs text-gray-500 dark:text-gray-400">Req. by <span class="text-gray-800 dark:text-gray-200 font-medium">Mike K.</span></span>
+</div>
+</div>
+<div class="flex gap-2 mt-4">
+<button class="flex-1 bg-primary hover:bg-primary/90 text-white text-sm font-bold py-2 rounded transition-colors">Approve</button>
+<button class="flex-1 border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 text-sm font-medium py-2 rounded transition-colors">Deny</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Trending & Suggestions Section -->
+<section class="px-6">
+<div class="flex justify-between items-baseline mb-6">
+<h2 class="text-xl font-bold uppercase tracking-wide">Trending Now</h2>
+<a class="text-primary text-sm font-medium hover:underline" href="#">View All</a>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<!-- Discovery Item 1 -->
+<div class="group relative aspect-[2/3] bg-surface-dark rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm">
+<img alt="Civil War Movie Poster" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Civil War Movie Poster" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBU-CQN5191G8BgfxcfURM2TsYucyuatrE5JvzSv7esSwcOGoIcrIEBGJo-K9DWa3KoxjTTWuHcvVKs1CNSTimu0NwxT7wdcbHVVCOoFiSAyViDo49MlOZL8OA-83lYQpMsRlukZ8-ubkqSG7l8sf7KmrvcJxXQaQRu9fY8CGV78M1AXNi0QW9j2P_7UyU4bUIyWhKFxG8U4EZ-RiHddydc23kNr5PYk0zU7dzd5nYsXj7M5gTWymf706OfkvO-pgQB4O_8Jyc2hJ4Q"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-3 flex flex-col justify-end">
+<span class="text-xs font-medium text-gray-300 mb-1">2024</span>
+<h3 class="text-white font-bold leading-tight">Civil War</h3>
+<div class="mt-2 flex gap-1">
+<!-- Status Badge -->
+<span class="px-2 py-0.5 bg-primary/20 backdrop-blur-md border border-primary/30 text-primary-300 text-[10px] font-bold uppercase tracking-wider rounded">Requested</span>
+</div>
+</div>
+</div>
+<!-- Discovery Item 2 -->
+<div class="group relative aspect-[2/3] bg-surface-dark rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm">
+<img alt="Fallout TV Show Poster" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Fallout TV Show Poster" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAD4y37AUrqfnGs7_XTuPpznnj0WUBE2ekLHnDGD9iBbDSZi2HrF7XFgZKu4jl40LOJNqAE9waa0M4EsCuT4ZLMGO46gDBjn-oH_j9KQrRkjq3FigDg9cAyXNog4V1qZr_Pljh3M2IgVfihNEfs6ZFM0nGsVliS6O-ZNw70Ed9Ra-J9Bw-ONTHnAoD9FRnEqcKo26SKsGkW-rv8UOMtrfh8fXqaZl7nHP-Y4c7yywHcfUgWtxSRwq8rZ6e40XwF0Jh9_8djSl7Bz2S9"/>
+<!-- Processing Overlay -->
+<div class="absolute top-2 right-2">
+<div class="w-6 h-6 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center border border-white/10">
+<span class="material-icons text-primary text-sm animate-pulse">download</span>
+</div>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-3 flex flex-col justify-end">
+<span class="text-xs font-medium text-gray-300 mb-1">TV • S1</span>
+<h3 class="text-white font-bold leading-tight">Fallout</h3>
+<div class="mt-2 w-full bg-gray-700 h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[45%]"></div>
+</div>
+<span class="text-[10px] text-gray-400 mt-1 font-mono">S1 E4 Downloading...</span>
+</div>
+</div>
+<!-- Discovery Item 3 -->
+<div class="group relative aspect-[2/3] bg-surface-dark rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm">
+<img alt="Shogun TV Series Poster" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Shogun TV Series Poster" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZ3Cl_DOaVDm3IYyxP_JwlGHObHTGUls-nStpo2TKz8Oqan6zcisDRiwi4xsXBPsoUkCGurB7fsyo31szxCIjppT-nbJvdH43Zk7CRdOb4Vs0iOhGeRA-3_DorSbNpmb_xo4_5KpM6gHe8aRiAawiFyIweKh1Q061hbIBOwtRmgJ92krc1cmIAZh9QQA0APms11qbOg0o8peRST4ZuIDI1U_DhOaPmLbyMAThSlkcG9C7Vuba9GDTOpI0xnirYEE7szX7KFybrFEVE"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-3 flex flex-col justify-end">
+<span class="text-xs font-medium text-gray-300 mb-1">TV • S1</span>
+<h3 class="text-white font-bold leading-tight">Shōgun</h3>
+<!-- Add Button -->
+<button class="mt-2 w-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white text-xs font-bold py-1.5 rounded flex items-center justify-center gap-1 transition-colors">
+<span class="material-icons text-sm">add</span> Request
+                        </button>
+</div>
+</div>
+<!-- Discovery Item 4 -->
+<div class="group relative aspect-[2/3] bg-surface-dark rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm">
+<img alt="Godzilla x Kong Poster" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Godzilla x Kong Poster" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3XCG2sbRcJbRa8ja6qOyU2j7g3LKSW8NHpT3CeZ5sj4gAMw5hsxYSIgTDNAyrbfpie_wXgD7dp2P1JrhWpkgT4_fGreeHmHoHMA8s16JImxTsj0Nferjksqss2U1UFzxYpx0IsD1JiQjSq-3kez9SZTJs60t5u-ejmEM5mUnMoOp9usr9giYSruHlW7xrrflf5gp5QQ3GpV5EjlN47nhRExrY_GQZ9pXJrlQGChcLjeYztbcVKCDYGJejMBHVz7smwXTBa4AU0sEA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-3 flex flex-col justify-end">
+<span class="text-xs font-medium text-gray-300 mb-1">2024</span>
+<h3 class="text-white font-bold leading-tight">Godzilla x Kong</h3>
+<!-- Add Button -->
+<button class="mt-2 w-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white text-xs font-bold py-1.5 rounded flex items-center justify-center gap-1 transition-colors">
+<span class="material-icons text-sm">add</span> Request
+                        </button>
+</div>
+</div>
+<!-- Discovery Item 5 -->
+<div class="group relative aspect-[2/3] bg-surface-dark rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm">
+<img alt="The Iron Claw Poster" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="The Iron Claw Poster" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZTpM1I9dufBfVoKOsT-zVUc27vceDyNxonZYI6jX7n7u6xfuHAYWktb0b-dktmYVi0TxoBqa8vTE9m2wm12L--iiexUqupz8_np-g6w0jYiDYlDdyhT-s71BqjD2DuIxMTOhtskKjeZXuI_gBdrDdOxDKD_8SdY8WnWjITV4Pu2pFKQK7DCpoCyJsBRiFz8hChNp4nWKQUHJp3JZ0_N6Nfju0LwTV2NkLHD4WdzpfrMmTS_6SmOA86xSBndM7spFP_aNJxQ2rhB38"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-3 flex flex-col justify-end">
+<span class="text-xs font-medium text-gray-300 mb-1">2023</span>
+<h3 class="text-white font-bold leading-tight">The Iron Claw</h3>
+<!-- Add Button -->
+<button class="mt-2 w-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 text-white text-xs font-bold py-1.5 rounded flex items-center justify-center gap-1 transition-colors">
+<span class="material-icons text-sm">add</span> Request
+                        </button>
+</div>
+</div>
+<!-- Discovery Item 6 -->
+<div class="group relative aspect-[2/3] bg-surface-dark rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm">
+<img alt="Wonka Poster" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Wonka Poster" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-FU65UQPT8iBaCVnCQSu6g4yeabyY7g8_A0X_j3QodX1K5Nw0oOTCocmFb0jiJAUO1J9ax6HwOBZf7HVWYa17tG6lQOAAsDJE91bu1qtiOT4Vd1mDIY3XUk8e5w8854MeHlWkolS9VrbaEVO1MAqX7siCZJXrAH3H1jL696HH9JB6ZzU1b-2pllHdSFHpm-f6LhELntmgH5XMWnzPAn-b2umM3QgKyYsc0PhLcr7_1b90IcrEhbialTtFnd_tcbFgmtoh1q657Kjj"/>
+<div class="absolute top-2 right-2">
+<div class="px-2 py-0.5 bg-green-500/80 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider rounded">Available</div>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-3 flex flex-col justify-end">
+<span class="text-xs font-medium text-gray-300 mb-1">2023</span>
+<h3 class="text-white font-bold leading-tight">Wonka</h3>
+<div class="mt-2 flex gap-1">
+<a class="text-primary text-xs flex items-center gap-1 hover:text-primary/80 transition-colors" href="#">Play <span class="material-icons text-sm">play_arrow</span></a>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 right-0 bg-surface-light dark:bg-surface-dark border-t border-gray-200 dark:border-gray-800 z-50 pb-safe">
+<div class="flex justify-around items-center h-16 max-w-lg mx-auto">
+<a class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors gap-1" href="#">
+<span class="material-icons text-2xl">dashboard</span>
+<span class="text-[10px] font-medium tracking-wide">Overview</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors gap-1" href="#">
+<span class="material-icons text-2xl">movie_filter</span>
+<span class="text-[10px] font-medium tracking-wide">Library</span>
+</a>
+<!-- Active Tab -->
+<a class="flex flex-col items-center justify-center w-full h-full text-primary transition-colors gap-1 relative" href="#">
+<span class="absolute -top-[1px] w-8 h-[2px] bg-primary rounded-b-full shadow-[0_0_10px_rgba(19,146,236,0.5)]"></span>
+<span class="material-icons text-2xl">download</span>
+<span class="text-[10px] font-bold tracking-wide">Requests</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors gap-1" href="#">
+<span class="material-icons text-2xl">history</span>
+<span class="text-[10px] font-medium tracking-wide">Activity</span>
+</a>
+</div>
+</nav>
+<!-- Safe area spacing for iOS -->
+<style>
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+    </style>
+</body></html>

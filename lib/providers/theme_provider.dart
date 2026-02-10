@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive/hive.dart';
 import 'package:arr/core/database/hive_database.dart';
+import 'package:arr/models/hive/models.dart';
 
 enum AppThemeMode {
   system,
@@ -10,15 +11,16 @@ enum AppThemeMode {
 }
 
 class ThemeNotifier extends StateNotifier<AppThemeMode> {
-  final Box settingsBox;
-  static const String _themeKey = 'app_theme_mode';
+  static const String _settingsKey = 'app_settings';
+  final Box<AppSettings> _settingsBox;
 
-  ThemeNotifier(this.settingsBox) : super(AppThemeMode.system) {
+  ThemeNotifier(this._settingsBox) : super(AppThemeMode.system) {
     _loadTheme();
   }
 
   void _loadTheme() {
-    final savedTheme = settingsBox.get(_themeKey, defaultValue: 'system');
+    final settings = _settingsBox.get(_settingsKey);
+    final savedTheme = settings?.themeMode ?? 'system';
     state = AppThemeMode.values.firstWhere(
       (mode) => mode.name == savedTheme,
       orElse: () => AppThemeMode.system,
@@ -27,7 +29,8 @@ class ThemeNotifier extends StateNotifier<AppThemeMode> {
 
   Future<void> setTheme(AppThemeMode mode) async {
     state = mode;
-    await settingsBox.put(_themeKey, mode.name);
+    final current = _settingsBox.get(_settingsKey) ?? AppSettings.defaultSettings;
+    await _settingsBox.put(_settingsKey, current.copyWith(themeMode: mode.name));
   }
 
   ThemeMode get themeMode {
@@ -42,8 +45,8 @@ class ThemeNotifier extends StateNotifier<AppThemeMode> {
   }
 }
 
-final settingsBoxProvider = Provider<Box>((ref) {
-  return Hive.box(HiveDatabase.settingsBox);
+final settingsBoxProvider = Provider<Box<AppSettings>>((ref) {
+  return HiveDatabase.getBox<AppSettings>(HiveDatabase.settingsBox);
 });
 
 final themeProvider = StateNotifierProvider<ThemeNotifier, AppThemeMode>((ref) {

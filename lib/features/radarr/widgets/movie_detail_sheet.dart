@@ -40,9 +40,9 @@ class MovieDetailSheet extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: movie.posterUrl.isNotEmpty
+                    child: movie.posterUrl != null && movie.posterUrl!.isNotEmpty
                         ? CachedNetworkImage(
-                            imageUrl: movie.posterUrl,
+                            imageUrl: movie.posterUrl!,
                             width: 120,
                             height: 180,
                             fit: BoxFit.cover,
@@ -140,23 +140,11 @@ class MovieDetailSheet extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: 8),
-                if (movie.ratings!.imdb != null)
+                if (movie.ratings!.value != null)
                   _RatingRow(
-                    label: 'IMDb',
-                    rating: movie.ratings!.imdb!,
-                    votes: movie.ratings!.imdbVotes,
-                  ),
-                if (movie.ratings!.tmdb != null)
-                  _RatingRow(
-                    label: 'TMDB',
-                    rating: movie.ratings!.tmdb!,
-                    votes: movie.ratings!.tmdbVotes,
-                  ),
-                if (movie.ratings!.rottenTomatoes != null)
-                  _RatingRow(
-                    label: 'Rotten Tomatoes',
-                    rating: movie.ratings!.rottenTomatoes!,
-                    votes: movie.ratings!.rottenTomatoesVotes,
+                    label: 'Rating',
+                    rating: movie.ratings!.value!,
+                    votes: movie.ratings!.votes?.toInt(),
                   ),
                 const SizedBox(height: 16),
               ],

@@ -1,0 +1,273 @@
+*arr Stack Manager - Clean Architecture Structure
+====================================================
+
+lib/
+├── core/                                    # Shared Core Functionality
+│   ├── constants/                           # App Constants
+│   │   ├── app_constants.dart              # UI, animations, grid settings
+│   │   ├── api_constants.dart              # API endpoints, timeouts, headers
+│   │   └── storage_constants.dart          # Hive boxes, cache keys
+│   │
+│   ├── errors/                              # Error Handling
+│   │   ├── exceptions.dart                 # Custom exception classes
+│   │   └── failures.dart                   # Domain failures (freezed)
+│   │
+│   ├── network/                             # Network Layer
+│   │   ├── dio_client.dart                 # Configured Dio HTTP client
+│   │   └── network_info.dart               # Connectivity checker
+│   │
+│   ├── theme/                               # App Theming (Material 3)
+│   │   ├── app_theme.dart                  # Light/Dark themes
+│   │   ├── colors.dart                     # Color palette
+│   │   └── text_styles.dart                # Typography
+│   │
+│   ├── utils/                               # Utilities
+│   │   ├── validators.dart                 # Input validators
+│   │   └── formatters.dart                 # Data formatters
+│   │
+│   └── widgets/                             # Reusable Widgets
+│       ├── loading_indicator.dart          # Loading states
+│       ├── error_widget.dart               # Error display
+│       └── empty_state.dart                # Empty states
+│
+├── features/                                # Feature Modules
+│   │
+│   ├── overview/                            # DASHBOARD FEATURE
+│   │   ├── data/                            # Data Layer
+│   │   │   ├── datasources/
+│   │   │   │   └── system_status_remote_datasource.dart
+│   │   │   └── repositories/
+│   │   │       └── system_status_repository.dart (impl)
+│   │   ├── domain/                          # Domain Layer (Pure Dart)
+│   │   │   ├── entities/
+│   │   │   │   └── system_status.dart (freezed entity)
+│   │   │   └── repositories/
+│   │   │       └── system_status_repository.dart (interface)
+│   │   └── presentation/                    # Presentation Layer
+│   │       ├── providers/
+│   │       │   └── system_status_provider.dart (Riverpod)
+│   │       ├── pages/
+│   │       │   └── overview_page.dart
+│   │       └── widgets/
+│   │           ├── status_card.dart
+│   │           └── airing_section.dart
+│   │
+│   ├── library/                             # LIBRARY FEATURE
+│   │   ├── data/
+│   │   │   ├── datasources/
+│   │   │   │   └── media_remote_datasource.dart
+│   │   │   └── repositories/
+│   │   │       └── media_repository.dart (impl)
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   │   └── media_item.dart (freezed entity)
+│   │   │   └── repositories/
+│   │   │       └── media_repository.dart (interface)
+│   │   └── presentation/
+│   │       ├── providers/
+│   │       │   └── media_provider.dart
+│   │       ├── pages/
+│   │       │   └── library_page.dart
+│   │       └── widgets/
+│   │           ├── media_grid.dart
+│   │           └── media_card.dart
+│   │
+│   ├── requests/                            # REQUESTS FEATURE
+│   │   ├── data/
+│   │   │   ├── datasources/
+│   │   │   │   └── overseerr_remote_datasource.dart
+│   │   │   └── repositories/
+│   │   │       └── requests_repository.dart (impl)
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   │   └── request.dart (freezed entity)
+│   │   │   └── repositories/
+│   │   │       └── requests_repository.dart (interface)
+│   │   └── presentation/
+│   │       ├── providers/
+│   │       │   └── requests_provider.dart
+│   │       ├── pages/
+│   │       │   └── requests_page.dart
+│   │       └── widgets/
+│   │           └── approval_card.dart
+│   │
+│   ├── activity/                            # ACTIVITY FEATURE
+│   │   ├── data/
+│   │   │   ├── datasources/
+│   │   │   │   └── download_remote_datasource.dart
+│   │   │   └── repositories/
+│   │   │       └── download_repository.dart (impl)
+│   │   ├── domain/
+│   │   │   ├── entities/
+│   │   │   │   └── download.dart (freezed entity)
+│   │   │   └── repositories/
+│   │   │       └── download_repository.dart (interface)
+│   │   └── presentation/
+│   │       ├── providers/
+│   │       │   └── download_provider.dart
+│   │       ├── pages/
+│   │       │   └── activity_page.dart
+│   │       └── widgets/
+│   │           └── download_item.dart
+│   │
+│   └── settings/                            # SETTINGS FEATURE
+│       ├── data/
+│       │   ├── datasources/
+│       │   │   └── service_local_datasource.dart (Hive + Secure Storage)
+│       │   └── repositories/
+│       │       └── service_repository.dart (impl)
+│       ├── domain/
+│       │   ├── entities/
+│       │   │   └── service_config.dart (freezed entity)
+│       │   └── repositories/
+│       │       └── service_repository.dart (interface)
+│       └── presentation/
+│           ├── providers/
+│           │   └── service_provider.dart
+│           ├── pages/
+│           │   └── settings_page.dart
+│           └── widgets/
+│               └── service_card.dart
+│
+├── services/                                # API Service Layer
+│   └── api/
+│       ├── sonarr_api_service.dart
+│       ├── radarr_api_service.dart
+│       ├── overseerr_api_service.dart
+│       └── download_api_service.dart
+│
+├── routes/                                  # Navigation
+│   └── app_router.dart                     # GoRouter config (5 tabs)
+│
+└── main.dart                               # App Entry Point
+                                            # - Hive init
+                                            # - ProviderScope
+                                            # - MaterialApp.router
+
+============================================================
+ARCHITECTURE FLOW
+============================================================
+
+┌─────────────────────────────────────────────────────────┐
+│                    PRESENTATION LAYER                    │
+│  ┌───────────────────────────────────────────────────┐  │
+│  │  Pages (Scaffolds)                                │  │
+│  │  ├─ overview_page.dart                            │  │
+│  │  ├─ library_page.dart                             │  │
+│  │  ├─ requests_page.dart                            │  │
+│  │  ├─ activity_page.dart                            │  │
+│  │  └─ settings_page.dart                            │  │
+│  └───────────────────────────────────────────────────┘  │
+│  ┌───────────────────────────────────────────────────┐  │
+│  │  Widgets (Feature-specific)                       │  │
+│  │  ├─ MediaGrid, MediaCard                          │  │
+│  │  ├─ ApprovalCard                                 │  │
+│  │  └─ StatusCard, DownloadItem                     │  │
+│  └───────────────────────────────────────────────────┘  │
+│  ┌───────────────────────────────────────────────────┐  │
+│  │  Providers (Riverpod State)                       │  │
+│  │  ├─ FutureProvider (async data)                   │  │
+│  │  ├─ StateProvider (simple state)                  │  │
+│  │  └─ Provider (DI)                                 │  │
+│  └───────────────────────────────────────────────────┘  │
+└──────────────────────────┬──────────────────────────────┘
+                           │ depends on
+                           ▼
+┌─────────────────────────────────────────────────────────┐
+│                     DOMAIN LAYER                         │
+│  (Pure Dart - No Flutter Dependencies)                  │
+│  ┌───────────────────────────────────────────────────┐  │
+│  │  Entities (Business Objects)                      │  │
+│  │  ├─ SystemStatus                                  │  │
+│  │  ├─ MediaItem                                     │  │
+│  │  ├─ Request                                       │  │
+│  │  ├─ Download                                      │  │
+│  │  └─ ServiceConfig                                 │  │
+│  └───────────────────────────────────────────────────┘  │
+│  ┌───────────────────────────────────────────────────┐  │
+│  │  Repository Interfaces (Contracts)                │  │
+│  │  ├─ SystemStatusRepository                        │  │
+│  │  ├─ MediaRepository                               │  │
+│  │  ├─ RequestsRepository                            │  │
+│  │  ├─ DownloadRepository                            │  │
+│  │  └─ ServiceRepository                             │  │
+│  └───────────────────────────────────────────────────┘  │
+└──────────────────────────┬──────────────────────────────┘
+                           │ implemented by
+                           ▼
+┌─────────────────────────────────────────────────────────┐
+│                      DATA LAYER                          │
+│  ┌───────────────────────────────────────────────────┐  │
+│  │  DataSources (External Data)                      │  │
+│  │  ├─ Remote (API calls via Dio)                    │  │
+│  │  └─ Local (Hive, Secure Storage)                  │  │
+│  └───────────────────────────────────────────────────┘  │
+│  ┌───────────────────────────────────────────────────┐  │
+│  │  Repository Implementations                       │  │
+│  │  (Bridge between DataSources and Domain)          │  │
+│  └───────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────┘
+
+============================================================
+DEPENDENCY INJECTION CHAIN (Example: Library Feature)
+============================================================
+
+Hive Box
+   │
+   ▼
+mediaCacheBoxProvider
+   │
+   ▼
+mediaRemoteDataSourceProvider (uses DioClient)
+   │
+   ▼
+mediaRepositoryProvider (uses cacheBox + remoteDataSource)
+   │
+   ▼
+allSeriesProvider (FutureProvider) ──► UI Watches This
+
+============================================================
+ERROR HANDLING PATTERN
+============================================================
+
+Repository
+   │
+   ├─ Success ──► Right<Data>
+   │
+   └─ Failure ──► Left<Failure>
+                     │
+                     ├─ ServerFailure
+                     ├─ NetworkFailure
+                     ├─ CacheFailure
+                     ├─ AuthFailure
+                     └─ UnknownFailure
+
+Provider returns Either<Failure, Data>
+   │
+   └─ UI handles both cases:
+      ├─ failure ──► ErrorWidget
+      └─ data ───► ContentWidget
+
+============================================================
+KEY DEPENDENCIES
+============================================================
+
+State Management:  flutter_riverpod
+HTTP Client:        dio
+Local Storage:      hive_flutter
+Secure Storage:     flutter_secure_storage
+Navigation:         go_router
+Functional:         dartz (Either type)
+Code Gen:           freezed, json_serializable, hive_generator
+Images:             cached_network_image
+
+============================================================
+TOTAL FILES CREATED: 74
+============================================================
+
+Core:         18 files
+Features:     50 files (10 per feature × 5 features)
+Services:      5 files
+Routes:        1 file
+
+└───────────────────────┘

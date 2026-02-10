@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Unified Media Dashboard</title>
+<script type="text/javascript" nonce="4a0c1c338de84087b4ee8663124" src="//local.adguard.org?ts=1770683218457&amp;type=content-script&amp;dmn=contribution.usercontent.google.com&amp;url=https%3A%2F%2Fcontribution.usercontent.google.com%2Fdownload%3Fc%3DCgthaWRhX2NvZGVmeBJ8Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpbCiVodG1sX2U2MjEwOGM1ZmJhZjQzNDI5ZTFmOTNiZDgzYmIxNWU0EgsSBxDeg7nxlhgYAZIBJAoKcHJvamVjdF9pZBIWQhQxNjUyOTQwMTgzNTY1NzU3MzA1Ng%26filename%3D%26opi%3D89354086&amp;app=org.mozilla.firefox&amp;css=3&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=1"></script><script type="text/javascript" nonce="4a0c1c338de84087b4ee8663124" src="//local.adguard.org?ts=1770683218457&amp;name=AdGuard%20Extra&amp;type=user-script"></script><link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1392ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101a22",
+                        "card-dark": "#16202a",
+                        "border-dark": "#2a3b4d",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom Scrollbar for horizontal scroll */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased selection:bg-primary selection:text-white pb-24">
+<!-- Top Bar -->
+<header class="sticky top-0 z-50 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm border-b border-slate-200 dark:border-border-dark px-6 py-4 flex items-center justify-between">
+<div>
+<h1 class="text-2xl font-bold tracking-tight">Dashboard</h1>
+<p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-0.5">Server: Optimus-Prime</p>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-200 dark:bg-card-dark text-slate-700 dark:text-white hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</header>
+<!-- System Status Row -->
+<section class="px-6 py-6">
+<h2 class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4">System Status</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Disk Space Card -->
+<div class="bg-white dark:bg-card-dark border border-slate-200 dark:border-border-dark rounded-xl p-5 flex flex-col justify-between h-32">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-primary text-xl">hard_drive</span>
+</div>
+<span class="text-xs font-medium text-slate-400 dark:text-slate-500">70% Used</span>
+</div>
+<div>
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Disk Space</p>
+<div class="flex items-end gap-2 mb-2">
+<span class="text-2xl font-bold leading-none">14</span>
+<span class="text-sm font-medium text-slate-500 mb-0.5">/ 20 TB</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 70%"></div>
+</div>
+</div>
+</div>
+<!-- Download Speed Card -->
+<div class="bg-white dark:bg-card-dark border border-slate-200 dark:border-border-dark rounded-xl p-5 flex flex-col justify-between h-32">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-emerald-500/10 rounded-lg">
+<span class="material-symbols-outlined text-emerald-500 text-xl">download</span>
+</div>
+<span class="text-xs font-medium text-emerald-500">Active</span>
+</div>
+<div>
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Down Speed</p>
+<span class="text-2xl font-bold leading-none">45.2</span>
+<span class="text-sm font-medium text-slate-500">MB/s</span>
+</div>
+</div>
+<!-- Issues Card -->
+<div class="bg-white dark:bg-card-dark border border-slate-200 dark:border-border-dark rounded-xl p-5 flex flex-col justify-between h-32">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-green-500/10 rounded-lg">
+<span class="material-symbols-outlined text-green-500 text-xl">check_circle</span>
+</div>
+<span class="text-xs font-medium text-green-500">Healthy</span>
+</div>
+<div>
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">System Issues</p>
+<span class="text-2xl font-bold leading-none">0</span>
+<span class="text-sm font-medium text-slate-500">Warnings</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Airing & Releasing Carousel -->
+<section class="pl-6 pb-6 border-t border-slate-100 dark:border-border-dark/50 pt-6">
+<div class="flex items-center justify-between pr-6 mb-4">
+<h2 class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Airing &amp; Releasing</h2>
+<a class="text-xs font-bold text-primary hover:text-primary/80" href="#">View Calendar</a>
+</div>
+<div class="flex overflow-x-auto gap-4 no-scrollbar pb-2 pr-6 snap-x snap-mandatory">
+<!-- Item 1 -->
+<div class="flex-none w-32 snap-start">
+<div class="relative aspect-[2/3] rounded-lg overflow-hidden mb-2 group border border-slate-200 dark:border-border-dark">
+<img alt="Movie Poster" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Dark moody movie poster abstract" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpi6AYtIBDCB0xEcHC8zvJuHH636lFP95Q0r-vfRjrWRkGW5WBvykfUdjb_osPABJvQvQuRe2CGzrG8s9NV9oJWjpAKdtkcyzgSwNzIODtA2KvLc5u33jqJj-3wJEQz9xGO6Z8JytGM-Z-OZEIM1B-6JQoWv19m1dY0zp6O4h1T6p1cr_m36X9Uj8mRq8DJHT5YjE07dMU5xEs0WduqRYpw1PWMC_XRwv0SZYmGetsJrH9qyd37GNDT_p3224Lg2jgivVb-BxVW4Wn"/>
+<div class="absolute top-2 left-2 bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded">TODAY</div>
+</div>
+<h3 class="text-sm font-bold truncate">Dune: Part Two</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400">Movie • 2160p</p>
+</div>
+<!-- Item 2 -->
+<div class="flex-none w-32 snap-start">
+<div class="relative aspect-[2/3] rounded-lg overflow-hidden mb-2 group border border-slate-200 dark:border-border-dark">
+<img alt="Movie Poster" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Sci-fi movie poster abstract" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzWhq75UgaVqoYDB8gRYbmlQu6sbNTjwFuOGK99VvItEAX14QgCT3PJ2Gn4-OfPPGMcc15JaEoHd-esfKepn31vKTXt3E2tj5V9o7m3wZcgiRKTy1uu9hNvkTm9i6yzADVjspBiKBkenyOm-DjpffrZ860CGLUZremoPGcKXnwMpqrD0S1-Q4qvu5ILDmaLRDPQaS-Zhh22Po5O172iTRhoUVYiQIABXVKlf0DniREjutLO7FQAcJVh0VgwEIcAxTUBcYJtI3cam4_"/>
+<div class="absolute top-2 left-2 bg-slate-800 text-white text-[10px] font-bold px-2 py-0.5 rounded">TMRW</div>
+</div>
+<h3 class="text-sm font-bold truncate">The Bear</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400">S03 E01 • 1080p</p>
+</div>
+<!-- Item 3 -->
+<div class="flex-none w-32 snap-start">
+<div class="relative aspect-[2/3] rounded-lg overflow-hidden mb-2 group border border-slate-200 dark:border-border-dark">
+<img alt="Movie Poster" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Action movie poster abstract" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6wJ9nGXiUaBTWrQfd89Qo6p4gZ4XT7Nrh8OSsEkv0y9G1rqxXLV54w1scaBTOSSmnGpc7DnVxilZQOPDqkmIWuRbaDJxznv9lJodsIufsXefijRa4m_lzCujczJGGbQhSqnYKPfBkkIou_kLZ-KAxjYMDOHvBW87tX9Q2ebtXDsGwXBG23pHSmLuLEU4UcEt4V9BJ8oKeNiEFuBFgex3eJQL5N3CyQrT_ukon9CHzBSOXhRM5GgsSLSEVWTkOuC366eeYHn4BqdaT"/>
+<div class="absolute top-2 left-2 bg-slate-800 text-white text-[10px] font-bold px-2 py-0.5 rounded">FRI</div>
+</div>
+<h3 class="text-sm font-bold truncate">Fallout</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400">S01 E04 • 4K</p>
+</div>
+<!-- Item 4 -->
+<div class="flex-none w-32 snap-start">
+<div class="relative aspect-[2/3] rounded-lg overflow-hidden mb-2 group border border-slate-200 dark:border-border-dark">
+<img alt="Movie Poster" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Drama movie poster abstract" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKWmfpoobtcfaTAT1lP1WDHs8OboJ25WR_X-Av1vgFRdAbXA7kcnufV0CSkVQfrReNDxliYL2RP5wfcDGlsPzfKbVlOUclVlt_YILR2mXQdxR-CGFPR2a9HJ_pHsQR839bW4Q68M3UszzT49uZxxRiikLZ3UUpVtcAhqyJTteutOC22axz4wV7_HwC5s9k2USXxxy-OBm7oux8tabD6QdBYFcsxuFSJQp5JDagwlXZI866JJdzwcqPgc17-t0XTqRgDXHMFlSYhvHA"/>
+<div class="absolute top-2 left-2 bg-slate-800 text-white text-[10px] font-bold px-2 py-0.5 rounded">SUN</div>
+</div>
+<h3 class="text-sm font-bold truncate">Shogun</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400">S01 E08 • 1080p</p>
+</div>
+<!-- Item 5 -->
+<div class="flex-none w-32 snap-start">
+<div class="relative aspect-[2/3] rounded-lg overflow-hidden mb-2 group border border-slate-200 dark:border-border-dark">
+<div class="w-full h-full bg-slate-100 dark:bg-card-dark flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600 text-3xl">calendar_month</span>
+</div>
+</div>
+<h3 class="text-sm font-bold truncate">View All</h3>
+<p class="text-xs text-slate-500 dark:text-slate-400">Calendar</p>
+</div>
+</div>
+</section>
+<!-- Active Activity List -->
+<section class="px-6 py-6 border-t border-slate-100 dark:border-border-dark/50">
+<h2 class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4">Active Downloads</h2>
+<div class="flex flex-col gap-3">
+<!-- Activity Item 1 -->
+<div class="bg-white dark:bg-card-dark border border-slate-200 dark:border-border-dark rounded-xl p-4 flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-slate-100 dark:bg-slate-800 flex-shrink-0 overflow-hidden relative">
+<img alt="Thumbnail" class="w-full h-full object-cover opacity-80" data-alt="Fallout poster thumbnail" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWBoS9oYQOX1QLgr590o9TpoavNYRJb469RfdtsCt7nywbLqAo_Ok-dHpv6jrCJjnTacpT51Me-8AjxPvm0jn9u3m_R8YOoGiGtYXgz2w19zUhmO--KjfqpI6H7TTm4SUTCbCOMBnNk9iDnpUKqnfxwRjkeDjSh5xlP-2jwTYTaJTra_dgq7bJn3UpZ4Sg6qIutkVIfwtd4hE6XFGu1x3sy4AIz0vxsws1FGe2TjyB6Rmc_KWU6WWH38mSvUShcbTr6QA3mLIFjuy1"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<h3 class="text-sm font-bold truncate pr-2">Fallout.S01E01.2160p.mkv</h3>
+<span class="text-xs font-medium text-primary whitespace-nowrap">85%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden mb-1.5">
+<div class="bg-primary h-full rounded-full" style="width: 85%"></div>
+</div>
+<div class="flex justify-between items-center text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+<span>ETA: 4m 12s</span>
+<span>32.5 MB/s</span>
+</div>
+</div>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-lg">pause</span>
+</button>
+</div>
+<!-- Activity Item 2 -->
+<div class="bg-white dark:bg-card-dark border border-slate-200 dark:border-border-dark rounded-xl p-4 flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-slate-100 dark:bg-slate-800 flex-shrink-0 overflow-hidden relative">
+<img alt="Thumbnail" class="w-full h-full object-cover opacity-80" data-alt="Shogun poster thumbnail" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBEaCyefdpyuUeL1FBa-1yCBVOYtqgnRLo1m8tJ1uDEyrZ-kTaTypZQcgtnAbkfhiWCa6TNhztNNZj-BZLStPImEEaFQl4mCGWdXGT5S5AiAQFuiOt5a3eCkxoyQPXB1-Fc15TOF0KcJ33Hdk3l9atbsQ2Qx1nm2DVjovjeBiDUKnE-JeaTGBohndUdejNqCAURqt7r49kt8gdkCEkBt_kI-UbyhFrp0diCMMEzMaXgLtOeE15PKD6xRi7iX9mquu2EAmjMqBf5rAQ"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<h3 class="text-sm font-bold truncate pr-2">Shogun.S01E05.1080p.mkv</h3>
+<span class="text-xs font-medium text-primary whitespace-nowrap">40%</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden mb-1.5">
+<div class="bg-primary h-full rounded-full" style="width: 40%"></div>
+</div>
+<div class="flex justify-between items-center text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+<span>ETA: 12m 45s</span>
+<span>12.7 MB/s</span>
+</div>
+</div>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-lg">pause</span>
+</button>
+</div>
+<!-- Activity Item 3 (Paused) -->
+<div class="bg-white dark:bg-card-dark border border-slate-200 dark:border-border-dark rounded-xl p-4 flex items-center gap-4 opacity-75">
+<div class="w-12 h-12 rounded-lg bg-slate-100 dark:bg-slate-800 flex-shrink-0 overflow-hidden relative">
+<div class="w-full h-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-400">movie</span>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-center mb-1">
+<h3 class="text-sm font-bold truncate pr-2">Civil.War.2024.2160p.mkv</h3>
+<span class="text-xs font-medium text-amber-500 whitespace-nowrap">Paused</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden mb-1.5">
+<div class="bg-amber-500 h-full rounded-full" style="width: 12%"></div>
+</div>
+<div class="flex justify-between items-center text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+<span>Queued</span>
+<span>0 MB/s</span>
+</div>
+</div>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-lg">play_arrow</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 w-full bg-white dark:bg-background-dark border-t border-slate-200 dark:border-border-dark pb-6 pt-2 px-6 flex justify-between items-center z-50">
+<button class="flex flex-col items-center gap-1 p-2 text-primary">
+<span class="material-symbols-outlined fill-current">dashboard</span>
+<span class="text-[10px] font-bold">Overview</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+<span class="material-symbols-outlined">video_library</span>
+<span class="text-[10px] font-bold">Library</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+<span class="material-symbols-outlined">search</span>
+<span class="text-[10px] font-bold">Requests</span>
+</button>
+<button class="flex flex-col items-center gap-1 p-2 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+<span class="material-symbols-outlined">history</span>
+<span class="text-[10px] font-bold">Activity</span>
+</button>
+</nav>
+</body></html>

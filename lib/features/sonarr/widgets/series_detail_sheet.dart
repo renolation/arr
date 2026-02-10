@@ -40,9 +40,9 @@ class SeriesDetailSheet extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: series.posterUrl.isNotEmpty
+                    child: series.posterUrl != null && series.posterUrl!.isNotEmpty
                         ? CachedNetworkImage(
-                            imageUrl: series.posterUrl,
+                            imageUrl: series.posterUrl!,
                             width: 120,
                             height: 180,
                             fit: BoxFit.cover,
@@ -140,17 +140,11 @@ class SeriesDetailSheet extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
                 const SizedBox(height: 8),
-                if (series.ratings!.imdb != null)
+                if (series.ratings!.value != null)
                   _RatingRow(
-                    label: 'IMDb',
-                    rating: series.ratings!.imdb!,
-                    votes: series.ratings!.imdbVotes,
-                  ),
-                if (series.ratings!.tmdb != null)
-                  _RatingRow(
-                    label: 'TMDB',
-                    rating: series.ratings!.tmdb!,
-                    votes: series.ratings!.tmdbVotes,
+                    label: 'Rating',
+                    rating: series.ratings!.value!,
+                    votes: series.ratings!.votes?.toInt(),
                   ),
                 const SizedBox(height: 16),
               ],
@@ -203,7 +197,7 @@ class SeriesDetailSheet extends StatelessWidget {
   String _getStatusText(SeriesHive series) {
     if (series.status == 'ended') return 'Ended';
     if (series.status == 'continuing') return 'Continuing';
-    return series.status ?? 'Unknown';
+    return (series.status ?? 'Unknown').toString();
   }
   
   String _formatDate(DateTime date) {

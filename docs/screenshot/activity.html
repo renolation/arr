@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Activity &amp; Queue</title>
+<script type="text/javascript" nonce="4a0c1c338de84087b4ee8663124" src="//local.adguard.org?ts=1770683218457&amp;type=content-script&amp;dmn=contribution.usercontent.google.com&amp;url=https%3A%2F%2Fcontribution.usercontent.google.com%2Fdownload%3Fc%3DCgthaWRhX2NvZGVmeBJ8Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpbCiVodG1sXzc2MjEyMzFmYWI2NzQzN2Q4OTNjNzQwYWY4ODJmNWVjEgsSBxDeg7nxlhgYAZIBJAoKcHJvamVjdF9pZBIWQhQxNjUyOTQwMTgzNTY1NzU3MzA1Ng%26filename%3D%26opi%3D89354086&amp;app=org.mozilla.firefox&amp;css=3&amp;js=1&amp;rel=1&amp;rji=1&amp;sbe=1"></script><script type="text/javascript" nonce="4a0c1c338de84087b4ee8663124" src="//local.adguard.org?ts=1770683218457&amp;name=AdGuard%20Extra&amp;type=user-script"></script><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#1392ec",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101a22",
+              "surface-dark": "#18242e",
+              "surface-light": "#ffffff",
+              "accent-green": "#22c55e",
+              "accent-yellow": "#eab308",
+              "accent-red": "#ef4444",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .hide-scroll::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+    .pb-safe {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-900 dark:text-gray-100 min-h-screen pb-24 selection:bg-primary selection:text-white">
+<header class="sticky top-0 z-50 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm pt-12 pb-4 px-6 border-b border-gray-200 dark:border-gray-800">
+<div class="flex justify-between items-end">
+<div>
+<h1 class="text-4xl font-bold tracking-tight">Activity</h1>
+<div class="flex items-center gap-3 mt-2">
+<span class="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 dark:text-gray-400">
+<span class="w-2 h-2 rounded-full bg-accent-green animate-pulse"></span>
+                    3 Downloading
+                </span>
+<span class="text-gray-300 dark:text-gray-700">•</span>
+<span class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    45.2 MB/s Total
+                </span>
+</div>
+</div>
+<button class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors">
+<span class="material-icons text-2xl">settings</span>
+</button>
+</div>
+</header>
+<main class="space-y-4 pt-6 px-4">
+<div class="bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-lg p-4 shadow-sm flex flex-col gap-3">
+<div class="flex gap-4">
+<div class="shrink-0 w-12 h-16 bg-gray-200 dark:bg-gray-800 rounded overflow-hidden relative">
+<img alt="Fallout TV Show Poster" class="h-full w-full object-cover" data-alt="Fallout TV Show Poster" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAD4y37AUrqfnGs7_XTuPpznnj0WUBE2ekLHnDGD9iBbDSZi2HrF7XFgZKu4jl40LOJNqAE9waa0M4EsCuT4ZLMGO46gDBjn-oH_j9KQrRkjq3FigDg9cAyXNog4V1qZr_Pljh3M2IgVfihNEfs6ZFM0nGsVliS6O-ZNw70Ed9Ra-J9Bw-ONTHnAoD9FRnEqcKo26SKsGkW-rv8UOMtrfh8fXqaZl7nHP-Y4c7yywHcfUgWtxSRwq8rZ6e40XwF0Jh9_8djSl7Bz2S9"/>
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-between py-0.5">
+<div>
+<h3 class="font-bold text-lg leading-tight truncate">Fallout - S01E04</h3>
+<p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">The Ghouls</p>
+</div>
+<div class="flex items-center gap-2 text-xs font-mono text-gray-600 dark:text-gray-300">
+<span class="text-primary font-bold">45%</span>
+<span class="text-gray-300 dark:text-gray-600">•</span>
+<span>1.2 GB left</span>
+<span class="text-gray-300 dark:text-gray-600">•</span>
+<span>12 MB/s</span>
+</div>
+</div>
+</div>
+<div class="w-full bg-gray-200 dark:bg-gray-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[45%]"></div>
+</div>
+<div class="flex items-center justify-end gap-3 pt-1">
+<div class="flex items-center gap-1 text-xs text-orange-400 bg-orange-400/10 px-2 py-1 rounded">
+<span class="material-icons text-[14px]">warning</span>
+<span>Slow Speed</span>
+</div>
+<div class="flex-1"></div>
+<button class="text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors">
+<span class="material-icons text-xl">pause</span>
+</button>
+<button class="text-gray-500 hover:text-red-500 transition-colors">
+<span class="material-icons text-xl">close</span>
+</button>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-lg p-4 shadow-sm flex flex-col gap-3">
+<div class="flex gap-4">
+<div class="shrink-0 w-12 h-16 bg-gray-200 dark:bg-gray-800 rounded overflow-hidden relative">
+<img alt="Dune Part Two Movie Poster" class="h-full w-full object-cover" data-alt="Dune Part Two Movie Poster" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2Vf7yLV_blQjz2F3PlSJv8KJq9zAxrm0cMUJ36_0oSbRmX6jQBZSz2N-0YPkAKCHSOxhLXMSFCu63WWTGbbE9eqegi53iLtLRnZoiwMn-gDzcHyjX8hYBD9hf2CnoODJX29dWRzDrd-tFKUsOslkujWyusjqL-ECsk54lO2gYgE_Qq7iyVZ7LotJQiUAVopFPSb6uf1yTax1ICRKjI1tCGzAMYnhr30zF0uZwoZdzecY51ZMf8bv0uM0LNpGfyPhLZjqKra4V_7R2"/>
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-between py-0.5">
+<div>
+<h3 class="font-bold text-lg leading-tight truncate">Dune: Part Two</h3>
+<p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">2160p.UHD.Remux</p>
+</div>
+<div class="flex items-center gap-2 text-xs font-mono text-gray-600 dark:text-gray-300">
+<span class="text-primary font-bold">78%</span>
+<span class="text-gray-300 dark:text-gray-600">•</span>
+<span>14.5 GB left</span>
+<span class="text-gray-300 dark:text-gray-600">•</span>
+<span>32 MB/s</span>
+</div>
+</div>
+</div>
+<div class="w-full bg-gray-200 dark:bg-gray-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[78%]"></div>
+</div>
+<div class="flex items-center justify-end gap-3 pt-1">
+<div class="flex items-center gap-1 text-xs text-blue-400 bg-blue-400/10 px-2 py-1 rounded">
+<span class="material-icons text-[14px]">timer</span>
+<span>8 min</span>
+</div>
+<div class="flex-1"></div>
+<button class="text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors">
+<span class="material-icons text-xl">pause</span>
+</button>
+<button class="text-gray-500 hover:text-red-500 transition-colors">
+<span class="material-icons text-xl">close</span>
+</button>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-lg p-4 shadow-sm flex flex-col gap-3 opacity-60">
+<div class="flex gap-4">
+<div class="shrink-0 w-12 h-16 bg-gray-200 dark:bg-gray-800 rounded overflow-hidden relative grayscale">
+<img alt="Shogun TV Series Poster" class="h-full w-full object-cover" data-alt="Shogun TV Series Poster" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZ3Cl_DOaVDm3IYyxP_JwlGHObHTGUls-nStpo2TKz8Oqan6zcisDRiwi4xsXBPsoUkCGurB7fsyo31szxCIjppT-nbJvdH43Zk7CRdOb4Vs0iOhGeRA-3_DorSbNpmb_xo4_5KpM6gHe8aRiAawiFyIweKh1Q061hbIBOwtRmgJ92krc1cmIAZh9QQA0APms11qbOg0o8peRST4ZuIDI1U_DhOaPmLbyMAThSlkcG9C7Vuba9GDTOpI0xnirYEE7szX7KFybrFEVE"/>
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-between py-0.5">
+<div>
+<h3 class="font-bold text-lg leading-tight truncate">Shōgun - S01E06</h3>
+<p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Ladies of the Willow World</p>
+</div>
+<div class="flex items-center gap-2 text-xs font-mono text-gray-600 dark:text-gray-300">
+<span class="text-yellow-500 font-bold">Paused</span>
+<span class="text-gray-300 dark:text-gray-600">•</span>
+<span>Queued</span>
+</div>
+</div>
+</div>
+<div class="w-full bg-gray-200 dark:bg-gray-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-yellow-500 h-full w-[15%]"></div>
+</div>
+<div class="flex items-center justify-end gap-3 pt-1">
+<div class="flex-1"></div>
+<button class="text-primary hover:text-primary/80 transition-colors">
+<span class="material-icons text-xl">play_arrow</span>
+</button>
+<button class="text-gray-500 hover:text-red-500 transition-colors">
+<span class="material-icons text-xl">close</span>
+</button>
+</div>
+</div>
+<div class="pt-6 pb-2">
+<h2 class="text-lg font-bold uppercase tracking-wide text-gray-500 dark:text-gray-400">Recent History</h2>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-lg p-3 shadow-sm flex items-center gap-3">
+<div class="shrink-0 w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center">
+<span class="material-icons text-green-500 text-xl">check</span>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="font-bold text-sm truncate">Civil War</h4>
+<p class="text-[10px] text-gray-500 dark:text-gray-400">Completed 2h ago</p>
+</div>
+<span class="text-xs font-mono text-gray-500 dark:text-gray-400">14.2 GB</span>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-lg p-3 shadow-sm flex items-center gap-3">
+<div class="shrink-0 w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
+<span class="material-icons text-red-500 text-xl">error_outline</span>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="font-bold text-sm truncate">Godzilla x Kong</h4>
+<p class="text-[10px] text-gray-500 dark:text-gray-400">Failed • Missing files</p>
+</div>
+<button class="text-xs font-bold text-primary hover:underline">Retry</button>
+</div>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 bg-surface-light dark:bg-surface-dark border-t border-gray-200 dark:border-gray-800 z-50 pb-safe">
+<div class="flex justify-around items-center h-16 max-w-lg mx-auto">
+<a class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors gap-1" href="#">
+<span class="material-icons text-2xl">dashboard</span>
+<span class="text-[10px] font-medium tracking-wide">Overview</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors gap-1" href="#">
+<span class="material-icons text-2xl">movie_filter</span>
+<span class="text-[10px] font-medium tracking-wide">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors gap-1" href="#">
+<span class="material-icons text-2xl">download</span>
+<span class="text-[10px] font-medium tracking-wide">Requests</span>
+</a>
+<a class="flex flex-col items-center justify-center w-full h-full text-primary transition-colors gap-1 relative" href="#">
+<span class="absolute -top-[1px] w-8 h-[2px] bg-primary rounded-b-full shadow-[0_0_10px_rgba(19,146,236,0.5)]"></span>
+<span class="material-icons text-2xl">history</span>
+<span class="text-[10px] font-bold tracking-wide">Activity</span>
+</a>
+</div>
+</nav>
+
+</body></html>

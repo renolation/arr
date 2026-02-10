@@ -1,218 +1,151 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:arr/features/sonarr/pages/sonarr_page.dart';
-import 'package:arr/features/sonarr/pages/series_detail_page.dart';
-import 'package:arr/features/radarr/pages/radarr_page.dart';
-import 'package:arr/features/radarr/pages/movie_detail_page.dart';
-import 'package:arr/features/settings/pages/settings_page.dart';
-import 'package:arr/models/hive/series_hive.dart';
-import 'package:arr/models/hive/movie_hive.dart';
+import 'package:arr/features/overview/presentation/pages/overview_page.dart';
+import 'package:arr/features/library/presentation/pages/library_page.dart';
+import 'package:arr/features/requests/presentation/pages/requests_page.dart';
+import 'package:arr/features/activity/presentation/pages/activity_page.dart';
+import 'package:arr/features/settings/presentation/pages/settings_page.dart';
 
+/// App router configuration using go_router
 class AppRouter {
-  static final _rootNavigatorKey = GlobalKey<NavigatorState>();
-  static final _shellNavigatorKey = GlobalKey<NavigatorState>();
+  static const String overviewPath = '/overview';
+  static const String libraryPath = '/library';
+  static const String requestsPath = '/requests';
+  static const String activityPath = '/activity';
+  static const String settingsPath = '/settings';
 
   static final GoRouter router = GoRouter(
-    navigatorKey: _rootNavigatorKey,
-    initialLocation: '/home',
+    initialLocation: overviewPath,
+    debugLogDiagnostics: true,
     routes: [
-      ShellRoute(
-        navigatorKey: _shellNavigatorKey,
-        builder: (context, state, child) {
-          return MainShell(child: child);
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return ScaffoldWithNavBar(navigationShell: navigationShell);
         },
-        routes: [
-          GoRoute(
-            path: '/home',
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: HomePage(),
-            ),
-          ),
-          GoRoute(
-            path: '/sonarr',
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: SonarrPage(),
-            ),
+        branches: [
+          StatefulShellBranch(
             routes: [
               GoRoute(
-                path: 'series/:id',
-                builder: (context, state) {
-                  final series = state.extra as SeriesHive;
-                  return SeriesDetailPage(series: series);
-                },
+                path: overviewPath,
+                pageBuilder: (context, state) => const MaterialPage(
+                  key: ValueKey('overview'),
+                  child: OverviewPage(),
+                ),
               ),
             ],
           ),
-          GoRoute(
-            path: '/radarr',
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: RadarrPage(),
-            ),
+          StatefulShellBranch(
             routes: [
               GoRoute(
-                path: 'movie/:id',
-                builder: (context, state) {
-                  final movie = state.extra as MovieHive;
-                  return MovieDetailPage(movie: movie);
-                },
+                path: libraryPath,
+                pageBuilder: (context, state) => const MaterialPage(
+                  key: ValueKey('library'),
+                  child: LibraryPage(),
+                ),
               ),
             ],
           ),
-          GoRoute(
-            path: '/settings',
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: SettingsPage(),
-            ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: requestsPath,
+                pageBuilder: (context, state) => const MaterialPage(
+                  key: ValueKey('requests'),
+                  child: RequestsPage(),
+                ),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: activityPath,
+                pageBuilder: (context, state) => const MaterialPage(
+                  key: ValueKey('activity'),
+                  child: ActivityPage(),
+                ),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: settingsPath,
+                pageBuilder: (context, state) => const MaterialPage(
+                  key: ValueKey('settings'),
+                  child: SettingsPage(),
+                ),
+              ),
+            ],
           ),
         ],
       ),
     ],
+    errorBuilder: (context, state) => Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.error_outline, size: 64),
+            const SizedBox(height: 16),
+            Text('Page not found: ${state.uri}'),
+          ],
+        ),
+      ),
+    ),
   );
 }
 
-class MainShell extends StatelessWidget {
-  final Widget child;
+/// Main scaffold with bottom navigation bar
+class ScaffoldWithNavBar extends StatelessWidget {
+  final StatefulNavigationShell navigationShell;
 
-  const MainShell({super.key, required this.child});
+  const ScaffoldWithNavBar({
+    required this.navigationShell,
+    super.key,
+  });
+
+  void _goBranch(int index) {
+    navigationShell.goBranch(
+      index,
+      initialLocation: index == navigationShell.currentIndex,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final location = GoRouterState.of(context).matchedLocation;
-    
-    int selectedIndex = 0;
-    if (location.startsWith('/home')) {
-      selectedIndex = 0;
-    } else if (location.startsWith('/sonarr')) {
-      selectedIndex = 1;
-    } else if (location.startsWith('/radarr')) {
-      selectedIndex = 2;
-    } else if (location.startsWith('/settings')) {
-      selectedIndex = 3;
-    }
-
     return Scaffold(
-      body: child,
+      body: navigationShell,
       bottomNavigationBar: NavigationBar(
-        selectedIndex: selectedIndex,
-        onDestinationSelected: (index) {
-          switch (index) {
-            case 0:
-              context.go('/home');
-              break;
-            case 1:
-              context.go('/sonarr');
-              break;
-            case 2:
-              context.go('/radarr');
-              break;
-            case 3:
-              context.go('/settings');
-              break;
-          }
-        },
+        selectedIndex: navigationShell.currentIndex,
+        onDestinationSelected: _goBranch,
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.dashboard_outlined),
+            selectedIcon: Icon(Icons.dashboard),
+            label: 'Overview',
           ),
           NavigationDestination(
-            icon: Icon(Icons.tv),
-            label: 'Sonarr',
+            icon: Icon(Icons.collections_bookmark_outlined),
+            selectedIcon: Icon(Icons.collections_bookmark),
+            label: 'Library',
           ),
           NavigationDestination(
-            icon: Icon(Icons.movie),
-            label: 'Radarr',
+            icon: Icon(Icons.request_page_outlined),
+            selectedIcon: Icon(Icons.request_page),
+            label: 'Requests',
           ),
           NavigationDestination(
-            icon: Icon(Icons.settings),
+            icon: Icon(Icons.download_outlined),
+            selectedIcon: Icon(Icons.download),
+            label: 'Activity',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.settings_outlined),
+            selectedIcon: Icon(Icons.settings),
             label: 'Settings',
           ),
         ],
-      ),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('*arr Stack Manager'),
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.dashboard,
-                  size: 100,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                const SizedBox(height: 24),
-                Text(
-                  'Welcome to *arr Stack Manager',
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'Manage your Sonarr and Radarr services from one place',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 32),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    context.go('/settings');
-                  },
-                  icon: const Icon(Icons.add),
-                  label: const Text('Configure Services'),
-                ),
-                const SizedBox(height: 48),
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          'Quick Tips',
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                        const SizedBox(height: 16),
-                        const ListTile(
-                          leading: Icon(Icons.settings),
-                          title: Text('Configure your services'),
-                          subtitle: Text('Add your Sonarr and Radarr endpoints in Settings'),
-                        ),
-                        const ListTile(
-                          leading: Icon(Icons.tv),
-                          title: Text('Browse TV Shows'),
-                          subtitle: Text('View and manage your TV show library'),
-                        ),
-                        const ListTile(
-                          leading: Icon(Icons.movie),
-                          title: Text('Browse Movies'),
-                          subtitle: Text('View and manage your movie collection'),
-                        ),
-                        const ListTile(
-                          leading: Icon(Icons.offline_bolt),
-                          title: Text('Offline Support'),
-                          subtitle: Text('Your media is cached for offline viewing'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
       ),
     );
   }
