@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import '../../core/constants/api_constants.dart';
+import '../../constants/api_constants.dart';
 import 'base_api_service.dart';
 
 /// API service for Overseerr/Jellyseerr (media requests)

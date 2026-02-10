@@ -1,6 +1,6 @@
 import 'package:arr/core/constants/api_constants.dart';
 import 'package:arr/features/settings/domain/entities/service_config.dart';
-import 'package:arr/services/api/base_api_service.dart';
+import '../services/api/base_api_service.dart';
 
 /// Radarr API service for movie management
 class RadarrApi extends BaseApiService {
@@ -8,16 +8,13 @@ class RadarrApi extends BaseApiService {
 
   RadarrApi({
     required this.config,
-    Duration? connectTimeout,
-    Duration? receiveTimeout,
-    Duration? sendTimeout,
+    super.connectTimeout,
+    super.receiveTimeout,
+    super.sendTimeout,
   }) : super(
           baseUrl: config.baseUrl,
           apiKey: config.apiKey ?? '',
           apiBasePath: ApiConstants.radarrBasePath,
-          connectTimeout: connectTimeout,
-          receiveTimeout: receiveTimeout,
-          sendTimeout: sendTimeout,
         );
 
   /// Get all movies

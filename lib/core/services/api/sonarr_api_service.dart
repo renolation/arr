@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
-import '../../models/tv/series/series_resource.dart';
-import '../../models/tv/episode/episode_resource.dart';
-import '../../core/constants/api_constants.dart';
+
+import '../../../models/tv/episode/episode_resource.dart';
+import '../../../models/tv/series/series_resource.dart';
+import '../../constants/api_constants.dart';
 import 'base_api_service.dart';
 
 /// API service for Sonarr (TV series management)

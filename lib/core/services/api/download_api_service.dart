@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
-import '../../core/network/dio_client.dart';
+import '../../errors/exceptions.dart';
+import '../../network/dio_client.dart';
 import 'base_api_service.dart';
 
 /// Supported download client types

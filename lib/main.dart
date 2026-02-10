@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:arr/core/database/hive_database.dart';
 import 'package:arr/core/router/app_router.dart';
-import 'package:arr/providers/theme_provider.dart';
+import 'package:arr/core/theme/theme_provider.dart';
 
 // App Color Palette - Matching HTML Design Specifications
 class AppColors {

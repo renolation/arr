@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import '../../models/movie/movie/movie_resource.dart';
-import '../../core/constants/api_constants.dart';
+import '../../../models/movie/movie/movie_resource.dart';
+import '../../constants/api_constants.dart';
 import 'base_api_service.dart';
 
 /// API service for Radarr (movie management)

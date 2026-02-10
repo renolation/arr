@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
-import '../../core/network/dio_client.dart';
-import '../../core/errors/exceptions.dart';
+
+import '../../errors/exceptions.dart';
+import '../../network/dio_client.dart';
+
 
 /// Supported authentication types for services
 enum AuthType { none, apiKey, basic, bearer }
