@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import '../../../../core/constants/storage_constants.dart';
+import '../../../../core/database/hive_database.dart';
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/network/dio_client.dart';
 import '../../data/datasources/overseerr_remote_datasource.dart';
@@ -9,7 +9,7 @@ import '../../domain/entities/request.dart';
 
 /// Provider for cache box
 final requestsCacheBoxProvider = Provider<Box<dynamic>>((ref) {
-  return Hive.box(StorageConstants.overseerrCacheBox);
+  return HiveDatabase.getBox<dynamic>(HiveDatabase.overseerrCacheBox);
 });
 
 /// Provider for remote data source

@@ -1,4 +1,3 @@
-import '../../../../core/errors/exceptions.dart';
 import '../entities/download.dart';
 
 /// Repository interface for download operations

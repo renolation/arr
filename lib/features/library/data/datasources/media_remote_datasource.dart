@@ -1,22 +1,17 @@
 import '../../../../core/errors/exceptions.dart';
-import '../../../../core/network/dio_client.dart';
+import '../../../../core/network/sonarr_api.dart';
+import '../../../../core/network/radarr_api.dart';
 
-/// Remote data source for media (series/movies) from *arr services
-class MediaRemoteDataSource {
-  final DioClient dioClient;
+/// Remote data source for series from Sonarr
+class SonarrRemoteDataSource {
+  final SonarrApi api;
 
-  MediaRemoteDataSource({required this.dioClient});
+  SonarrRemoteDataSource({required this.api});
 
   /// Fetch all series from Sonarr
   Future<List<Map<String, dynamic>>> getAllSeries() async {
     try {
-      final response = await dioClient.get('/series');
-      if (response.statusCode == 200) {
-        return List<Map<String, dynamic>>.from(
-          response.data.map((item) => item as Map<String, dynamic>),
-        );
-      }
-      throw ServerException('Failed to fetch series');
+      return await api.getSeries();
     } catch (e) {
       throw ServerException('Series fetch error: $e');
     }
@@ -25,26 +20,53 @@ class MediaRemoteDataSource {
   /// Fetch series by ID
   Future<Map<String, dynamic>> getSeriesById(int id) async {
     try {
-      final response = await dioClient.get('/series/$id');
-      if (response.statusCode == 200) {
-        return response.data as Map<String, dynamic>;
-      }
-      throw ServerException('Failed to fetch series');
+      return await api.getSeriesById(id);
     } catch (e) {
       throw ServerException('Series fetch error: $e');
     }
   }
 
+  /// Search for series
+  Future<List<Map<String, dynamic>>> searchSeries(String query) async {
+    try {
+      return await api.searchSeries(query);
+    } catch (e) {
+      throw ServerException('Search error: $e');
+    }
+  }
+
+  /// Get calendar (upcoming episodes)
+  Future<List<Map<String, dynamic>>> getCalendar({
+    DateTime? start,
+    DateTime? end,
+  }) async {
+    try {
+      return await api.getCalendar(start: start, end: end);
+    } catch (e) {
+      throw ServerException('Calendar fetch error: $e');
+    }
+  }
+
+  /// Get download queue
+  Future<List<Map<String, dynamic>>> getQueue() async {
+    try {
+      return await api.getQueue();
+    } catch (e) {
+      throw ServerException('Queue fetch error: $e');
+    }
+  }
+}
+
+/// Remote data source for movies from Radarr
+class RadarrRemoteDataSource {
+  final RadarrApi api;
+
+  RadarrRemoteDataSource({required this.api});
+
   /// Fetch all movies from Radarr
   Future<List<Map<String, dynamic>>> getAllMovies() async {
     try {
-      final response = await dioClient.get('/movie');
-      if (response.statusCode == 200) {
-        return List<Map<String, dynamic>>.from(
-          response.data.map((item) => item as Map<String, dynamic>),
-        );
-      }
-      throw ServerException('Failed to fetch movies');
+      return await api.getMovies();
     } catch (e) {
       throw ServerException('Movies fetch error: $e');
     }
@@ -53,31 +75,39 @@ class MediaRemoteDataSource {
   /// Fetch movie by ID
   Future<Map<String, dynamic>> getMovieById(int id) async {
     try {
-      final response = await dioClient.get('/movie/$id');
-      if (response.statusCode == 200) {
-        return response.data as Map<String, dynamic>;
-      }
-      throw ServerException('Failed to fetch movie');
+      return await api.getMovieById(id);
     } catch (e) {
       throw ServerException('Movie fetch error: $e');
     }
   }
 
-  /// Search for media
-  Future<List<Map<String, dynamic>>> searchMedia(String query) async {
+  /// Search for movies
+  Future<List<Map<String, dynamic>>> searchMovies(String query) async {
     try {
-      final response = await dioClient.get(
-        '/series/lookup',
-        queryParameters: {'term': query},
-      );
-      if (response.statusCode == 200) {
-        return List<Map<String, dynamic>>.from(
-          response.data.map((item) => item as Map<String, dynamic>),
-        );
-      }
-      throw ServerException('Failed to search media');
+      return await api.searchMovies(query);
     } catch (e) {
       throw ServerException('Search error: $e');
+    }
+  }
+
+  /// Get calendar (upcoming movies)
+  Future<List<Map<String, dynamic>>> getCalendar({
+    DateTime? start,
+    DateTime? end,
+  }) async {
+    try {
+      return await api.getCalendar(start: start, end: end);
+    } catch (e) {
+      throw ServerException('Calendar fetch error: $e');
+    }
+  }
+
+  /// Get download queue
+  Future<List<Map<String, dynamic>>> getQueue() async {
+    try {
+      return await api.getQueue();
+    } catch (e) {
+      throw ServerException('Queue fetch error: $e');
     }
   }
 }

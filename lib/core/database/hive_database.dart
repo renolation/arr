@@ -19,6 +19,18 @@ class HiveDatabase {
   // Keep track of initialization state
   static bool _isInitialized = false;
 
+  // Cached box instances to avoid type reification issues
+  static Box<ServiceConfig>? _servicesBox;
+  static Box<MediaItem>? _mediaUnifiedBox;
+  static Box<SeriesHive>? _sonarrCacheBox;
+  static Box<MovieHive>? _radarrCacheBox;
+  static Box<EpisodeHive>? _episodeCacheBox;
+  static Box? _overseerrCacheBox;
+  static Box? _downloadQueueBox;
+  static Box<AppSettings>? _settingsBoxInstance;
+  static Box<SyncState>? _syncStateBox;
+  static Box<SystemStatus>? _systemStatusBox;
+
   /// Initialize Hive and register all adapters
   static Future<void> init({bool clearOldData = false}) async {
     if (_isInitialized) {
@@ -61,46 +73,53 @@ class HiveDatabase {
 
   /// Register all Hive type adapters
   static void _registerAdapters() {
+    // Helper to safely register adapters (avoids errors on hot reload)
+    void safeRegister<T>(TypeAdapter<T> adapter) {
+      if (!Hive.isAdapterRegistered(adapter.typeId)) {
+        Hive.registerAdapter(adapter);
+      }
+    }
+
     // Enums (typeId: 100-199)
-    Hive.registerAdapter(ServiceTypeAdapter());
-    Hive.registerAdapter(MediaTypeAdapter());
-    Hive.registerAdapter(MediaStatusAdapter());
-    Hive.registerAdapter(SeriesStatusAdapter());
-    Hive.registerAdapter(DownloadClientTypeAdapter());
-    Hive.registerAdapter(ServiceSyncTypeAdapter());
-    Hive.registerAdapter(SyncStatusAdapter());
-    Hive.registerAdapter(HealthIssueTypeAdapter());
+    safeRegister(ServiceTypeAdapter());
+    safeRegister(MediaTypeAdapter());
+    safeRegister(MediaStatusAdapter());
+    safeRegister(SeriesStatusAdapter());
+    safeRegister(DownloadClientTypeAdapter());
+    safeRegister(ServiceSyncTypeAdapter());
+    safeRegister(SyncStatusAdapter());
+    safeRegister(HealthIssueTypeAdapter());
 
     // Image & Ratings (typeId: 110-119)
-    Hive.registerAdapter(ImageHiveAdapter());
-    Hive.registerAdapter(RatingsHiveAdapter());
+    safeRegister(ImageHiveAdapter());
+    safeRegister(RatingsHiveAdapter());
 
     // Service Config (typeId: 120)
-    Hive.registerAdapter(ServiceConfigAdapter());
+    safeRegister(ServiceConfigAdapter());
 
     // Media Item (typeId: 130)
-    Hive.registerAdapter(MediaItemAdapter());
+    safeRegister(MediaItemAdapter());
 
     // Series (typeId: 140)
-    Hive.registerAdapter(SeriesHiveAdapter());
+    safeRegister(SeriesHiveAdapter());
 
     // Movie (typeId: 150)
-    Hive.registerAdapter(MovieHiveAdapter());
+    safeRegister(MovieHiveAdapter());
 
     // Episode (typeId: 160)
-    Hive.registerAdapter(EpisodeHiveAdapter());
+    safeRegister(EpisodeHiveAdapter());
 
     // App Settings (typeId: 170)
-    Hive.registerAdapter(AppSettingsAdapter());
+    safeRegister(AppSettingsAdapter());
 
     // Sync State (typeId: 180-182)
-    Hive.registerAdapter(SyncStateAdapter());
+    safeRegister(SyncStateAdapter());
 
     // System Status (typeId: 190-194)
-    Hive.registerAdapter(SystemStatusAdapter());
-    Hive.registerAdapter(DiskSpaceInfoAdapter());
-    Hive.registerAdapter(HealthIssueAdapter());
-    Hive.registerAdapter(WikiLinkAdapter());
+    safeRegister(SystemStatusAdapter());
+    safeRegister(DiskSpaceInfoAdapter());
+    safeRegister(HealthIssueAdapter());
+    safeRegister(WikiLinkAdapter());
 
     print('All Hive adapters registered successfully');
   }
@@ -108,6 +127,30 @@ class HiveDatabase {
   /// Clear all Hive data (useful for schema changes during development)
   static Future<void> _clearAllData() async {
     try {
+      // Close any open boxes first to avoid conflicts
+      if (Hive.isBoxOpen(servicesBox)) await Hive.box(servicesBox).close();
+      if (Hive.isBoxOpen(mediaUnifiedBox)) await Hive.box(mediaUnifiedBox).close();
+      if (Hive.isBoxOpen(sonarrCacheBox)) await Hive.box(sonarrCacheBox).close();
+      if (Hive.isBoxOpen(radarrCacheBox)) await Hive.box(radarrCacheBox).close();
+      if (Hive.isBoxOpen(overseerrCacheBox)) await Hive.box(overseerrCacheBox).close();
+      if (Hive.isBoxOpen(downloadQueueBox)) await Hive.box(downloadQueueBox).close();
+      if (Hive.isBoxOpen(episodeCacheBox)) await Hive.box(episodeCacheBox).close();
+      if (Hive.isBoxOpen(settingsBox)) await Hive.box(settingsBox).close();
+      if (Hive.isBoxOpen(syncStateBox)) await Hive.box(syncStateBox).close();
+      if (Hive.isBoxOpen(systemStatusBox)) await Hive.box(systemStatusBox).close();
+
+      // Reset cached instances
+      _servicesBox = null;
+      _mediaUnifiedBox = null;
+      _sonarrCacheBox = null;
+      _radarrCacheBox = null;
+      _episodeCacheBox = null;
+      _overseerrCacheBox = null;
+      _downloadQueueBox = null;
+      _settingsBoxInstance = null;
+      _syncStateBox = null;
+      _systemStatusBox = null;
+
       // Clear all known boxes from disk
       await Hive.deleteBoxFromDisk(servicesBox);
       await Hive.deleteBoxFromDisk(mediaUnifiedBox);
@@ -125,43 +168,50 @@ class HiveDatabase {
     }
   }
 
-  /// Open all Hive boxes
+  /// Open all Hive boxes and cache references
   static Future<void> _openBoxes() async {
     // Service configuration boxes
-    if (!Hive.isBoxOpen(servicesBox)) {
-      await Hive.openBox<ServiceConfig>(servicesBox);
-    }
+    _servicesBox = Hive.isBoxOpen(servicesBox)
+        ? Hive.box<ServiceConfig>(servicesBox)
+        : await Hive.openBox<ServiceConfig>(servicesBox);
 
     // Media cache boxes
-    if (!Hive.isBoxOpen(mediaUnifiedBox)) {
-      await Hive.openBox<MediaItem>(mediaUnifiedBox);
-    }
-    if (!Hive.isBoxOpen(sonarrCacheBox)) {
-      await Hive.openBox<SeriesHive>(sonarrCacheBox);
-    }
-    if (!Hive.isBoxOpen(radarrCacheBox)) {
-      await Hive.openBox<MovieHive>(radarrCacheBox);
-    }
-    if (!Hive.isBoxOpen(episodeCacheBox)) {
-      await Hive.openBox<EpisodeHive>(episodeCacheBox);
-    }
-    if (!Hive.isBoxOpen(overseerrCacheBox)) {
-      await Hive.openBox(overseerrCacheBox);
-    }
-    if (!Hive.isBoxOpen(downloadQueueBox)) {
-      await Hive.openBox(downloadQueueBox);
-    }
+    _mediaUnifiedBox = Hive.isBoxOpen(mediaUnifiedBox)
+        ? Hive.box<MediaItem>(mediaUnifiedBox)
+        : await Hive.openBox<MediaItem>(mediaUnifiedBox);
+
+    _sonarrCacheBox = Hive.isBoxOpen(sonarrCacheBox)
+        ? Hive.box<SeriesHive>(sonarrCacheBox)
+        : await Hive.openBox<SeriesHive>(sonarrCacheBox);
+
+    _radarrCacheBox = Hive.isBoxOpen(radarrCacheBox)
+        ? Hive.box<MovieHive>(radarrCacheBox)
+        : await Hive.openBox<MovieHive>(radarrCacheBox);
+
+    _episodeCacheBox = Hive.isBoxOpen(episodeCacheBox)
+        ? Hive.box<EpisodeHive>(episodeCacheBox)
+        : await Hive.openBox<EpisodeHive>(episodeCacheBox);
+
+    _overseerrCacheBox = Hive.isBoxOpen(overseerrCacheBox)
+        ? Hive.box(overseerrCacheBox)
+        : await Hive.openBox(overseerrCacheBox);
+
+    _downloadQueueBox = Hive.isBoxOpen(downloadQueueBox)
+        ? Hive.box(downloadQueueBox)
+        : await Hive.openBox(downloadQueueBox);
 
     // Settings and state boxes
-    if (!Hive.isBoxOpen(settingsBox)) {
-      await Hive.openBox<AppSettings>(settingsBox);
-    }
-    if (!Hive.isBoxOpen(syncStateBox)) {
-      await Hive.openBox<SyncState>(syncStateBox);
-    }
-    if (!Hive.isBoxOpen(systemStatusBox)) {
-      await Hive.openBox<SystemStatus>(systemStatusBox);
-    }
+    _settingsBoxInstance = Hive.isBoxOpen(settingsBox)
+        ? Hive.box<AppSettings>(settingsBox)
+        : await Hive.openBox<AppSettings>(settingsBox);
+
+    _syncStateBox = Hive.isBoxOpen(syncStateBox)
+        ? Hive.box<SyncState>(syncStateBox)
+        : await Hive.openBox<SyncState>(syncStateBox);
+
+    _systemStatusBox = Hive.isBoxOpen(systemStatusBox)
+        ? Hive.box<SystemStatus>(systemStatusBox)
+        : await Hive.openBox<SystemStatus>(systemStatusBox);
 
     print('All Hive boxes opened successfully');
   }
@@ -169,12 +219,54 @@ class HiveDatabase {
   /// Check if Hive is initialized
   static bool get isInitialized => _isInitialized;
 
-  /// Get a specific box
+  /// Get a specific box from cached instances
   static Box<T> getBox<T>(String boxName) {
     if (!_isInitialized) {
       throw StateError('HiveDatabase is not initialized. Call init() first.');
     }
-    return Hive.box<T>(boxName);
+
+    // Return cached box instances to avoid type reification issues
+    final box = _getCachedBox(boxName);
+    if (box == null) {
+      throw StateError('Box "$boxName" not found. Make sure it was opened during initialization.');
+    }
+    return box as Box<T>;
+  }
+
+  /// Get cached box by name
+  static Box? _getCachedBox(String boxName) {
+    switch (boxName) {
+      case servicesBox:
+        return _servicesBox;
+      case mediaUnifiedBox:
+        return _mediaUnifiedBox;
+      case sonarrCacheBox:
+        return _sonarrCacheBox;
+      case radarrCacheBox:
+        return _radarrCacheBox;
+      case episodeCacheBox:
+        return _episodeCacheBox;
+      case overseerrCacheBox:
+        return _overseerrCacheBox;
+      case downloadQueueBox:
+        return _downloadQueueBox;
+      case settingsBox:
+        return _settingsBoxInstance;
+      case syncStateBox:
+        return _syncStateBox;
+      case systemStatusBox:
+        return _systemStatusBox;
+      default:
+        return null;
+    }
+  }
+
+  /// Get settings box directly (type-safe convenience method)
+  static Box<AppSettings> get settings {
+    if (!_isInitialized || _settingsBoxInstance == null) {
+      throw StateError('HiveDatabase is not initialized. Call init() first.');
+    }
+    return _settingsBoxInstance!;
   }
 
   /// Clear all cached media data
@@ -267,6 +359,17 @@ class HiveDatabase {
   static Future<void> close() async {
     await Hive.close();
     _isInitialized = false;
+    // Reset cached instances
+    _servicesBox = null;
+    _mediaUnifiedBox = null;
+    _sonarrCacheBox = null;
+    _radarrCacheBox = null;
+    _episodeCacheBox = null;
+    _overseerrCacheBox = null;
+    _downloadQueueBox = null;
+    _settingsBoxInstance = null;
+    _syncStateBox = null;
+    _systemStatusBox = null;
     print('HiveDatabase closed');
   }
 

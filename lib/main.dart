@@ -35,8 +35,9 @@ class AppColors {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Hive database (clear old data if schema changes)
-  await HiveDatabase.init(clearOldData: true);
+  // Initialize Hive database
+  // Note: Set clearOldData to true only during development when schema changes
+  await HiveDatabase.init(clearOldData: false);
 
   runApp(
     const ProviderScope(

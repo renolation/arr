@@ -5,12 +5,12 @@ import '../datasources/media_remote_datasource.dart';
 import '../../domain/entities/media_item.dart';
 import '../../domain/repositories/media_repository.dart';
 
-/// Repository implementation for media items
-class MediaRepositoryImpl implements MediaRepository {
-  final MediaRemoteDataSource remoteDataSource;
+/// Repository implementation for series (Sonarr)
+class SeriesRepositoryImpl implements MediaRepository {
+  final SonarrRemoteDataSource remoteDataSource;
   final Box<dynamic> cacheBox;
 
-  MediaRepositoryImpl({
+  SeriesRepositoryImpl({
     required this.remoteDataSource,
     required this.cacheBox,
   });
@@ -51,6 +51,80 @@ class MediaRepositoryImpl implements MediaRepository {
 
   @override
   Future<List<MediaItem>> getAllMovies() async {
+    // Not supported by this repository
+    throw UnsupportedError('Use MovieRepositoryImpl for movies');
+  }
+
+  @override
+  Future<MediaItem> getMovieById(int id) async {
+    // Not supported by this repository
+    throw UnsupportedError('Use MovieRepositoryImpl for movies');
+  }
+
+  @override
+  Future<List<MediaItem>> getCachedSeries() async {
+    try {
+      final cachedData = cacheBox.get(StorageConstants.seriesListKey);
+      if (cachedData == null) {
+        return [];
+      }
+
+      final seriesList = List<Map<String, dynamic>>.from(
+        (cachedData as List).map((item) => Map<String, dynamic>.from(item)),
+      );
+
+      final series = seriesList.map((data) => MediaItem.fromJson(data)).toList();
+      return series;
+    } catch (e) {
+      throw CacheException('Failed to load cached series: $e');
+    }
+  }
+
+  @override
+  Future<List<MediaItem>> getCachedMovies() async {
+    return [];
+  }
+
+  @override
+  Future<List<MediaItem>> searchMedia(String query) async {
+    try {
+      final resultsData = await remoteDataSource.searchSeries(query);
+      final results = resultsData.map((data) => MediaItem.fromJson(data)).toList();
+      return results;
+    } on ServerException {
+      rethrow;
+    } on NetworkException {
+      rethrow;
+    } catch (e) {
+      throw ServerException('Failed to search series: ${e.toString()}');
+    }
+  }
+}
+
+/// Repository implementation for movies (Radarr)
+class MovieRepositoryImpl implements MediaRepository {
+  final RadarrRemoteDataSource remoteDataSource;
+  final Box<dynamic> cacheBox;
+
+  MovieRepositoryImpl({
+    required this.remoteDataSource,
+    required this.cacheBox,
+  });
+
+  @override
+  Future<List<MediaItem>> getAllSeries() async {
+    // Not supported by this repository
+    throw UnsupportedError('Use SeriesRepositoryImpl for series');
+  }
+
+  @override
+  Future<MediaItem> getSeriesById(int id) async {
+    // Not supported by this repository
+    throw UnsupportedError('Use SeriesRepositoryImpl for series');
+  }
+
+  @override
+  Future<List<MediaItem>> getAllMovies() async {
     try {
       final moviesData = await remoteDataSource.getAllMovies();
       final movies = moviesData.map((data) => MediaItem.fromJson(data)).toList();
@@ -85,21 +159,7 @@ class MediaRepositoryImpl implements MediaRepository {
 
   @override
   Future<List<MediaItem>> getCachedSeries() async {
-    try {
-      final cachedData = cacheBox.get(StorageConstants.seriesListKey);
-      if (cachedData == null) {
-        throw CacheException('No cached series found');
-      }
-
-      final seriesList = List<Map<String, dynamic>>.from(
-        (cachedData as List).map((item) => Map<String, dynamic>.from(item)),
-      );
-
-      final series = seriesList.map((data) => MediaItem.fromJson(data)).toList();
-      return series;
-    } catch (e) {
-      throw CacheException('Failed to load cached series: $e');
-    }
+    return [];
   }
 
   @override
@@ -107,7 +167,7 @@ class MediaRepositoryImpl implements MediaRepository {
     try {
       final cachedData = cacheBox.get(StorageConstants.movieListKey);
       if (cachedData == null) {
-        throw CacheException('No cached movies found');
+        return [];
       }
 
       final movieList = List<Map<String, dynamic>>.from(
@@ -124,7 +184,7 @@ class MediaRepositoryImpl implements MediaRepository {
   @override
   Future<List<MediaItem>> searchMedia(String query) async {
     try {
-      final resultsData = await remoteDataSource.searchMedia(query);
+      final resultsData = await remoteDataSource.searchMovies(query);
       final results = resultsData.map((data) => MediaItem.fromJson(data)).toList();
       return results;
     } on ServerException {
@@ -132,7 +192,7 @@ class MediaRepositoryImpl implements MediaRepository {
     } on NetworkException {
       rethrow;
     } catch (e) {
-      throw ServerException('Failed to search media: ${e.toString()}');
+      throw ServerException('Failed to search movies: ${e.toString()}');
     }
   }
 }

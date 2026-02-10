@@ -46,7 +46,7 @@ class ThemeNotifier extends StateNotifier<AppThemeMode> {
 }
 
 final settingsBoxProvider = Provider<Box<AppSettings>>((ref) {
-  return HiveDatabase.getBox<AppSettings>(HiveDatabase.settingsBox);
+  return HiveDatabase.settings;
 });
 
 final themeProvider = StateNotifierProvider<ThemeNotifier, AppThemeMode>((ref) {

@@ -1,7 +1,9 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import '../../../../core/constants/storage_constants.dart';
+import '../../../../core/database/hive_database.dart';
 import '../../../../core/errors/exceptions.dart';
+import '../../../../models/hive/service_config.dart' as hive_model;
+import '../../../../models/hive/enums.dart' as hive_enums;
 
 /// Local data source for service configurations using Hive and Secure Storage
 class ServiceLocalDataSource {
@@ -13,14 +15,27 @@ class ServiceLocalDataSource {
     required this.secureStorage,
   });
 
-  /// Get services box
-  Box<Map> get _servicesBox => hive.box(StorageConstants.servicesBox);
+  /// Get services box from HiveDatabase cached instance
+  Box<hive_model.ServiceConfig> get _servicesBox =>
+      HiveDatabase.getBox<hive_model.ServiceConfig>(HiveDatabase.servicesBox);
 
   /// Get all service configurations
   Future<List<Map<String, dynamic>>> getAllServices() async {
     try {
       final services = _servicesBox.values.toList();
-      return services.map((e) => Map<String, dynamic>.from(e)).toList();
+      final result = <Map<String, dynamic>>[];
+
+      for (final service in services) {
+        final map = _hiveToMap(service);
+        // Add API key from secure storage
+        final apiKey = await secureStorage.read(key: '${service.id}_api_key');
+        if (apiKey != null) {
+          map['apiKey'] = apiKey;
+        }
+        result.add(map);
+      }
+
+      return result;
     } catch (e) {
       throw CacheException('Failed to load services: $e');
     }
@@ -33,7 +48,7 @@ class ServiceLocalDataSource {
       if (service == null) return null;
 
       // Convert to Map<String, dynamic>
-      final serviceMap = Map<String, dynamic>.from(service);
+      final serviceMap = _hiveToMap(service);
 
       // Add API key from secure storage
       final apiKey = await secureStorage.read(key: '${key}_api_key');
@@ -54,14 +69,51 @@ class ServiceLocalDataSource {
       final apiKey = service['apiKey'] as String?;
       if (apiKey != null) {
         await secureStorage.write(key: '${key}_api_key', value: apiKey);
-        service = Map<String, dynamic>.from(service);
-        service.remove('apiKey');
       }
 
-      await _servicesBox.put(key, service);
+      // Create ServiceConfig from map (without apiKey)
+      final serviceConfig = _mapToHive(key, service);
+      await _servicesBox.put(key, serviceConfig);
     } catch (e) {
       throw CacheException('Failed to save service: $e');
     }
+  }
+
+  /// Convert Hive model to domain map (uses 'key' field)
+  Map<String, dynamic> _hiveToMap(hive_model.ServiceConfig config) {
+    return {
+      'key': config.id,
+      'name': config.name,
+      'type': config.type.name,
+      'url': config.baseUrl,
+      'port': config.port,
+      'isActive': config.isEnabled,
+      'lastSync': config.lastSync?.toIso8601String(),
+      'settings': config.settings,
+    };
+  }
+
+  /// Convert domain map to Hive model (uses 'id' field)
+  hive_model.ServiceConfig _mapToHive(String key, Map<String, dynamic> map) {
+    // Map service type from string to enum
+    final typeStr = map['type'] as String? ?? 'sonarr';
+    final type = hive_enums.ServiceType.values.firstWhere(
+      (e) => e.name.toLowerCase() == typeStr.toLowerCase(),
+      orElse: () => hive_enums.ServiceType.sonarr,
+    );
+
+    return hive_model.ServiceConfig(
+      id: key,
+      name: map['name'] as String? ?? '',
+      type: type,
+      baseUrl: map['url'] as String? ?? '',
+      port: map['port'] as int?,
+      isEnabled: map['isActive'] as bool? ?? true,
+      lastSync: map['lastSync'] != null
+          ? DateTime.tryParse(map['lastSync'] as String)
+          : null,
+      settings: map['settings'] as Map<String, dynamic>?,
+    );
   }
 
   /// Update service configuration

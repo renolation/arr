@@ -1,4 +1,3 @@
-import '../../../../core/errors/exceptions.dart';
 import '../entities/media_item.dart';
 
 /// Repository interface for media operations
