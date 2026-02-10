@@ -1,6 +1,11 @@
-import 'package:arr/models/part_3.dart';
+// ========================================
+// Collection Movie Resource
+// Radarr-specific
+// ========================================
+
+import 'package:arr/models/common/media_cover.dart';
+import 'package:arr/models/movie/ratings.dart';
 import 'package:equatable/equatable.dart';
-import 'part_4.dart';
 
 class CollectionMovieResource extends Equatable {
   final int? tmdbId;
@@ -13,7 +18,7 @@ class CollectionMovieResource extends Equatable {
   final int? runtime;
   final List<MediaCover>? images;
   final int? year;
-  final Ratings? ratings;
+  final MovieRatings? ratings;
   final List<String>? genres;
   final String? folder;
   final bool? isExisting;
@@ -39,32 +44,18 @@ class CollectionMovieResource extends Equatable {
 
   @override
   List<Object?> get props => [
-    tmdbId,
-    imdbId,
-    title,
-    cleanTitle,
-    sortTitle,
-    status,
-    overview,
-    runtime,
-    images,
-    year,
-    ratings,
-    genres,
-    folder,
-    isExisting,
-    isExcluded,
+    tmdbId, imdbId, title, cleanTitle, sortTitle, status, overview, runtime,
+    images, year, ratings, genres, folder, isExisting, isExcluded
   ];
 
   factory CollectionMovieResource.fromJson(Map<String, dynamic> json) {
-    // Helper function to safely parse integers
     int? parseIntSafe(dynamic value) {
       if (value == null) return null;
       if (value is int) return value;
       if (value is String) return int.tryParse(value);
       return null;
     }
-    
+
     return CollectionMovieResource(
       tmdbId: parseIntSafe(json['tmdbId']),
       imdbId: json['imdbId'] as String?,
@@ -76,7 +67,7 @@ class CollectionMovieResource extends Equatable {
       runtime: parseIntSafe(json['runtime']),
       images: (json['images'] as List<dynamic>?)?.map((e) => MediaCover.fromJson(e as Map<String, dynamic>)).toList(),
       year: parseIntSafe(json['year']),
-      ratings: json['ratings'] != null ? Ratings.fromJson(json['ratings'] as Map<String, dynamic>) : null,
+      ratings: json['ratings'] != null ? MovieRatings.fromJson(json['ratings'] as Map<String, dynamic>) : null,
       genres: (json['genres'] as List<dynamic>?)?.cast<String>(),
       folder: json['folder'] as String?,
       isExisting: json['isExisting'] as bool?,
@@ -115,7 +106,7 @@ class CollectionMovieResource extends Equatable {
     int? runtime,
     List<MediaCover>? images,
     int? year,
-    Ratings? ratings,
+    MovieRatings? ratings,
     List<String>? genres,
     String? folder,
     bool? isExisting,
@@ -137,57 +128,6 @@ class CollectionMovieResource extends Equatable {
       folder: folder ?? this.folder,
       isExisting: isExisting ?? this.isExisting,
       isExcluded: isExcluded ?? this.isExcluded,
-    );
-  }
-}
-
-class MovieStatisticsResource extends Equatable {
-  final int? movieFileCount;
-  final int? sizeOnDisk;
-  final List<String>? releaseGroups;
-
-  const MovieStatisticsResource({
-    this.movieFileCount,
-    this.sizeOnDisk,
-    this.releaseGroups,
-  });
-
-  @override
-  List<Object?> get props => [movieFileCount, sizeOnDisk, releaseGroups];
-
-  factory MovieStatisticsResource.fromJson(Map<String, dynamic> json) {
-    // Helper function to safely parse integers
-    int? parseIntSafe(dynamic value) {
-      if (value == null) return null;
-      if (value is int) return value;
-      if (value is String) return int.tryParse(value);
-      return null;
-    }
-    
-    return MovieStatisticsResource(
-      movieFileCount: parseIntSafe(json['movieFileCount']),
-      sizeOnDisk: parseIntSafe(json['sizeOnDisk']),
-      releaseGroups: (json['releaseGroups'] as List<dynamic>?)?.cast<String>(),
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'movieFileCount': movieFileCount,
-      'sizeOnDisk': sizeOnDisk,
-      'releaseGroups': releaseGroups,
-    };
-  }
-
-  MovieStatisticsResource copyWith({
-    int? movieFileCount,
-    int? sizeOnDisk,
-    List<String>? releaseGroups,
-  }) {
-    return MovieStatisticsResource(
-      movieFileCount: movieFileCount ?? this.movieFileCount,
-      sizeOnDisk: sizeOnDisk ?? this.sizeOnDisk,
-      releaseGroups: releaseGroups ?? this.releaseGroups,
     );
   }
 }
