@@ -133,7 +133,9 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                     child: _buildEmptyState(context, mediaType),
                   );
                 }
-                return MediaGrid(mediaItems: mediaItems);
+                return SliverToBoxAdapter(
+                  child: MediaGrid(mediaItems: mediaItems),
+                );
               },
               loading: () => const SliverToBoxAdapter(
                 child: SizedBox(

@@ -1,17 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import '../../../../core/constants/storage_constants.dart';
-import '../../../../core/database/hive_database.dart';
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/network/api_providers.dart';
 import '../../data/datasources/media_remote_datasource.dart';
 import '../../data/repositories/media_repository.dart';
 import '../../domain/entities/media_item.dart';
-
-/// Provider for cache box
-final mediaCacheBoxProvider = Provider<Box<dynamic>>((ref) {
-  return HiveDatabase.getBox<dynamic>(StorageConstants.mediaUnifiedBox);
-});
 
 /// Provider for Sonarr remote data source (configured with service settings)
 final sonarrRemoteDataSourceProvider = FutureProvider<SonarrRemoteDataSource?>((ref) async {
@@ -38,10 +30,8 @@ final seriesRepositoryProvider = FutureProvider<SeriesRepositoryImpl?>((ref) asy
     return null;
   }
 
-  final cacheBox = ref.watch(mediaCacheBoxProvider);
   return SeriesRepositoryImpl(
     remoteDataSource: dataSource,
-    cacheBox: cacheBox,
   );
 });
 
@@ -52,10 +42,8 @@ final movieRepositoryProvider = FutureProvider<MovieRepositoryImpl?>((ref) async
     return null;
   }
 
-  final cacheBox = ref.watch(mediaCacheBoxProvider);
   return MovieRepositoryImpl(
     remoteDataSource: dataSource,
-    cacheBox: cacheBox,
   );
 });
 

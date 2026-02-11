@@ -27,8 +27,12 @@ class MediaItem with _$MediaItem {
   }) = _MediaItem;
 
   factory MediaItem.fromJson(Map<String, dynamic> json) {
-    final typeStr = json['type'] as String? ?? 'movie';
-    final type = typeStr == 'series' ? MediaType.series : MediaType.movie;
+    // Determine type: Sonarr has 'seasons' field, Radarr has 'movieFile' or 'hasFile'
+    final isSeries = json.containsKey('seasons') || json.containsKey('tvdbId') && !json.containsKey('movieFile');
+    final typeStr = json['type'] as String?;
+    final type = typeStr == 'series' || (typeStr == null && isSeries)
+        ? MediaType.series
+        : MediaType.movie;
 
     final statusStr = json['status'] as String? ?? 'continuing';
     final status = MediaStatus.values.firstWhere(
@@ -36,23 +40,58 @@ class MediaItem with _$MediaItem {
       orElse: () => MediaStatus.continuing,
     );
 
+    // Extract poster and fanart URLs from images array
+    String? posterUrl;
+    String? backdropUrl;
+    if (json['images'] is List) {
+      final images = json['images'] as List;
+      for (final img in images) {
+        if (img is Map) {
+          final coverType = img['coverType'] as String?;
+          if (coverType == 'poster') {
+            posterUrl = (img['remoteUrl'] as String?) ?? (img['url'] as String?);
+          } else if (coverType == 'fanart') {
+            backdropUrl = (img['remoteUrl'] as String?) ?? (img['url'] as String?);
+          }
+        }
+      }
+    }
+    posterUrl ??= json['posterUrl'] as String?;
+    backdropUrl ??= json['backdropUrl'] as String?;
+
+    // Extract rating safely
+    double? rating;
+    final ratings = json['ratings'];
+    if (ratings is Map) {
+      rating = (ratings['value'] as num?)?.toDouble();
+    } else if (ratings is num) {
+      rating = ratings.toDouble();
+    }
+
+    // Extract season/episode counts from statistics if not at top level
+    int? seasonCount = json['seasonCount'] as int?;
+    int? episodeCount = json['episodeCount'] as int?;
+    final stats = json['statistics'];
+    if (stats is Map) {
+      seasonCount ??= stats['seasonCount'] as int?;
+      episodeCount ??= stats['episodeFileCount'] as int?;
+    }
+
     return MediaItem(
       id: json['id'] as int? ?? json['idTvdb'] as int? ?? 0,
       title: json['title'] as String? ?? json['seriesName'] as String? ?? '',
       type: type,
       status: status,
       overview: json['overview'] as String?,
-      posterUrl: json['posterUrl'] as String?,
-      backdropUrl: json['backdropUrl'] as String?,
+      posterUrl: posterUrl,
+      backdropUrl: backdropUrl,
       year: json['year'] as int? ?? (json['firstAired'] != null
           ? DateTime.tryParse(json['firstAired'] as String)?.year
           : null),
-      rating: json['ratings'] != null && json['ratings'] is Map
-          ? ((json['ratings'] as Map<String, dynamic>)['value'] as num?)?.toDouble()
-          : (json['ratings'] as num?)?.toDouble(),
+      rating: rating,
       quality: json['qualityProfileId']?.toString(),
-      seasonCount: json['seasonCount'] as int?,
-      episodeCount: json['episodeCount'] as int?,
+      seasonCount: seasonCount,
+      episodeCount: episodeCount,
       airDate: json['airDate'] != null
           ? DateTime.tryParse(json['airDate'] as String)
           : json['firstAired'] != null

@@ -43,7 +43,12 @@ class ServiceRepositoryImpl implements ServiceRepository {
   @override
   Future<void> saveService(ServiceConfig service) async {
     try {
-      await localDataSource.saveService(service.key, service.toJson());
+      final json = service.toJson();
+      // toJson() excludes apiKey for security, so add it back for storage
+      if (service.apiKey != null) {
+        json['apiKey'] = service.apiKey;
+      }
+      await localDataSource.saveService(service.key, json);
     } on CacheException {
       rethrow;
     } catch (e) {

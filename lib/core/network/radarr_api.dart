@@ -187,11 +187,11 @@ class RadarrApi extends BaseApiService {
     await delete('/exclusions/$id');
   }
 
-  /// Test connection to this Radarr instance
+  /// Test connection to this Radarr instance via /health endpoint
   @override
   Future<bool> testConnection() async {
     try {
-      final response = await get('/system/status');
+      final response = await get('/health');
       return response.statusCode == 200;
     } catch (_) {
       return false;

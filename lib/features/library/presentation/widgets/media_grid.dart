@@ -15,7 +15,7 @@ class MediaGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (mediaItems.isEmpty) {
-      return SizedBox(
+      return const SizedBox(
         height: 400,
         child: EmptyState(
           message: 'No media found',
@@ -28,19 +28,19 @@ class MediaGrid extends StatelessWidget {
       builder: (context, constraints) {
         // Calculate responsive grid columns
         final crossAxisCount = _getCrossAxisCount(constraints.maxWidth);
-        final spacing = 16.0;
-        final horizontalPadding = 20.0;
+        const spacing = 16.0;
+        const horizontalPadding = 20.0;
         final itemWidth = (constraints.maxWidth - (spacing * (crossAxisCount - 1)) - (horizontalPadding * 2)) / crossAxisCount;
 
         return GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+          padding: const EdgeInsets.symmetric(horizontal: horizontalPadding),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
             crossAxisSpacing: spacing,
             mainAxisSpacing: spacing,
-            childAspectRatio: itemWidth / (itemWidth * 1.55),
+            childAspectRatio: itemWidth / (itemWidth * (500 / 333) + MediaCard.textAreaHeight),
           ),
           itemCount: mediaItems.length,
           itemBuilder: (context, index) {

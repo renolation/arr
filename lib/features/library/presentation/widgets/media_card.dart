@@ -5,6 +5,9 @@ import '../../../../main.dart';
 
 /// Card widget for displaying a media item - Matching HTML design
 class MediaCard extends StatelessWidget {
+  /// Fixed height for the text area below the poster (title + year/type)
+  static const double textAreaHeight = 60;
+
   final MediaItem mediaItem;
 
   const MediaCard({
@@ -23,9 +26,8 @@ class MediaCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Poster with aspect ratio 2:3
-          AspectRatio(
-            aspectRatio: 2 / 3,
+          // Poster with 9:16 aspect ratio
+          Expanded(
             child: Stack(
               children: [
                 Container(
@@ -75,10 +77,10 @@ class MediaCard extends StatelessWidget {
                 ),
                 // Missing badge
                 if (isMissing)
-                  Positioned(
+                  const Positioned(
                     top: 6,
                     right: 6,
-                    child: const _Badge(
+                    child: _Badge(
                       label: 'Missing',
                       backgroundColor: AppColors.accentRed,
                     ),
@@ -96,49 +98,60 @@ class MediaCard extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 8),
-          // Title
-          Text(
-            mediaItem.title,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              height: 1.2,
+          // Fixed-height text area below poster
+          SizedBox(
+            height: MediaCard.textAreaHeight,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 4,
+                children: [
+                  // Title - always reserves 2 lines of space
+                  Text(
+                    mediaItem.title,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      height: 1.2,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  // Year and type
+                  Row(
+                    children: [
+                      Text(
+                        mediaItem.year?.toString() ?? 'N/A',
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        width: 2,
+                        height: 2,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        isSeries ? 'Series' : 'Movie',
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: 4),
-          // Year and type
-          Row(
-            children: [
-              Text(
-                mediaItem.year?.toString() ?? 'N/A',
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w500,
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                ),
-              ),
-              const SizedBox(width: 8),
-              Container(
-                width: 2,
-                height: 2,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
-                  shape: BoxShape.circle,
-                ),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                isSeries ? 'Series' : 'Movie',
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w500,
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                ),
-              ),
-            ],
           ),
         ],
       ),

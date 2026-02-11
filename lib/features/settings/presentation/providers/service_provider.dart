@@ -5,6 +5,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../../../../core/constants/storage_constants.dart';
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/network/dio_client.dart';
+import '../../../../core/network/sonarr_api.dart';
+import '../../../../core/network/radarr_api.dart';
+import '../../../../core/network/overseerr_api.dart';
 import '../../data/datasources/service_local_datasource.dart';
 import '../../data/repositories/service_repository.dart' as impl;
 import '../../domain/repositories/service_repository.dart';
@@ -167,9 +170,35 @@ class ServiceNotifier extends StateNotifier<ServiceState> {
   Future<void> testConnection(ServiceConfig service) async {
     state = const ServiceState.testing();
 
-    // TODO: Implement actual connection test
-    await Future.delayed(const Duration(seconds: 2));
-    state = const ServiceState.testSuccess();
+    try {
+      bool success = false;
+      switch (service.type) {
+        case ServiceType.sonarr:
+          final api = SonarrApi(config: service);
+          success = await api.testConnection();
+          break;
+        case ServiceType.radarr:
+          final api = RadarrApi(config: service);
+          success = await api.testConnection();
+          break;
+        case ServiceType.overseerr:
+          final api = OverseerrApi(config: service);
+          success = await api.testConnection();
+          break;
+        case ServiceType.downloadClient:
+          // Download client test not yet implemented
+          success = false;
+          break;
+      }
+
+      if (success) {
+        state = const ServiceState.testSuccess();
+      } else {
+        state = const ServiceState.testFailure('Connection failed');
+      }
+    } catch (e) {
+      state = ServiceState.testFailure('Connection failed: $e');
+    }
   }
 }
 

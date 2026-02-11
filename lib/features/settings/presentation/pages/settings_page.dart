@@ -6,48 +6,93 @@ import '../../../../core/network/overseerr_api.dart';
 import '../../domain/entities/service_config.dart';
 import '../providers/service_provider.dart';
 
-/// Service type configuration data
-class ServiceTypeConfig {
+/// Supported service type metadata for the "Add" dropdown
+class _ServiceTypeInfo {
   final ServiceType type;
-  final String title;
+  final String label;
   final IconData icon;
   final String defaultPort;
 
-  const ServiceTypeConfig({
+  const _ServiceTypeInfo({
     required this.type,
-    required this.title,
+    required this.label,
     required this.icon,
     required this.defaultPort,
   });
 }
 
-/// Predefined service configurations
-const _serviceTypes = [
-  ServiceTypeConfig(
+const _supportedServices = [
+  _ServiceTypeInfo(
     type: ServiceType.radarr,
-    title: 'Movie Server (Radarr)',
+    label: 'Radarr',
     icon: Icons.movie_outlined,
     defaultPort: '7878',
   ),
-  ServiceTypeConfig(
+  _ServiceTypeInfo(
     type: ServiceType.sonarr,
-    title: 'TV Server (Sonarr)',
+    label: 'Sonarr',
     icon: Icons.tv_outlined,
     defaultPort: '8989',
   ),
-  ServiceTypeConfig(
+  _ServiceTypeInfo(
     type: ServiceType.overseerr,
-    title: 'Requests (Overseerr)',
+    label: 'Overseerr',
     icon: Icons.download_done_outlined,
     defaultPort: '5055',
   ),
-  ServiceTypeConfig(
+  _ServiceTypeInfo(
     type: ServiceType.downloadClient,
-    title: 'Download Client',
+    label: 'Download Client',
     icon: Icons.cloud_download_outlined,
     defaultPort: '8080',
   ),
 ];
+
+/// Test connection using the appropriate API's health endpoint
+Future<bool> _testServiceConnection(ServiceConfig config) async {
+  switch (config.type) {
+    case ServiceType.sonarr:
+      final api = SonarrApi(config: config);
+      return api.testConnection();
+    case ServiceType.radarr:
+      final api = RadarrApi(config: config);
+      return api.testConnection();
+    case ServiceType.overseerr:
+      final api = OverseerrApi(config: config);
+      return api.testConnection();
+    case ServiceType.downloadClient:
+      // Download client doesn't have a unified test yet
+      return false;
+  }
+}
+
+/// Get icon for a service type
+IconData _iconForType(ServiceType type) {
+  switch (type) {
+    case ServiceType.radarr:
+      return Icons.movie_outlined;
+    case ServiceType.sonarr:
+      return Icons.tv_outlined;
+    case ServiceType.overseerr:
+      return Icons.download_done_outlined;
+    case ServiceType.downloadClient:
+      return Icons.cloud_download_outlined;
+  }
+}
+
+/// Get display label for a service type
+String _labelForType(ServiceType type) {
+  switch (type) {
+    case ServiceType.radarr:
+      return 'Radarr';
+    case ServiceType.sonarr:
+      return 'Sonarr';
+    case ServiceType.overseerr:
+      return 'Overseerr';
+    case ServiceType.downloadClient:
+      return 'Download Client';
+  }
+}
 
 /// Settings page for configuring services
 class SettingsPage extends ConsumerStatefulWidget {
@@ -58,128 +103,203 @@ class SettingsPage extends ConsumerStatefulWidget {
 }
 
 class _SettingsPageState extends ConsumerState<SettingsPage> {
-  /// Track which service card is expanded
   int? _expandedIndex;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final servicesAsync = ref.watch(allServicesProvider);
 
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
+            // Header with Add button
+            Padding(
+              padding: const EdgeInsets.fromLTRB(24, 24, 16, 8),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Service Settings',
+                          style: theme.textTheme.headlineMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: -0.5,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Configure your media server connections.',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.colorScheme.onSurface.withOpacity(0.6),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  PopupMenuButton<_ServiceTypeInfo>(
+                    icon: Icon(
+                      Icons.add,
+                      color: theme.colorScheme.primary,
+                      size: 28,
+                    ),
+                    tooltip: 'Add service',
+                    onSelected: (info) => _showAddServiceDialog(info),
+                    itemBuilder: (context) => _supportedServices.map((info) {
+                      return PopupMenuItem<_ServiceTypeInfo>(
+                        value: info,
+                        child: Row(
+                          children: [
+                            Icon(info.icon, size: 20),
+                            const SizedBox(width: 12),
+                            Text(info.label),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
             // Content
             Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Header
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(24, 24, 24, 8),
+              child: servicesAsync.when(
+                data: (services) {
+                  if (services.isEmpty) {
+                    return Center(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
+                          Icon(
+                            Icons.dns_outlined,
+                            size: 64,
+                            color: isDark ? Colors.grey.shade600 : Colors.grey.shade400,
+                          ),
+                          const SizedBox(height: 16),
                           Text(
-                            'Service Settings',
-                            style: theme.textTheme.headlineMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: -0.5,
+                            'No services configured',
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
                             ),
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Configure your media server connections.',
+                            'Tap + to add a service',
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurface.withOpacity(0.6),
+                              color: isDark ? Colors.grey.shade500 : Colors.grey.shade500,
                             ),
                           ),
                         ],
                       ),
-                    ),
+                    );
+                  }
 
-                    const SizedBox(height: 16),
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        // Service Cards
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Column(
+                            children: List.generate(services.length, (index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 16),
+                                child: _ServiceCard(
+                                  config: services[index],
+                                  isExpanded: _expandedIndex == index,
+                                  onToggle: () {
+                                    setState(() {
+                                      _expandedIndex =
+                                          _expandedIndex == index ? null : index;
+                                    });
+                                  },
+                                  onDelete: () => _deleteService(services[index]),
+                                ),
+                              );
+                            }),
+                          ),
+                        ),
 
-                    // Service Cards
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: Column(
-                        children: List.generate(_serviceTypes.length, (index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 16),
-                            child: _ServiceConfigCard(
-                              config: _serviceTypes[index],
-                              isExpanded: _expandedIndex == index,
-                              onToggle: () {
-                                setState(() {
-                                  _expandedIndex = _expandedIndex == index ? null : index;
-                                });
-                              },
-                            ),
-                          );
-                        }),
-                      ),
-                    ),
+                        const SizedBox(height: 16),
 
-                    const SizedBox(height: 16),
-
-                    // Bottom Actions
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: Column(
-                        children: [
-                          // Sync All Services Button
-                          SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: _syncAllServices,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: isDark
-                                    ? Colors.grey.shade100
-                                    : Colors.grey.shade900,
-                                foregroundColor: isDark
-                                    ? Colors.grey.shade900
-                                    : Colors.white,
-                                elevation: 0,
-                                padding: const EdgeInsets.symmetric(vertical: 16),
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.zero,
+                        // Bottom Actions
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton(
+                                  onPressed: _syncAllServices,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: isDark
+                                        ? Colors.grey.shade100
+                                        : Colors.grey.shade900,
+                                    foregroundColor: isDark
+                                        ? Colors.grey.shade900
+                                        : Colors.white,
+                                    elevation: 0,
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 16),
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.zero,
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    'SYNC ALL SERVICES',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.5,
+                                    ),
+                                  ),
                                 ),
                               ),
-                              child: const Text(
-                                'SYNC ALL SERVICES',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1.5,
+                              const SizedBox(height: 16),
+                              TextButton(
+                                onPressed: _showResetConfirmation,
+                                child: Text(
+                                  'RESET CONFIGURATION',
+                                  style: TextStyle(
+                                    color: Colors.red.shade500,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 1.5,
+                                  ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
+                        ),
 
-                          const SizedBox(height: 16),
-
-                          // Reset Configuration Button
-                          TextButton(
-                            onPressed: _showResetConfirmation,
-                            child: Text(
-                              'RESET CONFIGURATION',
-                              style: TextStyle(
-                                color: Colors.red.shade500,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1.5,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                        const SizedBox(height: 32),
+                      ],
                     ),
-
-                    const SizedBox(height: 32),
-                  ],
+                  );
+                },
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (e, _) => Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.error_outline, size: 48, color: Colors.red.shade400),
+                      const SizedBox(height: 16),
+                      Text('Failed to load services',
+                          style: theme.textTheme.titleMedium),
+                      const SizedBox(height: 8),
+                      TextButton(
+                        onPressed: () => ref.invalidate(allServicesProvider),
+                        child: const Text('RETRY'),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -189,8 +309,54 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     );
   }
 
+  void _showAddServiceDialog(_ServiceTypeInfo info) {
+    showDialog(
+      context: context,
+      builder: (context) => _AddServiceDialog(
+        serviceInfo: info,
+        onSave: (config) async {
+          await ref.read(serviceNotifierProvider.notifier).addService(config);
+          ref.invalidate(allServicesProvider);
+        },
+      ),
+    );
+  }
+
+  Future<void> _deleteService(ServiceConfig config) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Service'),
+        content: Text(
+          'Are you sure you want to delete "${config.name}"? This cannot be undone.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('CANCEL'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('DELETE'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      await ref.read(serviceNotifierProvider.notifier).deleteService(config.key);
+      ref.invalidate(allServicesProvider);
+      setState(() => _expandedIndex = null);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Service deleted')),
+        );
+      }
+    }
+  }
+
   void _syncAllServices() {
-    // TODO: Implement sync all services
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Syncing all services...')),
     );
@@ -223,33 +389,319 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   }
 
   void _resetConfiguration() {
-    // TODO: Implement reset configuration
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Configuration reset')),
     );
   }
 }
 
-/// Individual service configuration card
-class _ServiceConfigCard extends ConsumerStatefulWidget {
-  final ServiceTypeConfig config;
-  final bool isExpanded;
-  final VoidCallback onToggle;
+/// Dialog for adding a new service
+class _AddServiceDialog extends StatefulWidget {
+  final _ServiceTypeInfo serviceInfo;
+  final Future<void> Function(ServiceConfig config) onSave;
 
-  const _ServiceConfigCard({
-    required this.config,
-    required this.isExpanded,
-    required this.onToggle,
+  const _AddServiceDialog({
+    required this.serviceInfo,
+    required this.onSave,
   });
 
   @override
-  ConsumerState<_ServiceConfigCard> createState() => _ServiceConfigCardState();
+  State<_AddServiceDialog> createState() => _AddServiceDialogState();
 }
 
-class _ServiceConfigCardState extends ConsumerState<_ServiceConfigCard> {
-  final _hostController = TextEditingController();
+class _AddServiceDialogState extends State<_AddServiceDialog> {
+  final _urlController = TextEditingController();
   final _apiKeyController = TextEditingController();
   final _portController = TextEditingController();
+  bool _isTesting = false;
+  bool _isSaving = false;
+  bool? _testResult;
+
+  @override
+  void initState() {
+    super.initState();
+    _portController.text = widget.serviceInfo.defaultPort;
+  }
+
+  @override
+  void dispose() {
+    _urlController.dispose();
+    _apiKeyController.dispose();
+    _portController.dispose();
+    super.dispose();
+  }
+
+  ServiceConfig _buildConfig(String key) {
+    return ServiceConfig(
+      key: key,
+      type: widget.serviceInfo.type,
+      name: widget.serviceInfo.label,
+      url: _urlController.text.trim(),
+      apiKey: _apiKeyController.text.trim(),
+      port: int.tryParse(_portController.text.trim()),
+      isActive: true,
+    );
+  }
+
+  Future<void> _testConnection() async {
+    if (_urlController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a URL')),
+      );
+      return;
+    }
+
+    setState(() {
+      _isTesting = true;
+      _testResult = null;
+    });
+
+    try {
+      final config = _buildConfig('test');
+      final success = await _testServiceConnection(config);
+      if (mounted) {
+        setState(() {
+          _testResult = success;
+          _isTesting = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(success ? 'Connection successful!' : 'Connection failed'),
+            backgroundColor: success ? Colors.green : Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _testResult = false;
+          _isTesting = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Connection failed: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _save() async {
+    if (_urlController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a URL')),
+      );
+      return;
+    }
+
+    setState(() => _isSaving = true);
+
+    try {
+      final key =
+          '${widget.serviceInfo.type.name}_${DateTime.now().millisecondsSinceEpoch}';
+      final config = _buildConfig(key);
+      await widget.onSave(config);
+      if (mounted) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Service saved!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isSaving = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to save: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final borderColor = isDark ? Colors.grey.shade700 : Colors.grey.shade300;
+    final inputBgColor = isDark ? const Color(0xFF1A2632) : Colors.grey.shade50;
+
+    return AlertDialog(
+      title: Row(
+        children: [
+          Icon(widget.serviceInfo.icon, size: 24),
+          const SizedBox(width: 12),
+          Text('Add ${widget.serviceInfo.label}'),
+        ],
+      ),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildLabel('URL', isDark),
+            const SizedBox(height: 8),
+            _buildTextField(
+              controller: _urlController,
+              hint: 'http://192.168.1.100',
+              bgColor: inputBgColor,
+              borderColor: borderColor,
+            ),
+            const SizedBox(height: 16),
+            _buildLabel('API KEY', isDark),
+            const SizedBox(height: 8),
+            _buildTextField(
+              controller: _apiKeyController,
+              hint: 'Enter your API key',
+              bgColor: inputBgColor,
+              borderColor: borderColor,
+              obscure: true,
+            ),
+            const SizedBox(height: 16),
+            _buildLabel('PORT (OPTIONAL)', isDark),
+            const SizedBox(height: 8),
+            _buildTextField(
+              controller: _portController,
+              hint: widget.serviceInfo.defaultPort,
+              bgColor: inputBgColor,
+              borderColor: borderColor,
+              keyboardType: TextInputType.number,
+            ),
+            if (_testResult != null) ...[
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Icon(
+                    _testResult! ? Icons.check_circle : Icons.cancel,
+                    color: _testResult! ? Colors.green : Colors.red,
+                    size: 18,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    _testResult! ? 'Connected' : 'Connection failed',
+                    style: TextStyle(
+                      color: _testResult! ? Colors.green : Colors.red,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('CANCEL'),
+        ),
+        OutlinedButton(
+          onPressed: _isTesting ? null : _testConnection,
+          child: _isTesting
+              ? const SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : const Text('TEST'),
+        ),
+        ElevatedButton(
+          onPressed: _isSaving ? null : _save,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: theme.colorScheme.primary,
+            foregroundColor: Colors.white,
+          ),
+          child: _isSaving
+              ? const SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(
+                      strokeWidth: 2, color: Colors.white),
+                )
+              : const Text('SAVE'),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLabel(String text, bool isDark) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontSize: 10,
+        fontWeight: FontWeight.bold,
+        letterSpacing: 1.5,
+        color: isDark ? Colors.grey.shade400 : Colors.grey.shade500,
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String hint,
+    required Color bgColor,
+    required Color borderColor,
+    bool obscure = false,
+    TextInputType? keyboardType,
+  }) {
+    final theme = Theme.of(context);
+    return TextField(
+      controller: controller,
+      obscureText: obscure,
+      keyboardType: keyboardType,
+      style: TextStyle(fontSize: 14, color: theme.colorScheme.onSurface),
+      decoration: InputDecoration(
+        hintText: hint,
+        hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
+        filled: true,
+        fillColor: bgColor,
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.zero,
+          borderSide: BorderSide(color: borderColor),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.zero,
+          borderSide: BorderSide(color: borderColor),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.zero,
+          borderSide: BorderSide(color: theme.colorScheme.primary),
+        ),
+      ),
+    );
+  }
+}
+
+/// Card displaying a saved service with expand/edit capabilities
+class _ServiceCard extends ConsumerStatefulWidget {
+  final ServiceConfig config;
+  final bool isExpanded;
+  final VoidCallback onToggle;
+  final VoidCallback onDelete;
+
+  const _ServiceCard({
+    required this.config,
+    required this.isExpanded,
+    required this.onToggle,
+    required this.onDelete,
+  });
+
+  @override
+  ConsumerState<_ServiceCard> createState() => _ServiceCardState();
+}
+
+class _ServiceCardState extends ConsumerState<_ServiceCard> {
+  late final TextEditingController _hostController;
+  late final TextEditingController _apiKeyController;
+  late final TextEditingController _portController;
   bool _isObscured = true;
   bool _isTesting = false;
   bool _isSaving = false;
@@ -257,23 +709,11 @@ class _ServiceConfigCardState extends ConsumerState<_ServiceConfigCard> {
   @override
   void initState() {
     super.initState();
-    _portController.text = widget.config.defaultPort;
-    _loadExistingConfig();
-  }
-
-  Future<void> _loadExistingConfig() async {
-    // Load existing configuration if available
-    final services = await ref.read(allServicesProvider.future);
-    final existing = services.where((s) => s.type == widget.config.type).firstOrNull;
-    if (existing != null && mounted) {
-      setState(() {
-        _hostController.text = existing.url;
-        _apiKeyController.text = existing.apiKey ?? '';
-        if (existing.port != null) {
-          _portController.text = existing.port.toString();
-        }
-      });
-    }
+    _hostController = TextEditingController(text: widget.config.url);
+    _apiKeyController = TextEditingController(text: widget.config.apiKey ?? '');
+    _portController = TextEditingController(
+      text: widget.config.port?.toString() ?? '',
+    );
   }
 
   @override
@@ -308,7 +748,8 @@ class _ServiceConfigCardState extends ConsumerState<_ServiceConfigCard> {
                   ? BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
-                          color: isDark ? Colors.grey.shade800 : Colors.grey.shade200,
+                          color:
+                              isDark ? Colors.grey.shade800 : Colors.grey.shade200,
                         ),
                       ),
                     )
@@ -316,7 +757,7 @@ class _ServiceConfigCardState extends ConsumerState<_ServiceConfigCard> {
               child: Row(
                 children: [
                   Icon(
-                    widget.config.icon,
+                    _iconForType(widget.config.type),
                     color: widget.isExpanded
                         ? theme.colorScheme.primary
                         : (isDark ? Colors.grey.shade500 : Colors.grey.shade400),
@@ -324,18 +765,46 @@ class _ServiceConfigCardState extends ConsumerState<_ServiceConfigCard> {
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: Text(
-                      widget.config.title.toUpperCase(),
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.5,
-                        color: widget.isExpanded
-                            ? theme.colorScheme.onSurface
-                            : (isDark ? Colors.grey.shade300 : Colors.grey.shade600),
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _labelForType(widget.config.type).toUpperCase(),
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0.5,
+                            color: widget.isExpanded
+                                ? theme.colorScheme.onSurface
+                                : (isDark
+                                    ? Colors.grey.shade300
+                                    : Colors.grey.shade600),
+                          ),
+                        ),
+                        if (widget.config.url.isNotEmpty)
+                          Text(
+                            widget.config.baseUrl,
+                            style: TextStyle(
+                              fontSize: 11,
+                              color: isDark
+                                  ? Colors.grey.shade500
+                                  : Colors.grey.shade500,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                      ],
                     ),
                   ),
+                  if (widget.config.isConfigured)
+                    Container(
+                      width: 8,
+                      height: 8,
+                      margin: const EdgeInsets.only(right: 8),
+                      decoration: const BoxDecoration(
+                        color: Colors.green,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
                   AnimatedRotation(
                     turns: widget.isExpanded ? 0.5 : 0,
                     duration: const Duration(milliseconds: 200),
@@ -356,7 +825,6 @@ class _ServiceConfigCardState extends ConsumerState<_ServiceConfigCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Host URL
                   _buildInputField(
                     label: 'HOST URL',
                     controller: _hostController,
@@ -364,10 +832,7 @@ class _ServiceConfigCardState extends ConsumerState<_ServiceConfigCard> {
                     backgroundColor: inputBgColor,
                     borderColor: borderColor,
                   ),
-
                   const SizedBox(height: 16),
-
-                  // API Key
                   _buildInputField(
                     label: 'API KEY',
                     controller: _apiKeyController,
@@ -375,32 +840,24 @@ class _ServiceConfigCardState extends ConsumerState<_ServiceConfigCard> {
                     isPassword: true,
                     isObscured: _isObscured,
                     onToggleObscure: () {
-                      setState(() {
-                        _isObscured = !_isObscured;
-                      });
+                      setState(() => _isObscured = !_isObscured);
                     },
                     backgroundColor: inputBgColor,
                     borderColor: borderColor,
                   ),
-
                   const SizedBox(height: 16),
-
-                  // Port Number
                   _buildInputField(
                     label: 'PORT NUMBER',
                     controller: _portController,
-                    hint: widget.config.defaultPort,
+                    hint: '',
                     keyboardType: TextInputType.number,
                     backgroundColor: inputBgColor,
                     borderColor: borderColor,
                   ),
-
                   const SizedBox(height: 24),
-
-                  // Action Buttons
                   Row(
                     children: [
-                      // Test Connection Button
+                      // Test Connection
                       Expanded(
                         child: OutlinedButton(
                           onPressed: _isTesting ? null : _testConnection,
@@ -415,10 +872,11 @@ class _ServiceConfigCardState extends ConsumerState<_ServiceConfigCard> {
                               ? const SizedBox(
                                   width: 16,
                                   height: 16,
-                                  child: CircularProgressIndicator(strokeWidth: 2),
+                                  child: CircularProgressIndicator(
+                                      strokeWidth: 2),
                                 )
                               : Text(
-                                  'TEST CONNECTION',
+                                  'TEST',
                                   style: TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.bold,
@@ -430,10 +888,8 @@ class _ServiceConfigCardState extends ConsumerState<_ServiceConfigCard> {
                                 ),
                         ),
                       ),
-
                       const SizedBox(width: 12),
-
-                      // Save Button
+                      // Save
                       Expanded(
                         child: ElevatedButton(
                           onPressed: _isSaving ? null : _saveConfiguration,
@@ -464,6 +920,14 @@ class _ServiceConfigCardState extends ConsumerState<_ServiceConfigCard> {
                                   ),
                                 ),
                         ),
+                      ),
+                      const SizedBox(width: 12),
+                      // Delete
+                      IconButton(
+                        onPressed: widget.onDelete,
+                        icon: Icon(Icons.delete_outline,
+                            color: Colors.red.shade400, size: 22),
+                        tooltip: 'Delete service',
                       ),
                     ],
                   ),
@@ -551,9 +1015,9 @@ class _ServiceConfigCardState extends ConsumerState<_ServiceConfigCard> {
   }
 
   Future<void> _testConnection() async {
-    if (_hostController.text.isEmpty || _apiKeyController.text.isEmpty) {
+    if (_hostController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in Host URL and API Key')),
+        const SnackBar(content: Text('Please enter a Host URL')),
       );
       return;
     }
@@ -561,14 +1025,23 @@ class _ServiceConfigCardState extends ConsumerState<_ServiceConfigCard> {
     setState(() => _isTesting = true);
 
     try {
-      // TODO: Implement actual connection test based on service type
-      await Future.delayed(const Duration(seconds: 2));
+      final config = ServiceConfig(
+        key: widget.config.key,
+        type: widget.config.type,
+        name: widget.config.name,
+        url: _hostController.text.trim(),
+        apiKey: _apiKeyController.text.trim(),
+        port: int.tryParse(_portController.text.trim()),
+        isActive: true,
+      );
+
+      final success = await _testServiceConnection(config);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Connection successful!'),
-            backgroundColor: Colors.green,
+          SnackBar(
+            content: Text(success ? 'Connection successful!' : 'Connection failed'),
+            backgroundColor: success ? Colors.green : Colors.red,
           ),
         );
       }
@@ -582,9 +1055,7 @@ class _ServiceConfigCardState extends ConsumerState<_ServiceConfigCard> {
         );
       }
     } finally {
-      if (mounted) {
-        setState(() => _isTesting = false);
-      }
+      if (mounted) setState(() => _isTesting = false);
     }
   }
 
@@ -600,9 +1071,9 @@ class _ServiceConfigCardState extends ConsumerState<_ServiceConfigCard> {
 
     try {
       final config = ServiceConfig(
-        key: '${widget.config.type.name}_service',
+        key: widget.config.key,
         type: widget.config.type,
-        name: widget.config.title,
+        name: widget.config.name,
         url: _hostController.text.trim(),
         apiKey: _apiKeyController.text.trim(),
         port: int.tryParse(_portController.text.trim()),
@@ -630,9 +1101,7 @@ class _ServiceConfigCardState extends ConsumerState<_ServiceConfigCard> {
         );
       }
     } finally {
-      if (mounted) {
-        setState(() => _isSaving = false);
-      }
+      if (mounted) setState(() => _isSaving = false);
     }
   }
 }

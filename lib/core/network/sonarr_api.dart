@@ -188,11 +188,11 @@ class SonarrApi extends BaseApiService {
     return [];
   }
 
-  /// Test connection to this Sonarr instance
+  /// Test connection to this Sonarr instance via /health endpoint
   @override
   Future<bool> testConnection() async {
     try {
-      final response = await get('/system/status');
+      final response = await get('/health');
       return response.statusCode == 200;
     } catch (_) {
       return false;
