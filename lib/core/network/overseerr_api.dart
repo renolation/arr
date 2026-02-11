@@ -2,6 +2,7 @@ import 'package:arr/core/constants/api_constants.dart';
 import 'package:arr/features/settings/domain/entities/service_config.dart';
 
 import '../services/api/base_api_service.dart';
+import 'models/jellyseerr_models.dart';
 
 /// Overseerr/Jellyseerr API service for media requests management
 class OverseerrApi extends BaseApiService {
@@ -162,7 +163,8 @@ class OverseerrApi extends BaseApiService {
   @override
   Future<bool> testConnection() async {
     try {
-      final response = await get('/status');
+      // Use /request/count - lightweight, requires valid API key
+      final response = await get('/request/count');
       return response.statusCode == 200;
     } catch (e) {
       return false;
@@ -171,5 +173,107 @@ class OverseerrApi extends BaseApiService {
 
   Future<Map<String, dynamic>> getSystemStatus() async {
     return await getStatus();
+  }
+
+  // ──────────────────────────────────────────────
+  // Typed API methods (Jellyseerr models)
+  // ──────────────────────────────────────────────
+
+  /// Get trending content (movies + TV mixed)
+  Future<PagedResponse<JellyseerrMediaResult>> getTrending({int page = 1}) async {
+    final response = await get('/discover/trending', queryParameters: {'page': page});
+    return PagedResponse.fromJson(
+      response.data as Map<String, dynamic>,
+      JellyseerrMediaResult.fromJson,
+    );
+  }
+
+  /// Get popular movies sorted by popularity
+  Future<PagedResponse<JellyseerrMediaResult>> getPopularMovies({int page = 1}) async {
+    final response = await get('/discover/movies', queryParameters: {
+      'page': page,
+      'sortBy': 'popularity.desc',
+    });
+    return PagedResponse.fromJson(
+      response.data as Map<String, dynamic>,
+      (json) => JellyseerrMediaResult.fromJson({...json, 'mediaType': 'movie'}),
+    );
+  }
+
+  /// Get upcoming movies
+  Future<PagedResponse<JellyseerrMediaResult>> getUpcomingMovies({int page = 1}) async {
+    final response = await get('/discover/movies/upcoming', queryParameters: {'page': page});
+    return PagedResponse.fromJson(
+      response.data as Map<String, dynamic>,
+      (json) => JellyseerrMediaResult.fromJson({...json, 'mediaType': 'movie'}),
+    );
+  }
+
+  /// Get popular TV shows
+  Future<PagedResponse<JellyseerrMediaResult>> getPopularTv({int page = 1}) async {
+    final response = await get('/discover/tv', queryParameters: {'page': page});
+    return PagedResponse.fromJson(
+      response.data as Map<String, dynamic>,
+      (json) => JellyseerrMediaResult.fromJson({...json, 'mediaType': 'tv'}),
+    );
+  }
+
+  /// Typed search returning parsed media results with status info
+  Future<PagedResponse<JellyseerrMediaResult>> searchMedia(String query, {int page = 1}) async {
+    final response = await get('/search', queryParameters: {
+      'query': query,
+      'page': page,
+    });
+    return PagedResponse.fromJson(
+      response.data as Map<String, dynamic>,
+      JellyseerrMediaResult.fromJson,
+    );
+  }
+
+  /// Get requests as typed list with pagination and filtering
+  Future<PagedResponse<JellyseerrRequest>> getRequestList({
+    int take = 20,
+    int skip = 0,
+    String? filter,
+    String sort = 'added',
+  }) async {
+    final queryParams = <String, dynamic>{
+      'take': take,
+      'skip': skip,
+      'sort': sort,
+    };
+    if (filter != null) {
+      queryParams['filter'] = filter;
+    }
+
+    final response = await get('/request', queryParameters: queryParams);
+    return PagedResponse.fromJson(
+      response.data as Map<String, dynamic>,
+      JellyseerrRequest.fromJson,
+    );
+  }
+
+  /// Create a media request (movie or TV) with full parameters
+  Future<JellyseerrRequest> createRequest({
+    required String mediaType,
+    required int mediaId,
+    List<int> seasons = const [],
+    bool is4k = false,
+    int? serverId,
+    int? profileId,
+    String? rootFolder,
+  }) async {
+    final body = <String, dynamic>{
+      'mediaType': mediaType,
+      'mediaId': mediaId,
+      'seasons': seasons,
+      'is4k': is4k,
+    };
+    if (serverId != null) body['serverId'] = serverId;
+    if (profileId != null) body['profileId'] = profileId;
+    if (rootFolder != null) body['rootFolder'] = rootFolder;
+
+    final response = await post('/request', data: body);
+    return JellyseerrRequest.fromJson(response.data as Map<String, dynamic>);
   }
 }

@@ -410,8 +410,8 @@ class _AddServiceDialog extends StatefulWidget {
 }
 
 class _AddServiceDialogState extends State<_AddServiceDialog> {
-  final _urlController = TextEditingController();
-  final _apiKeyController = TextEditingController();
+  final _urlController = TextEditingController(text: 'https://seerr.phuoc.io.vn:8443');
+  final _apiKeyController = TextEditingController(text: 'MTc3MDQ0MDAwODQ1NDZkZTdhNTJlLTMwYzEtNDg4MC1hNTQ1LTE0Y2E2Mzg3YTU3OA==');
   final _portController = TextEditingController();
   bool _isTesting = false;
   bool _isSaving = false;
