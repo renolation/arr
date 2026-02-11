@@ -56,6 +56,30 @@ final overseerrApiProvider = FutureProvider<OverseerrApi?>((ref) async {
   }
 });
 
+/// Provider for ALL configured Sonarr API instances (multi-instance support)
+/// Returns a list of (serviceKey, SonarrApi) pairs for each configured Sonarr service
+final allSonarrApisProvider = FutureProvider<List<(String, SonarrApi)>>((ref) async {
+  try {
+    final services = await ref.watch(allServicesProvider.future);
+    final sonarrServices = services.where((s) => s.type == ServiceType.sonarr && s.isConfigured);
+    return sonarrServices.map((s) => (s.key, SonarrApi(config: s))).toList();
+  } catch (e) {
+    return [];
+  }
+});
+
+/// Provider for ALL configured Radarr API instances (multi-instance support)
+/// Returns a list of (serviceKey, RadarrApi) pairs for each configured Radarr service
+final allRadarrApisProvider = FutureProvider<List<(String, RadarrApi)>>((ref) async {
+  try {
+    final services = await ref.watch(allServicesProvider.future);
+    final radarrServices = services.where((s) => s.type == ServiceType.radarr && s.isConfigured);
+    return radarrServices.map((s) => (s.key, RadarrApi(config: s))).toList();
+  } catch (e) {
+    return [];
+  }
+});
+
 /// Check if Sonarr is configured and working
 final isSonarrAvailableProvider = FutureProvider<bool>((ref) async {
   final api = await ref.watch(sonarrApiProvider.future);

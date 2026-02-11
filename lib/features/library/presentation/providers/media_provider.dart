@@ -197,71 +197,97 @@ final searchResultsProvider = FutureProvider<List<MediaItem>>((ref) async {
   }
 });
 
-/// Provider for selected media type filter
-final mediaTypeFilterProvider = StateProvider<MediaType>((ref) => MediaType.series);
+/// Provider for selected media type filter (null = All)
+final mediaTypeFilterProvider = StateProvider<MediaType?>((ref) => null);
 
-/// Provider for combined library (series + movies based on filter)
-final libraryProvider = FutureProvider<List<MediaItem>>((ref) async {
-  final filter = ref.watch(mediaTypeFilterProvider);
+/// Unified library notifier - fetches from ALL configured service instances
+class UnifiedLibraryNotifier extends AsyncNotifier<List<MediaItem>> {
+  List<MediaItem> _allMedia = [];
+  List<String> _errors = [];
 
-  try {
-    if (filter == MediaType.series) {
-      final repository = await ref.watch(seriesRepositoryProvider.future);
-      if (repository == null) {
-        throw Exception('Sonarr service not configured. Please configure in Settings.');
-      }
-      return await repository.getAllSeries();
-    } else {
-      final repository = await ref.watch(movieRepositoryProvider.future);
-      if (repository == null) {
-        throw Exception('Radarr service not configured. Please configure in Settings.');
-      }
-      return await repository.getAllMovies();
+  /// Errors from individual services (partial failure info)
+  List<String> get errors => _errors;
+
+  @override
+  Future<List<MediaItem>> build() async {
+    // Watch the filter so we rebuild when it changes
+    ref.watch(mediaTypeFilterProvider);
+
+    // Only re-fetch if cache is empty (filter changes reuse cache)
+    if (_allMedia.isEmpty) {
+      await _fetchAll();
     }
-  } on ServerException catch (e) {
-    throw Exception('Failed to load library: ${e.message}');
-  } on NetworkException catch (e) {
-    throw Exception('Network error: ${e.message}');
-  } on CacheException catch (e) {
-    throw Exception('Cache error: ${e.message}');
-  } catch (e) {
-    throw Exception('Unexpected error: ${e.toString()}');
+    return _applyFilter();
   }
-});
 
-/// Provider for unified library (all media from all configured services)
-final unifiedLibraryProvider = FutureProvider<List<MediaItem>>((ref) async {
-  final seriesRepo = await ref.watch(seriesRepositoryProvider.future);
-  final movieRepo = await ref.watch(movieRepositoryProvider.future);
+  Future<void> _fetchAll() async {
+    final sonarrApis = await ref.read(allSonarrApisProvider.future);
+    final radarrApis = await ref.read(allRadarrApisProvider.future);
 
-  final allMedia = <MediaItem>[];
-
-  try {
-    // Get series if Sonarr is configured
-    if (seriesRepo != null) {
-      final series = await seriesRepo.getAllSeries();
-      allMedia.addAll(series);
-    }
-
-    // Get movies if Radarr is configured
-    if (movieRepo != null) {
-      final movies = await movieRepo.getAllMovies();
-      allMedia.addAll(movies);
-    }
-
-    if (allMedia.isEmpty && seriesRepo == null && movieRepo == null) {
+    if (sonarrApis.isEmpty && radarrApis.isEmpty) {
       throw Exception('No media services configured. Please configure in Settings.');
     }
 
-    // Sort by title
-    allMedia.sort((a, b) => a.title.compareTo(b.title));
+    _allMedia = [];
+    _errors = [];
 
-    return allMedia;
-  } on ServerException catch (e) {
-    throw Exception('Failed to load library: ${e.message}');
-  } on NetworkException catch (e) {
-    throw Exception('Network error: ${e.message}');
-  } catch (e) {
-    throw Exception('Unexpected error: ${e.toString()}');
+    // Fetch from all services in parallel with error isolation
+    final futures = <Future<List<MediaItem>>>[];
+
+    for (final (serviceKey, api) in sonarrApis) {
+      futures.add(_fetchSeries(serviceKey, api));
+    }
+    for (final (serviceKey, api) in radarrApis) {
+      futures.add(_fetchMovies(serviceKey, api));
+    }
+
+    final results = await Future.wait(futures);
+    for (final result in results) {
+      _allMedia.addAll(result);
+    }
+
+    _allMedia.sort((a, b) => a.title.compareTo(b.title));
   }
-});
+
+  Future<List<MediaItem>> _fetchSeries(String serviceKey, dynamic api) async {
+    try {
+      final seriesData = await api.getSeries() as List<Map<String, dynamic>>;
+      return seriesData
+          .map((data) => MediaItem.fromJson(data, serviceKey: serviceKey))
+          .toList();
+    } catch (e) {
+      _errors.add('Sonarr ($serviceKey): $e');
+      return [];
+    }
+  }
+
+  Future<List<MediaItem>> _fetchMovies(String serviceKey, dynamic api) async {
+    try {
+      final moviesData = await api.getMovies() as List<Map<String, dynamic>>;
+      return moviesData
+          .map((data) => MediaItem.fromJson(data, serviceKey: serviceKey))
+          .toList();
+    } catch (e) {
+      _errors.add('Radarr ($serviceKey): $e');
+      return [];
+    }
+  }
+
+  List<MediaItem> _applyFilter() {
+    final filter = ref.read(mediaTypeFilterProvider);
+    if (filter == null) return List.unmodifiable(_allMedia);
+    return _allMedia.where((item) => item.type == filter).toList();
+  }
+
+  /// Force refresh from all services
+  Future<void> refresh() async {
+    _allMedia = [];
+    ref.invalidateSelf();
+  }
+}
+
+/// Provider for unified library (all media from all configured services)
+final unifiedLibraryProvider =
+    AsyncNotifierProvider<UnifiedLibraryNotifier, List<MediaItem>>(
+  UnifiedLibraryNotifier.new,
+);

@@ -27,7 +27,7 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
   @override
   Widget build(BuildContext context) {
     final mediaType = ref.watch(mediaTypeFilterProvider);
-    final libraryAsync = ref.watch(libraryProvider);
+    final libraryAsync = ref.watch(unifiedLibraryProvider);
 
     return Scaffold(
       body: CustomScrollView(
@@ -86,13 +86,15 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                   children: [
                     _FilterChip(
                       label: 'All',
-                      isSelected: true,
-                      onTap: () {},
+                      isSelected: mediaType == null,
+                      onTap: () {
+                        ref.read(mediaTypeFilterProvider.notifier).state = null;
+                      },
                     ),
                     const SizedBox(width: 8),
                     _FilterChip(
                       label: 'Movies',
-                      isSelected: false,
+                      isSelected: mediaType == MediaType.movie,
                       onTap: () {
                         ref.read(mediaTypeFilterProvider.notifier).state = MediaType.movie;
                       },
@@ -100,7 +102,7 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                     const SizedBox(width: 8),
                     _FilterChip(
                       label: 'TV Shows',
-                      isSelected: false,
+                      isSelected: mediaType == MediaType.series,
                       onTap: () {
                         ref.read(mediaTypeFilterProvider.notifier).state = MediaType.series;
                       },
@@ -148,7 +150,7 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                   padding: const EdgeInsets.all(20),
                   child: AppErrorWidget(
                     message: error.toString(),
-                    onRetry: () => ref.refresh(libraryProvider),
+                    onRetry: () => ref.read(unifiedLibraryProvider.notifier).refresh(),
                   ),
                 ),
               ),
@@ -159,15 +161,19 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
     );
   }
 
-  Widget _buildEmptyState(BuildContext context, MediaType mediaType) {
-    final isSeries = mediaType == MediaType.series;
+  Widget _buildEmptyState(BuildContext context, MediaType? mediaType) {
+    final icon = mediaType == MediaType.series
+        ? Icons.tv_outlined
+        : mediaType == MediaType.movie
+            ? Icons.movie_outlined
+            : Icons.video_library_outlined;
     return SizedBox(
       height: 500,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
-            isSeries ? Icons.tv_outlined : Icons.movie_outlined,
+            icon,
             size: 64,
             color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
           ),

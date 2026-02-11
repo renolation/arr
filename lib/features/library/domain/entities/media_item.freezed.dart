@@ -30,6 +30,7 @@ mixin _$MediaItem {
   int? get episodeCount => throw _privateConstructorUsedError;
   DateTime? get airDate => throw _privateConstructorUsedError;
   bool? get monitored => throw _privateConstructorUsedError;
+  String? get serviceKey => throw _privateConstructorUsedError;
   Map<String, dynamic>? get metadata => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -57,6 +58,7 @@ abstract class $MediaItemCopyWith<$Res> {
       int? episodeCount,
       DateTime? airDate,
       bool? monitored,
+      String? serviceKey,
       Map<String, dynamic>? metadata});
 }
 
@@ -87,6 +89,7 @@ class _$MediaItemCopyWithImpl<$Res, $Val extends MediaItem>
     Object? episodeCount = freezed,
     Object? airDate = freezed,
     Object? monitored = freezed,
+    Object? serviceKey = freezed,
     Object? metadata = freezed,
   }) {
     return _then(_value.copyWith(
@@ -146,6 +149,10 @@ class _$MediaItemCopyWithImpl<$Res, $Val extends MediaItem>
           ? _value.monitored
           : monitored // ignore: cast_nullable_to_non_nullable
               as bool?,
+      serviceKey: freezed == serviceKey
+          ? _value.serviceKey
+          : serviceKey // ignore: cast_nullable_to_non_nullable
+              as String?,
       metadata: freezed == metadata
           ? _value.metadata
           : metadata // ignore: cast_nullable_to_non_nullable
@@ -177,6 +184,7 @@ abstract class _$$MediaItemImplCopyWith<$Res>
       int? episodeCount,
       DateTime? airDate,
       bool? monitored,
+      String? serviceKey,
       Map<String, dynamic>? metadata});
 }
 
@@ -205,6 +213,7 @@ class __$$MediaItemImplCopyWithImpl<$Res>
     Object? episodeCount = freezed,
     Object? airDate = freezed,
     Object? monitored = freezed,
+    Object? serviceKey = freezed,
     Object? metadata = freezed,
   }) {
     return _then(_$MediaItemImpl(
@@ -264,6 +273,10 @@ class __$$MediaItemImplCopyWithImpl<$Res>
           ? _value.monitored
           : monitored // ignore: cast_nullable_to_non_nullable
               as bool?,
+      serviceKey: freezed == serviceKey
+          ? _value.serviceKey
+          : serviceKey // ignore: cast_nullable_to_non_nullable
+              as String?,
       metadata: freezed == metadata
           ? _value._metadata
           : metadata // ignore: cast_nullable_to_non_nullable
@@ -290,6 +303,7 @@ class _$MediaItemImpl extends _MediaItem {
       this.episodeCount,
       this.airDate,
       this.monitored,
+      this.serviceKey,
       final Map<String, dynamic>? metadata})
       : _metadata = metadata,
         super._();
@@ -322,6 +336,8 @@ class _$MediaItemImpl extends _MediaItem {
   final DateTime? airDate;
   @override
   final bool? monitored;
+  @override
+  final String? serviceKey;
   final Map<String, dynamic>? _metadata;
   @override
   Map<String, dynamic>? get metadata {
@@ -334,7 +350,7 @@ class _$MediaItemImpl extends _MediaItem {
 
   @override
   String toString() {
-    return 'MediaItem(id: $id, title: $title, type: $type, status: $status, overview: $overview, posterUrl: $posterUrl, backdropUrl: $backdropUrl, year: $year, rating: $rating, quality: $quality, seasonCount: $seasonCount, episodeCount: $episodeCount, airDate: $airDate, monitored: $monitored, metadata: $metadata)';
+    return 'MediaItem(id: $id, title: $title, type: $type, status: $status, overview: $overview, posterUrl: $posterUrl, backdropUrl: $backdropUrl, year: $year, rating: $rating, quality: $quality, seasonCount: $seasonCount, episodeCount: $episodeCount, airDate: $airDate, monitored: $monitored, serviceKey: $serviceKey, metadata: $metadata)';
   }
 
   @override
@@ -362,6 +378,8 @@ class _$MediaItemImpl extends _MediaItem {
             (identical(other.airDate, airDate) || other.airDate == airDate) &&
             (identical(other.monitored, monitored) ||
                 other.monitored == monitored) &&
+            (identical(other.serviceKey, serviceKey) ||
+                other.serviceKey == serviceKey) &&
             const DeepCollectionEquality().equals(other._metadata, _metadata));
   }
 
@@ -382,6 +400,7 @@ class _$MediaItemImpl extends _MediaItem {
       episodeCount,
       airDate,
       monitored,
+      serviceKey,
       const DeepCollectionEquality().hash(_metadata));
 
   @JsonKey(ignore: true)
@@ -407,6 +426,7 @@ abstract class _MediaItem extends MediaItem {
       final int? episodeCount,
       final DateTime? airDate,
       final bool? monitored,
+      final String? serviceKey,
       final Map<String, dynamic>? metadata}) = _$MediaItemImpl;
   const _MediaItem._() : super._();
 
@@ -438,6 +458,8 @@ abstract class _MediaItem extends MediaItem {
   DateTime? get airDate;
   @override
   bool? get monitored;
+  @override
+  String? get serviceKey;
   @override
   Map<String, dynamic>? get metadata;
   @override

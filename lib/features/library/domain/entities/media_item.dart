@@ -23,16 +23,24 @@ class MediaItem with _$MediaItem {
     int? episodeCount,
     DateTime? airDate,
     bool? monitored,
+    String? serviceKey,
     Map<String, dynamic>? metadata,
   }) = _MediaItem;
 
-  factory MediaItem.fromJson(Map<String, dynamic> json) {
-    // Determine type: Sonarr has 'seasons' field, Radarr has 'movieFile' or 'hasFile'
-    final isSeries = json.containsKey('seasons') || json.containsKey('tvdbId') && !json.containsKey('movieFile');
+  factory MediaItem.fromJson(Map<String, dynamic> json, {String? serviceKey}) {
+    // Determine type using definitive field presence:
+    // Radarr (Movie): movieFile, studio, tmdbId (without tvdbId), inCinemas
+    // Sonarr (TV Show): seasons, network, tvdbId, firstAired
+    final isMovie = json.containsKey('movieFile') ||
+        json.containsKey('studio') ||
+        (json.containsKey('tmdbId') && !json.containsKey('tvdbId')) ||
+        json.containsKey('inCinemas');
     final typeStr = json['type'] as String?;
-    final type = typeStr == 'series' || (typeStr == null && isSeries)
-        ? MediaType.series
-        : MediaType.movie;
+    final type = typeStr == 'movie' || (typeStr == null && isMovie)
+        ? MediaType.movie
+        : typeStr == 'series' || (typeStr == null && !isMovie)
+            ? MediaType.series
+            : MediaType.movie;
 
     final statusStr = json['status'] as String? ?? 'continuing';
     final status = MediaStatus.values.firstWhere(
@@ -98,6 +106,7 @@ class MediaItem with _$MediaItem {
               ? DateTime.tryParse(json['firstAired'] as String)
               : null,
       monitored: json['monitored'] as bool?,
+      serviceKey: serviceKey,
       metadata: json,
     );
   }
