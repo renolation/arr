@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:arr/core/database/hive_database.dart';
 import 'package:arr/core/router/app_router.dart';
+import 'package:arr/core/theme/app_theme.dart';
 import 'package:arr/core/theme/theme_provider.dart';
 
 // App Color Palette - Matching HTML Design Specifications
@@ -55,130 +56,11 @@ class ArrApp extends ConsumerWidget {
     return MaterialApp.router(
       title: '*arr Stack Manager',
       debugShowCheckedModeBanner: false,
-      theme: _lightTheme,
-      darkTheme: _darkTheme,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
       themeMode: themeMode,
       routerConfig: AppRouter.router,
     );
   }
 
-  // Light Theme Configuration - Matching HTML Design
-  static final ThemeData _lightTheme = ThemeData(
-    useMaterial3: true,
-    brightness: Brightness.light,
-    colorScheme: ColorScheme.light(
-      primary: AppColors.primary,
-      onPrimary: Colors.white,
-      primaryContainer: AppColors.primary.withOpacity(0.1),
-      onPrimaryContainer: AppColors.primary,
-      secondary: AppColors.primary,
-      onSecondary: Colors.white,
-      error: AppColors.accentRed,
-      onError: Colors.white,
-      background: AppColors.backgroundLight,
-      onBackground: AppColors.textPrimaryLight,
-      surface: AppColors.surfaceLight,
-      onSurface: AppColors.textPrimaryLight,
-      surfaceVariant: AppColors.backgroundLight,
-      onSurfaceVariant: AppColors.textSecondaryLight,
-      outline: AppColors.borderLight,
-    ),
-    scaffoldBackgroundColor: AppColors.backgroundLight,
-    appBarTheme: AppBarTheme(
-      backgroundColor: AppColors.backgroundLight.withOpacity(0.95),
-      foregroundColor: AppColors.textPrimaryLight,
-      elevation: 0,
-      centerTitle: false,
-      titleTextStyle: const TextStyle(
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
-        letterSpacing: -0.5,
-        color: AppColors.textPrimaryLight,
-      ),
-    ),
-    cardTheme: CardThemeData(
-      color: AppColors.surfaceLight,
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(4), // 0.25rem
-        side: const BorderSide(color: AppColors.borderLight, width: 1),
-      ),
-    ),
-    navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: AppColors.surfaceLight,
-      elevation: 0,
-      indicatorColor: AppColors.primary.withOpacity(0.1),
-      labelTextStyle: WidgetStateProperty.all(
-        const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-      ),
-    ),
-    chipTheme: ChipThemeData(
-      backgroundColor: AppColors.backgroundLight,
-      selectedColor: AppColors.backgroundDark,
-      labelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(9999), // full
-      ),
-    ),
-  );
-
-  // Dark Theme Configuration - Matching HTML Design
-  static final ThemeData _darkTheme = ThemeData(
-    useMaterial3: true,
-    brightness: Brightness.dark,
-    colorScheme: ColorScheme.dark(
-      primary: AppColors.primary,
-      onPrimary: Colors.white,
-      primaryContainer: AppColors.primary.withOpacity(0.1),
-      onPrimaryContainer: AppColors.primary,
-      secondary: AppColors.primary,
-      onSecondary: Colors.white,
-      error: AppColors.accentRed,
-      onError: Colors.white,
-      background: AppColors.backgroundDark,
-      onBackground: AppColors.textPrimaryDark,
-      surface: AppColors.surfaceDark,
-      onSurface: AppColors.textPrimaryDark,
-      surfaceVariant: AppColors.cardDark,
-      onSurfaceVariant: AppColors.textSecondaryDark,
-      outline: AppColors.borderDark,
-    ),
-    scaffoldBackgroundColor: AppColors.backgroundDark,
-    appBarTheme: AppBarTheme(
-      backgroundColor: AppColors.backgroundDark.withOpacity(0.95),
-      foregroundColor: AppColors.textPrimaryDark,
-      elevation: 0,
-      centerTitle: false,
-      titleTextStyle: const TextStyle(
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
-        letterSpacing: -0.5,
-        color: AppColors.textPrimaryDark,
-      ),
-    ),
-    cardTheme: CardThemeData(
-      color: AppColors.cardDark,
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(4), // 0.25rem
-        side: const BorderSide(color: AppColors.borderDark, width: 1),
-      ),
-    ),
-    navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: AppColors.surfaceDark,
-      elevation: 0,
-      indicatorColor: AppColors.primary.withOpacity(0.1),
-      labelTextStyle: WidgetStateProperty.all(
-        const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-      ),
-    ),
-    chipTheme: ChipThemeData(
-      backgroundColor: AppColors.surfaceDark,
-      selectedColor: AppColors.backgroundDark,
-      labelStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(9999), // full
-      ),
-    ),
-  );
 }

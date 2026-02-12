@@ -14,16 +14,16 @@ class ThemeNotifier extends StateNotifier<AppThemeMode> {
   static const String _settingsKey = 'app_settings';
   final Box<AppSettings> _settingsBox;
 
-  ThemeNotifier(this._settingsBox) : super(AppThemeMode.system) {
+  ThemeNotifier(this._settingsBox) : super(AppThemeMode.dark) {
     _loadTheme();
   }
 
   void _loadTheme() {
     final settings = _settingsBox.get(_settingsKey);
-    final savedTheme = settings?.themeMode ?? 'system';
+    final savedTheme = settings?.themeMode ?? 'dark';
     state = AppThemeMode.values.firstWhere(
       (mode) => mode.name == savedTheme,
-      orElse: () => AppThemeMode.system,
+      orElse: () => AppThemeMode.dark,
     );
   }
 

@@ -97,7 +97,7 @@ class OverseerrApi extends BaseApiService {
   /// Search for media
   Future<Map<String, dynamic>> search(String query, {int page = 1}) async {
     final response = await get('/search', queryParameters: {
-      'query': query,
+      'query': Uri.encodeComponent(query),
       'page': page,
     });
     return response.data as Map<String, dynamic>;
@@ -221,7 +221,7 @@ class OverseerrApi extends BaseApiService {
   /// Typed search returning parsed media results with status info
   Future<PagedResponse<JellyseerrMediaResult>> searchMedia(String query, {int page = 1}) async {
     final response = await get('/search', queryParameters: {
-      'query': query,
+      'query': Uri.encodeComponent(query),
       'page': page,
     });
     return PagedResponse.fromJson(

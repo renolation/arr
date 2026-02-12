@@ -38,51 +38,48 @@ class MediaCard extends StatelessWidget {
                         : AppColors.surfaceLight,
                     borderRadius: BorderRadius.circular(4),
                     border: Border.all(
-                      color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .outline
+                          .withOpacity(0.5),
                     ),
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(4),
-                    child: _buildPoster(context),
+                    child: Opacity(
+                      opacity: isMissing ? 0.6 : 1.0,
+                      child: _buildPoster(context),
+                    ),
                   ),
                 ),
-                // Badges at top right
-                Positioned(
-                  top: 6,
-                  right: 6,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (mediaItem.quality != null)
-                        _Badge(
-                          label: mediaItem.quality!,
-                          backgroundColor: Colors.black.withOpacity(0.8),
-                        ),
-                      if (mediaItem.status == MediaStatus.downloaded)
-                        const SizedBox(width: 4),
-                      if (mediaItem.status == MediaStatus.downloaded)
-                        const _Badge(
-                          label: 'Ended',
-                          backgroundColor: AppColors.accentGreen,
-                        ),
-                      if (mediaItem.status == MediaStatus.continuing)
-                        const SizedBox(width: 4),
-                      if (mediaItem.status == MediaStatus.continuing)
-                        const _Badge(
-                          label: 'Returning',
-                          backgroundColor: AppColors.accentYellow,
-                        ),
-                    ],
-                  ),
-                ),
-                // Missing badge
-                if (isMissing)
-                  const Positioned(
+                // Quality badge at top right
+                if (mediaItem.quality != null)
+                  Positioned(
                     top: 6,
                     right: 6,
                     child: _Badge(
+                      label: mediaItem.quality!,
+                      backgroundColor: Colors.black.withOpacity(0.8),
+                      textColor: Colors.white,
+                      borderColor: Colors.white.withOpacity(0.1),
+                    ),
+                  ),
+                // Status badge at top right (below quality if present)
+                if (!isMissing)
+                  Positioned(
+                    top: mediaItem.quality != null ? 28 : 6,
+                    right: 6,
+                    child: _buildStatusBadge(),
+                  ),
+                // Missing badge at top right
+                if (isMissing)
+                  Positioned(
+                    top: mediaItem.quality != null ? 28 : 6,
+                    right: 6,
+                    child: const _Badge(
                       label: 'Missing',
                       backgroundColor: AppColors.accentRed,
+                      textColor: Colors.white,
                     ),
                   ),
                 // Season badge at bottom left (for series)
@@ -93,6 +90,7 @@ class MediaCard extends StatelessWidget {
                     child: _Badge(
                       label: 'S1',
                       backgroundColor: Colors.black.withOpacity(0.6),
+                      textColor: Colors.white,
                     ),
                   ),
               ],
@@ -107,7 +105,6 @@ class MediaCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 4,
                 children: [
-                  // Title - always reserves 2 lines of space
                   Text(
                     mediaItem.title,
                     style: const TextStyle(
@@ -118,7 +115,6 @@ class MediaCard extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  // Year and type
                   Row(
                     children: [
                       Text(
@@ -126,7 +122,10 @@ class MediaCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w500,
-                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withOpacity(0.6),
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -134,7 +133,10 @@ class MediaCard extends StatelessWidget {
                         width: 2,
                         height: 2,
                         decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withOpacity(0.4),
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -144,7 +146,10 @@ class MediaCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w500,
-                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .onSurface
+                              .withOpacity(0.6),
                         ),
                       ),
                     ],
@@ -156,6 +161,24 @@ class MediaCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _buildStatusBadge() {
+    if (mediaItem.status == MediaStatus.downloaded) {
+      return const _Badge(
+        label: 'Ended',
+        backgroundColor: AppColors.accentGreen,
+        textColor: Colors.black,
+      );
+    }
+    if (mediaItem.status == MediaStatus.continuing) {
+      return const _Badge(
+        label: 'Returning',
+        backgroundColor: AppColors.accentYellow,
+        textColor: Colors.black,
+      );
+    }
+    return const SizedBox.shrink();
   }
 
   Widget _buildPoster(BuildContext context) {
@@ -184,7 +207,8 @@ class MediaCard extends StatelessWidget {
             ),
           ),
         ),
-        errorWidget: (context, url, error) => const Icon(Icons.broken_image, size: 32),
+        errorWidget: (context, url, error) =>
+            const Icon(Icons.broken_image, size: 32),
       ),
     );
   }
@@ -197,10 +221,14 @@ class MediaCard extends StatelessWidget {
 class _Badge extends StatelessWidget {
   final String label;
   final Color backgroundColor;
+  final Color textColor;
+  final Color? borderColor;
 
   const _Badge({
     required this.label,
     required this.backgroundColor,
+    this.textColor = Colors.white,
+    this.borderColor,
   });
 
   @override
@@ -210,17 +238,16 @@ class _Badge extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(4),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.1),
-          width: 1,
-        ),
+        border: borderColor != null
+            ? Border.all(color: borderColor!, width: 1)
+            : null,
       ),
       child: Text(
         label.toUpperCase(),
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 10,
           fontWeight: FontWeight.bold,
-          color: Colors.white,
+          color: textColor,
         ),
       ),
     );

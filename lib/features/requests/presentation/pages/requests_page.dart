@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../main.dart';
@@ -5,19 +7,50 @@ import '../providers/requests_provider.dart';
 import '../widgets/approval_card.dart';
 import '../widgets/trending_card.dart';
 
-/// Requests page with "Needs Approval" and "Trending Now" sections
-class RequestsPage extends ConsumerWidget {
+/// Requests page with search, "Needs Approval", and "Trending Now" sections
+class RequestsPage extends ConsumerStatefulWidget {
   const RequestsPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<RequestsPage> createState() => _RequestsPageState();
+}
+
+class _RequestsPageState extends ConsumerState<RequestsPage> {
+  final _searchController = TextEditingController();
+  Timer? _debounce;
+
+  bool get _isSearching => _searchController.text.trim().isNotEmpty;
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged(String query) {
+    _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 400), () {
+      ref.read(searchQueryProvider.notifier).state = query.trim();
+    });
+    setState(() {}); // Update _isSearching state
+  }
+
+  void _clearSearch() {
+    _searchController.clear();
+    ref.read(searchQueryProvider.notifier).state = '';
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final isConfigured = ref.watch(isOverseerrConfiguredProvider);
 
     return Scaffold(
       body: isConfigured.when(
         data: (configured) {
           if (!configured) return _buildNotConfigured(context);
-          return _buildContent(context, ref);
+          return _buildContent(context);
         },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('Error: $e')),
@@ -58,22 +91,59 @@ class RequestsPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context, WidgetRef ref) {
+  Widget _buildContent(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
         ref.invalidate(pendingRequestsProvider);
         ref.invalidate(trendingProvider);
+        if (_isSearching) {
+          ref.invalidate(searchResultsProvider);
+        }
       },
       child: CustomScrollView(
         slivers: [
-          const SliverAppBar(
-            title: Text('Requests'),
+          // const SliverAppBar(
+          //   title: Text('Requests'),
+          //   floating: true,
+          // ),
+          // Search bar
+          SliverAppBar(
+            title: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+              child: TextField(
+                controller: _searchController,
+                onChanged: _onSearchChanged,
+                decoration: InputDecoration(
+                  hintText: 'Search movies & TV shows...',
+                  prefixIcon: const Icon(Icons.search, size: 20),
+                  suffixIcon: _isSearching
+                      ? IconButton(
+                          icon: const Icon(Icons.clear, size: 20),
+                          onPressed: _clearSearch,
+                        )
+                      : null,
+                  filled: true,
+                  fillColor: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+            ),
             floating: true,
+            pinned: true,
           ),
-          // Needs Approval section
-          _buildPendingSection(context, ref),
-          // Trending Now section
-          _buildTrendingSection(context, ref),
+          // Show search results or normal content
+          if (_isSearching)
+            _buildSearchResults(context)
+          else ...[
+            // Needs Approval section
+            _buildPendingSection(context),
+            // Trending Now section
+            _buildTrendingSection(context),
+          ],
           // Bottom padding
           const SliverPadding(padding: EdgeInsets.only(bottom: 32)),
         ],
@@ -81,7 +151,65 @@ class RequestsPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildPendingSection(BuildContext context, WidgetRef ref) {
+  Widget _buildSearchResults(BuildContext context) {
+    final searchResults = ref.watch(searchResultsProvider);
+
+    return searchResults.when(
+      data: (response) {
+        if (response.results.isEmpty) {
+          return SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(32),
+              child: Center(
+                child: Text(
+                  'No results found',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+                      ),
+                ),
+              ),
+            ),
+          );
+        }
+        return SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          sliver: SliverGrid(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 16,
+              crossAxisSpacing: 16,
+              childAspectRatio: 0.52,
+            ),
+            delegate: SliverChildBuilderDelegate(
+              (context, index) => TrendingCard(media: response.results[index]),
+              childCount: response.results.length,
+            ),
+          ),
+        );
+      },
+      loading: () => const SliverToBoxAdapter(
+        child: Padding(
+          padding: EdgeInsets.all(32),
+          child: Center(
+            child: SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
+          ),
+        ),
+      ),
+      error: (e, _) => SliverToBoxAdapter(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Text('Search failed: $e',
+              style: TextStyle(color: Theme.of(context).colorScheme.error)),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPendingSection(BuildContext context) {
     final pendingRequests = ref.watch(pendingRequestsProvider);
 
     return pendingRequests.when(
@@ -183,7 +311,7 @@ class RequestsPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildTrendingSection(BuildContext context, WidgetRef ref) {
+  Widget _buildTrendingSection(BuildContext context) {
     final trending = ref.watch(trendingProvider);
 
     return trending.when(

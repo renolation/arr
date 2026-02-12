@@ -135,6 +135,22 @@ final requestActionsProvider =
   RequestActionsNotifier.new,
 );
 
+/// Search query for Jellyseerr media search
+final searchQueryProvider = StateProvider<String>((ref) => '');
+
+/// Search results from Jellyseerr
+final searchResultsProvider = FutureProvider<PagedResponse<JellyseerrMediaResult>>((ref) async {
+  final query = ref.watch(searchQueryProvider);
+  if (query.trim().isEmpty) {
+    return const PagedResponse(page: 1, totalPages: 0, totalResults: 0, results: []);
+  }
+  final api = await ref.watch(overseerrApiProvider.future);
+  if (api == null) {
+    return const PagedResponse(page: 1, totalPages: 0, totalResults: 0, results: []);
+  }
+  return await api.searchMedia(query);
+});
+
 /// Whether Overseerr is configured
 final isOverseerrConfiguredProvider = FutureProvider<bool>((ref) async {
   final api = await ref.watch(overseerrApiProvider.future);
