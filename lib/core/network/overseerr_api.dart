@@ -253,6 +253,40 @@ class OverseerrApi extends BaseApiService {
     );
   }
 
+  /// Get configured Radarr servers from Jellyseerr
+  Future<List<JellyseerrServiceServer>> getRadarrServers() async {
+    final response = await get('/service/radarr');
+    return (response.data as List)
+        .map((e) => JellyseerrServiceServer.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  /// Get configured Sonarr servers from Jellyseerr
+  Future<List<JellyseerrServiceServer>> getSonarrServers() async {
+    final response = await get('/service/sonarr');
+    return (response.data as List)
+        .map((e) => JellyseerrServiceServer.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  /// Get quality profiles for a specific Radarr server
+  Future<List<JellyseerrServiceProfile>> getRadarrProfiles(int serverId) async {
+    final response = await get('/service/radarr/$serverId');
+    final data = response.data as Map<String, dynamic>;
+    return (data['profiles'] as List)
+        .map((e) => JellyseerrServiceProfile.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  /// Get quality profiles for a specific Sonarr server
+  Future<List<JellyseerrServiceProfile>> getSonarrProfiles(int serverId) async {
+    final response = await get('/service/sonarr/$serverId');
+    final data = response.data as Map<String, dynamic>;
+    return (data['profiles'] as List)
+        .map((e) => JellyseerrServiceProfile.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
   /// Create a media request (movie or TV) with full parameters
   Future<JellyseerrRequest> createRequest({
     required String mediaType,

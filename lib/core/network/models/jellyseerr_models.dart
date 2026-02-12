@@ -253,6 +253,59 @@ class JellyseerrRequestSeason {
   }
 }
 
+/// A configured Radarr/Sonarr server from Jellyseerr service settings
+class JellyseerrServiceServer {
+  final int id;
+  final String name;
+  final bool is4k;
+  final bool isDefault;
+  final int activeProfileId;
+  final String activeProfileName;
+  final String activeDirectory;
+
+  const JellyseerrServiceServer({
+    required this.id,
+    required this.name,
+    this.is4k = false,
+    this.isDefault = false,
+    required this.activeProfileId,
+    required this.activeProfileName,
+    required this.activeDirectory,
+  });
+
+  factory JellyseerrServiceServer.fromJson(Map<String, dynamic> json) {
+    return JellyseerrServiceServer(
+      id: json['id'] as int? ?? 0,
+      name: json['name'] as String? ?? '',
+      is4k: json['is4k'] as bool? ?? false,
+      isDefault: json['isDefault'] as bool? ?? false,
+      activeProfileId: json['activeProfileId'] as int? ?? 0,
+      activeProfileName: json['activeProfileName'] as String? ?? '',
+      activeDirectory: json['activeDirectory'] as String? ?? '',
+    );
+  }
+
+  String get displayName {
+    final suffix = is4k ? ' (4K)' : '';
+    return '$name$suffix';
+  }
+}
+
+/// Quality profile from a Radarr/Sonarr server
+class JellyseerrServiceProfile {
+  final int id;
+  final String name;
+
+  const JellyseerrServiceProfile({required this.id, required this.name});
+
+  factory JellyseerrServiceProfile.fromJson(Map<String, dynamic> json) {
+    return JellyseerrServiceProfile(
+      id: json['id'] as int? ?? 0,
+      name: json['name'] as String? ?? '',
+    );
+  }
+}
+
 /// Generic paginated response wrapper for Jellyseerr list endpoints
 class PagedResponse<T> {
   final int page;

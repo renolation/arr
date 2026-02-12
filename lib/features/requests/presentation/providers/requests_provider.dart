@@ -107,6 +107,9 @@ class RequestActionsNotifier extends Notifier<AsyncValue<void>> {
     required int mediaId,
     List<int> seasons = const [],
     bool is4k = false,
+    int? serverId,
+    int? profileId,
+    String? rootFolder,
   }) async {
     state = const AsyncLoading();
     try {
@@ -117,6 +120,9 @@ class RequestActionsNotifier extends Notifier<AsyncValue<void>> {
         mediaId: mediaId,
         seasons: seasons,
         is4k: is4k,
+        serverId: serverId,
+        profileId: profileId,
+        rootFolder: rootFolder,
       );
       state = const AsyncData(null);
       ref.invalidate(pendingRequestsProvider);
@@ -149,6 +155,20 @@ final searchResultsProvider = FutureProvider<PagedResponse<JellyseerrMediaResult
     return const PagedResponse(page: 1, totalPages: 0, totalResults: 0, results: []);
   }
   return await api.searchMedia(query);
+});
+
+/// Radarr servers configured in Jellyseerr
+final radarrServersProvider = FutureProvider<List<JellyseerrServiceServer>>((ref) async {
+  final api = await ref.watch(overseerrApiProvider.future);
+  if (api == null) return [];
+  return await api.getRadarrServers();
+});
+
+/// Sonarr servers configured in Jellyseerr
+final sonarrServersProvider = FutureProvider<List<JellyseerrServiceServer>>((ref) async {
+  final api = await ref.watch(overseerrApiProvider.future);
+  if (api == null) return [];
+  return await api.getSonarrServers();
 });
 
 /// Whether Overseerr is configured

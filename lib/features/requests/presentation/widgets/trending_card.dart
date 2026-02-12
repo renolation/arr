@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../core/network/models/jellyseerr_models.dart';
 import '../../../../main.dart';
-import '../providers/requests_provider.dart';
+import 'request_dialog.dart';
 
 /// Card widget for trending media - full poster with gradient overlay
 class TrendingCard extends ConsumerWidget {
@@ -197,12 +197,8 @@ class TrendingCard extends ConsumerWidget {
   }
 
   void _onRequest(BuildContext context, WidgetRef ref) async {
-    final success =
-        await ref.read(requestActionsProvider.notifier).createRequest(
-              mediaType: media.mediaType,
-              mediaId: media.id,
-            );
-    if (context.mounted) {
+    final success = await RequestDialog.show(context, media);
+    if (context.mounted && success != null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(success
