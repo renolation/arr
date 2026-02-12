@@ -40,7 +40,7 @@ class JellyseerrMediaInfo {
   final int? tmdbId;
   final int? tvdbId;
   final JellyseerrMediaStatus status;
-  final JellyseerrMediaStatus? downloadStatus;
+  final JellyseerrMediaStatus status4k;
   final String? mediaType;
 
   const JellyseerrMediaInfo({
@@ -48,7 +48,7 @@ class JellyseerrMediaInfo {
     this.tmdbId,
     this.tvdbId,
     this.status = JellyseerrMediaStatus.unknown,
-    this.downloadStatus,
+    this.status4k = JellyseerrMediaStatus.unknown,
     this.mediaType,
   });
 
@@ -58,9 +58,7 @@ class JellyseerrMediaInfo {
       tmdbId: json['tmdbId'] as int?,
       tvdbId: json['tvdbId'] as int?,
       status: JellyseerrMediaStatus.fromValue(json['status'] as int?),
-      downloadStatus: json['downloadStatus'] != null
-          ? JellyseerrMediaStatus.fromValue(json['downloadStatus'] as int?)
-          : null,
+      status4k: JellyseerrMediaStatus.fromValue(json['status4k'] as int?),
       mediaType: json['mediaType'] as String?,
     );
   }

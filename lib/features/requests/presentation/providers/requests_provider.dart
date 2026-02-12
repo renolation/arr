@@ -1,110 +1,142 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import '../../../../core/database/hive_database.dart';
-import '../../../../core/errors/exceptions.dart';
-import '../../../../core/network/dio_client.dart';
-import '../../data/datasources/overseerr_remote_datasource.dart';
-import '../../data/repositories/requests_repository.dart';
-import '../../domain/entities/request.dart';
+import '../../../../core/network/api_providers.dart';
+import '../../../../core/network/models/jellyseerr_models.dart';
 
-/// Provider for cache box
-final requestsCacheBoxProvider = Provider<Box<dynamic>>((ref) {
-  return HiveDatabase.getBox<dynamic>(HiveDatabase.overseerrCacheBox);
-});
+/// Provider for pending requests from Jellyseerr
+class PendingRequestsNotifier extends AsyncNotifier<List<JellyseerrRequest>> {
+  @override
+  Future<List<JellyseerrRequest>> build() async {
+    final api = await ref.watch(overseerrApiProvider.future);
+    if (api == null) return [];
 
-/// Provider for remote data source
-final requestsRemoteDataSourceProvider = Provider<OverseerrRemoteDataSource>((ref) {
-  return OverseerrRemoteDataSource(
-    dioClient: DioClient(),
-  );
-});
-
-/// Provider for repository
-final requestsRepositoryProvider = Provider<RequestsRepositoryImpl>((ref) {
-  return RequestsRepositoryImpl(
-    remoteDataSource: ref.watch(requestsRemoteDataSourceProvider),
-    cacheBox: ref.watch(requestsCacheBoxProvider),
-  );
-});
-
-/// Provider for all requests
-final allRequestsProvider = FutureProvider<List<Request>>((ref) async {
-  try {
-    return await ref.watch(requestsRepositoryProvider).getAllRequests();
-  } on ServerException catch (e) {
-    throw Exception('Failed to load requests: ${e.message}');
-  } on NetworkException catch (e) {
-    throw Exception('Network error: ${e.message}');
-  } on CacheException catch (e) {
-    throw Exception('Cache error: ${e.message}');
-  } catch (e) {
-    throw Exception('Unexpected error: ${e.toString()}');
+    final response = await api.getRequestList(
+      filter: 'pending',
+      sort: 'added',
+      take: 50,
+    );
+    return response.results;
   }
-});
 
-/// Provider for pending requests
-final pendingRequestsProvider = FutureProvider<List<Request>>((ref) async {
-  try {
-    return await ref.watch(requestsRepositoryProvider).getPendingRequests();
-  } on ServerException catch (e) {
-    throw Exception('Failed to load pending requests: ${e.message}');
-  } on NetworkException catch (e) {
-    throw Exception('Network error: ${e.message}');
-  } catch (e) {
-    throw Exception('Unexpected error: ${e.toString()}');
+  Future<void> refresh() async {
+    ref.invalidateSelf();
   }
-});
+}
 
-/// Provider for cached requests
-final cachedRequestsProvider = FutureProvider<List<Request>>((ref) async {
-  try {
-    return await ref.watch(requestsRepositoryProvider).getCachedRequests();
-  } on CacheException catch (e) {
-    throw Exception('Cache error: ${e.message}');
-  } catch (e) {
-    throw Exception('Unexpected error: ${e.toString()}');
+final pendingRequestsProvider =
+    AsyncNotifierProvider<PendingRequestsNotifier, List<JellyseerrRequest>>(
+  PendingRequestsNotifier.new,
+);
+
+/// Provider for all requests (with filter support)
+final requestFilterProvider = StateProvider<String?>((ref) => null);
+
+class AllRequestsNotifier extends AsyncNotifier<List<JellyseerrRequest>> {
+  @override
+  Future<List<JellyseerrRequest>> build() async {
+    final api = await ref.watch(overseerrApiProvider.future);
+    final filter = ref.watch(requestFilterProvider);
+    if (api == null) return [];
+
+    final response = await api.getRequestList(
+      filter: filter,
+      sort: 'added',
+      take: 50,
+    );
+    return response.results;
   }
-});
 
-/// Provider for request by ID
-final requestProvider = FutureProvider.family<Request, int>((ref, id) async {
-  try {
-    return await ref.watch(requestsRepositoryProvider).getRequestById(id);
-  } on ServerException catch (e) {
-    throw Exception('Failed to load request: ${e.message}');
-  } on NetworkException catch (e) {
-    throw Exception('Network error: ${e.message}');
-  } on NotFoundException catch (e) {
-    throw Exception('Request not found: ${e.message}');
-  } catch (e) {
-    throw Exception('Unexpected error: ${e.toString()}');
+  Future<void> refresh() async {
+    ref.invalidateSelf();
   }
+}
+
+final allRequestsProvider =
+    AsyncNotifierProvider<AllRequestsNotifier, List<JellyseerrRequest>>(
+  AllRequestsNotifier.new,
+);
+
+/// Provider for trending content from Jellyseerr
+final trendingProvider = FutureProvider<PagedResponse<JellyseerrMediaResult>>((ref) async {
+  final api = await ref.watch(overseerrApiProvider.future);
+  if (api == null) {
+    return const PagedResponse(page: 1, totalPages: 0, totalResults: 0, results: []);
+  }
+  return await api.getTrending();
 });
 
-/// Provider for request filter
-final requestFilterProvider = StateProvider<RequestFilter>((ref) {
-  return RequestFilter.all;
+/// Notifier for request actions (approve, decline, create)
+class RequestActionsNotifier extends Notifier<AsyncValue<void>> {
+  @override
+  AsyncValue<void> build() => const AsyncData(null);
+
+  Future<bool> approve(int id) async {
+    state = const AsyncLoading();
+    try {
+      final api = await ref.read(overseerrApiProvider.future);
+      if (api == null) throw Exception('Overseerr not configured');
+      await api.approveRequest(id);
+      state = const AsyncData(null);
+      // Refresh request lists
+      ref.invalidate(pendingRequestsProvider);
+      ref.invalidate(allRequestsProvider);
+      return true;
+    } catch (e) {
+      state = AsyncError(e, StackTrace.current);
+      return false;
+    }
+  }
+
+  Future<bool> decline(int id) async {
+    state = const AsyncLoading();
+    try {
+      final api = await ref.read(overseerrApiProvider.future);
+      if (api == null) throw Exception('Overseerr not configured');
+      await api.declineRequest(id);
+      state = const AsyncData(null);
+      ref.invalidate(pendingRequestsProvider);
+      ref.invalidate(allRequestsProvider);
+      return true;
+    } catch (e) {
+      state = AsyncError(e, StackTrace.current);
+      return false;
+    }
+  }
+
+  Future<bool> createRequest({
+    required String mediaType,
+    required int mediaId,
+    List<int> seasons = const [],
+    bool is4k = false,
+  }) async {
+    state = const AsyncLoading();
+    try {
+      final api = await ref.read(overseerrApiProvider.future);
+      if (api == null) throw Exception('Overseerr not configured');
+      await api.createRequest(
+        mediaType: mediaType,
+        mediaId: mediaId,
+        seasons: seasons,
+        is4k: is4k,
+      );
+      state = const AsyncData(null);
+      ref.invalidate(pendingRequestsProvider);
+      ref.invalidate(allRequestsProvider);
+      ref.invalidate(trendingProvider);
+      return true;
+    } catch (e) {
+      state = AsyncError(e, StackTrace.current);
+      return false;
+    }
+  }
+}
+
+final requestActionsProvider =
+    NotifierProvider<RequestActionsNotifier, AsyncValue<void>>(
+  RequestActionsNotifier.new,
+);
+
+/// Whether Overseerr is configured
+final isOverseerrConfiguredProvider = FutureProvider<bool>((ref) async {
+  final api = await ref.watch(overseerrApiProvider.future);
+  return api != null;
 });
-
-/// Provider for filtered requests
-final filteredRequestsProvider = Provider<List<Request>>((ref) {
-  final allRequests = ref.watch(allRequestsProvider);
-  final filter = ref.watch(requestFilterProvider);
-
-  return allRequests.when(
-    data: (requests) {
-      if (filter == RequestFilter.all) return requests;
-      if (filter == RequestFilter.pending) {
-        return requests.where((r) => r.isPending).toList();
-      }
-      if (filter == RequestFilter.approved) {
-        return requests.where((r) => r.isApproved).toList();
-      }
-      return requests;
-    },
-    loading: () => [],
-    error: (_, __) => [],
-  );
-});
-
-enum RequestFilter { all, pending, approved }
