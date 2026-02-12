@@ -28,6 +28,8 @@ mixin _$Download {
   String? get errorMessage => throw _privateConstructorUsedError;
   String? get protocol =>
       throw _privateConstructorUsedError; // torrent or usenet
+  String? get eventType =>
+      throw _privateConstructorUsedError; // history: grabbed, downloadFolderImported, etc.
   Map<String, dynamic>? get metadata => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -52,6 +54,7 @@ abstract class $DownloadCopyWith<$Res> {
       DateTime? date,
       String? errorMessage,
       String? protocol,
+      String? eventType,
       Map<String, dynamic>? metadata});
 }
 
@@ -79,6 +82,7 @@ class _$DownloadCopyWithImpl<$Res, $Val extends Download>
     Object? date = freezed,
     Object? errorMessage = freezed,
     Object? protocol = freezed,
+    Object? eventType = freezed,
     Object? metadata = freezed,
   }) {
     return _then(_value.copyWith(
@@ -126,6 +130,10 @@ class _$DownloadCopyWithImpl<$Res, $Val extends Download>
           ? _value.protocol
           : protocol // ignore: cast_nullable_to_non_nullable
               as String?,
+      eventType: freezed == eventType
+          ? _value.eventType
+          : eventType // ignore: cast_nullable_to_non_nullable
+              as String?,
       metadata: freezed == metadata
           ? _value.metadata
           : metadata // ignore: cast_nullable_to_non_nullable
@@ -154,6 +162,7 @@ abstract class _$$DownloadImplCopyWith<$Res>
       DateTime? date,
       String? errorMessage,
       String? protocol,
+      String? eventType,
       Map<String, dynamic>? metadata});
 }
 
@@ -179,6 +188,7 @@ class __$$DownloadImplCopyWithImpl<$Res>
     Object? date = freezed,
     Object? errorMessage = freezed,
     Object? protocol = freezed,
+    Object? eventType = freezed,
     Object? metadata = freezed,
   }) {
     return _then(_$DownloadImpl(
@@ -226,6 +236,10 @@ class __$$DownloadImplCopyWithImpl<$Res>
           ? _value.protocol
           : protocol // ignore: cast_nullable_to_non_nullable
               as String?,
+      eventType: freezed == eventType
+          ? _value.eventType
+          : eventType // ignore: cast_nullable_to_non_nullable
+              as String?,
       metadata: freezed == metadata
           ? _value._metadata
           : metadata // ignore: cast_nullable_to_non_nullable
@@ -249,6 +263,7 @@ class _$DownloadImpl extends _Download {
       this.date,
       this.errorMessage,
       this.protocol,
+      this.eventType,
       final Map<String, dynamic>? metadata})
       : _metadata = metadata,
         super._();
@@ -276,8 +291,11 @@ class _$DownloadImpl extends _Download {
   @override
   final String? protocol;
 // torrent or usenet
+  @override
+  final String? eventType;
+// history: grabbed, downloadFolderImported, etc.
   final Map<String, dynamic>? _metadata;
-// torrent or usenet
+// history: grabbed, downloadFolderImported, etc.
   @override
   Map<String, dynamic>? get metadata {
     final value = _metadata;
@@ -289,7 +307,7 @@ class _$DownloadImpl extends _Download {
 
   @override
   String toString() {
-    return 'Download(id: $id, title: $title, status: $status, source: $source, quality: $quality, size: $size, sizeLeft: $sizeLeft, progress: $progress, date: $date, errorMessage: $errorMessage, protocol: $protocol, metadata: $metadata)';
+    return 'Download(id: $id, title: $title, status: $status, source: $source, quality: $quality, size: $size, sizeLeft: $sizeLeft, progress: $progress, date: $date, errorMessage: $errorMessage, protocol: $protocol, eventType: $eventType, metadata: $metadata)';
   }
 
   @override
@@ -312,6 +330,8 @@ class _$DownloadImpl extends _Download {
                 other.errorMessage == errorMessage) &&
             (identical(other.protocol, protocol) ||
                 other.protocol == protocol) &&
+            (identical(other.eventType, eventType) ||
+                other.eventType == eventType) &&
             const DeepCollectionEquality().equals(other._metadata, _metadata));
   }
 
@@ -329,6 +349,7 @@ class _$DownloadImpl extends _Download {
       date,
       errorMessage,
       protocol,
+      eventType,
       const DeepCollectionEquality().hash(_metadata));
 
   @JsonKey(ignore: true)
@@ -351,6 +372,7 @@ abstract class _Download extends Download {
       final DateTime? date,
       final String? errorMessage,
       final String? protocol,
+      final String? eventType,
       final Map<String, dynamic>? metadata}) = _$DownloadImpl;
   const _Download._() : super._();
 
@@ -377,6 +399,8 @@ abstract class _Download extends Download {
   @override
   String? get protocol;
   @override // torrent or usenet
+  String? get eventType;
+  @override // history: grabbed, downloadFolderImported, etc.
   Map<String, dynamic>? get metadata;
   @override
   @JsonKey(ignore: true)

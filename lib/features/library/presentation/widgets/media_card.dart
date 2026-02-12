@@ -197,15 +197,11 @@ class MediaCard extends StatelessWidget {
       child: CachedNetworkImage(
         imageUrl: mediaItem.posterUrl!,
         fit: BoxFit.cover,
+        fadeInDuration: Duration.zero,
+        fadeOutDuration: Duration.zero,
+        memCacheWidth: 300,
         placeholder: (context, url) => Container(
           color: Theme.of(context).colorScheme.surface,
-          child: const Center(
-            child: SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            ),
-          ),
         ),
         errorWidget: (context, url, error) =>
             const Icon(Icons.broken_image, size: 32),

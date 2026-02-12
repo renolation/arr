@@ -43,6 +43,9 @@ class MovieDetailPage extends ConsumerWidget {
                     CachedNetworkImage(
                       imageUrl: movie.posterUrl!,
                       fit: BoxFit.cover,
+                      fadeInDuration: Duration.zero,
+                      fadeOutDuration: Duration.zero,
+                      memCacheWidth: 300,
                       placeholder: (context, url) => Container(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(

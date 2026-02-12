@@ -28,6 +28,9 @@ class TrendingCard extends ConsumerWidget {
                 ? CachedNetworkImage(
                     imageUrl: media.fullPosterUrl!,
                     fit: BoxFit.cover,
+                    fadeInDuration: Duration.zero,
+                    fadeOutDuration: Duration.zero,
+                    memCacheWidth: 300,
                     placeholder: (context, url) => _buildPlaceholder(context),
                     errorWidget: (context, url, error) =>
                         _buildPlaceholder(context),

@@ -59,6 +59,9 @@ class RadarrPage extends ConsumerWidget {
                                 imageUrl: movie.posterUrl!,
                                 width: double.infinity,
                                 fit: BoxFit.cover,
+                                fadeInDuration: Duration.zero,
+                                fadeOutDuration: Duration.zero,
+                                memCacheWidth: 300,
                                 placeholder: (context, url) => Container(
                                   color: Colors.grey[300],
                                   child: const Center(child: CircularProgressIndicator()),

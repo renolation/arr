@@ -55,14 +55,59 @@ final allRequestsProvider =
   AllRequestsNotifier.new,
 );
 
-/// Provider for trending content from Jellyseerr
-final trendingProvider = FutureProvider<PagedResponse<JellyseerrMediaResult>>((ref) async {
-  final api = await ref.watch(overseerrApiProvider.future);
-  if (api == null) {
-    return const PagedResponse(page: 1, totalPages: 0, totalResults: 0, results: []);
+/// Notifier for trending content with infinite scroll
+class TrendingNotifier extends AsyncNotifier<List<JellyseerrMediaResult>> {
+  int _currentPage = 1;
+  int _totalPages = 1;
+  bool _isLoadingMore = false;
+
+  bool get canLoadMore => _currentPage < _totalPages && !_isLoadingMore;
+  bool get isLoadingMore => _isLoadingMore;
+
+  @override
+  Future<List<JellyseerrMediaResult>> build() async {
+    _currentPage = 1;
+    _totalPages = 1;
+    return _fetchPage(1);
   }
-  return await api.getTrending();
-});
+
+  Future<List<JellyseerrMediaResult>> _fetchPage(int page) async {
+    final api = await ref.read(overseerrApiProvider.future);
+    if (api == null) return [];
+    final response = await api.getTrending(page: page);
+    _totalPages = response.totalPages;
+    _currentPage = response.page;
+    return response.results;
+  }
+
+  Future<void> loadMore() async {
+    if (!canLoadMore) return;
+    final currentData = state.valueOrNull ?? [];
+    _isLoadingMore = true;
+    state = AsyncData(currentData); // keep current data visible
+    try {
+      final newResults = await _fetchPage(_currentPage + 1);
+      _isLoadingMore = false;
+      state = AsyncData([...currentData, ...newResults]);
+    } catch (e) {
+      _isLoadingMore = false;
+      // Keep existing data on error
+      state = AsyncData(currentData);
+    }
+  }
+
+  Future<void> refresh() async {
+    _currentPage = 1;
+    _totalPages = 1;
+    _isLoadingMore = false;
+    ref.invalidateSelf();
+  }
+}
+
+final trendingProvider =
+    AsyncNotifierProvider<TrendingNotifier, List<JellyseerrMediaResult>>(
+  TrendingNotifier.new,
+);
 
 /// Notifier for request actions (approve, decline, create)
 class RequestActionsNotifier extends Notifier<AsyncValue<void>> {

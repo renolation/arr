@@ -20,21 +20,22 @@ class Download with _$Download {
     DateTime? date,
     String? errorMessage,
     String? protocol, // torrent or usenet
+    String? eventType, // history: grabbed, downloadFolderImported, etc.
     Map<String, dynamic>? metadata,
   }) = _Download;
 
-  factory Download.fromJson(Map<String, dynamic> json) {
+  /// Parse from Sonarr/Radarr queue or history JSON.
+  /// [sourceOverride] sets the source since API responses don't include it.
+  factory Download.fromJson(
+    Map<String, dynamic> json, {
+    DownloadSource sourceOverride = DownloadSource.sonarr,
+  }) {
     final statusStr = json['status'] as String? ?? 'queued';
     final statusStrLower = statusStr.toLowerCase();
     final status = DownloadStatus.values.firstWhere(
       (e) => e.name.toLowerCase() == statusStrLower || statusStrLower.contains(e.name),
       orElse: () => DownloadStatus.queued,
     );
-
-    final sourceStr = json['source'] as String? ?? 'sonarr';
-    final source = sourceStr.toLowerCase() == 'radarr'
-        ? DownloadSource.radarr
-        : DownloadSource.sonarr;
 
     final size = json['size'] as num?;
     final sizeLeft = json['sizeleft'] as num?;
@@ -46,11 +47,29 @@ class Download with _$Download {
       progress = (json['progress'] as num).toDouble();
     }
 
+    // For history, map eventType to a meaningful status
+    final eventType = json['eventType'] as String?;
+    DownloadStatus resolvedStatus = status;
+    if (eventType != null) {
+      switch (eventType) {
+        case 'grabbed':
+          resolvedStatus = DownloadStatus.downloading;
+          break;
+        case 'downloadFolderImported':
+        case 'downloadImported':
+          resolvedStatus = DownloadStatus.completed;
+          break;
+        case 'downloadFailed':
+          resolvedStatus = DownloadStatus.failed;
+          break;
+      }
+    }
+
     return Download(
       id: json['id'] as int? ?? json['downloadId'] as int? ?? 0,
-      title: json['title'] as String? ?? '',
-      status: status,
-      source: source,
+      title: json['sourceTitle'] as String? ?? json['title'] as String? ?? '',
+      status: resolvedStatus,
+      source: sourceOverride,
       quality: json['quality']?['quality']?['name'] as String?,
       size: size?.toDouble(),
       sizeLeft: sizeLeft?.toDouble(),
@@ -62,6 +81,7 @@ class Download with _$Download {
               : null,
       errorMessage: json['errorMessage'] as String?,
       protocol: json['protocol'] as String?,
+      eventType: eventType,
       metadata: json,
     );
   }

@@ -46,6 +46,9 @@ class MovieDetailSheet extends StatelessWidget {
                             width: 120,
                             height: 180,
                             fit: BoxFit.cover,
+                            fadeInDuration: Duration.zero,
+                            fadeOutDuration: Duration.zero,
+                            memCacheWidth: 300,
                             errorWidget: (context, url, error) => Container(
                               width: 120,
                               height: 180,

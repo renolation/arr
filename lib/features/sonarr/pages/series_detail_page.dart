@@ -38,6 +38,9 @@ class SeriesDetailPage extends StatelessWidget {
                     CachedNetworkImage(
                       imageUrl: series.posterUrl!,
                       fit: BoxFit.cover,
+                      fadeInDuration: Duration.zero,
+                      fadeOutDuration: Duration.zero,
+                      memCacheWidth: 300,
                       placeholder: (context, url) => Container(
                         color: Theme.of(context).colorScheme.surfaceContainerHighest,
                         child: const Center(child: CircularProgressIndicator()),

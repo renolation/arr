@@ -94,59 +94,67 @@ class _RequestsPageState extends ConsumerState<RequestsPage> {
   Widget _buildContent(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () async {
-        ref.invalidate(pendingRequestsProvider);
-        ref.invalidate(trendingProvider);
+        ref.read(pendingRequestsProvider.notifier).refresh();
+        ref.read(trendingProvider.notifier).refresh();
         if (_isSearching) {
           ref.invalidate(searchResultsProvider);
         }
       },
-      child: CustomScrollView(
-        slivers: [
-          // const SliverAppBar(
-          //   title: Text('Requests'),
-          //   floating: true,
-          // ),
-          // Search bar
-          SliverAppBar(
-            title: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-              child: TextField(
-                controller: _searchController,
-                onChanged: _onSearchChanged,
-                decoration: InputDecoration(
-                  hintText: 'Search movies & TV shows...',
-                  prefixIcon: const Icon(Icons.search, size: 20),
-                  suffixIcon: _isSearching
-                      ? IconButton(
-                          icon: const Icon(Icons.clear, size: 20),
-                          onPressed: _clearSearch,
-                        )
-                      : null,
-                  filled: true,
-                  fillColor: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide.none,
+      child: NotificationListener<ScrollNotification>(
+        onNotification: (notification) {
+          if (notification is ScrollEndNotification &&
+              notification.metrics.pixels >= notification.metrics.maxScrollExtent - 200) {
+            final notifier = ref.read(trendingProvider.notifier);
+            if (notifier.canLoadMore && !_isSearching) {
+              notifier.loadMore();
+            }
+          }
+          return false;
+        },
+        child: CustomScrollView(
+          slivers: [
+            // Search bar
+            SliverAppBar(
+              title: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                child: TextField(
+                  controller: _searchController,
+                  onChanged: _onSearchChanged,
+                  decoration: InputDecoration(
+                    hintText: 'Search movies & TV shows...',
+                    prefixIcon: const Icon(Icons.search, size: 20),
+                    suffixIcon: _isSearching
+                        ? IconButton(
+                            icon: const Icon(Icons.clear, size: 20),
+                            onPressed: _clearSearch,
+                          )
+                        : null,
+                    filled: true,
+                    fillColor: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
                   ),
                 ),
               ),
+              floating: true,
+              pinned: true,
             ),
-            floating: true,
-            pinned: true,
-          ),
-          // Show search results or normal content
-          if (_isSearching)
-            _buildSearchResults(context)
-          else ...[
-            // Needs Approval section
-            _buildPendingSection(context),
-            // Trending Now section
-            _buildTrendingSection(context),
+            // Show search results or normal content
+            if (_isSearching)
+              _buildSearchResults(context)
+            else ...[
+              // Needs Approval section
+              _buildPendingSection(context),
+              // Trending Now section
+              _buildTrendingSection(context),
+            ],
+            // Bottom padding
+            const SliverPadding(padding: EdgeInsets.only(bottom: 32)),
           ],
-          // Bottom padding
-          const SliverPadding(padding: EdgeInsets.only(bottom: 32)),
-        ],
+        ),
       ),
     );
   }
@@ -313,10 +321,11 @@ class _RequestsPageState extends ConsumerState<RequestsPage> {
 
   Widget _buildTrendingSection(BuildContext context) {
     final trending = ref.watch(trendingProvider);
+    final notifier = ref.watch(trendingProvider.notifier);
 
     return trending.when(
-      data: (response) {
-        if (response.results.isEmpty) {
+      data: (results) {
+        if (results.isEmpty) {
           return SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16),
@@ -355,11 +364,25 @@ class _RequestsPageState extends ConsumerState<RequestsPage> {
                   childAspectRatio: 0.52,
                 ),
                 delegate: SliverChildBuilderDelegate(
-                  (context, index) => TrendingCard(media: response.results[index]),
-                  childCount: response.results.length,
+                  (context, index) => TrendingCard(media: results[index]),
+                  childCount: results.length,
                 ),
               ),
             ),
+            // Load more indicator
+            if (notifier.isLoadingMore)
+              const SliverToBoxAdapter(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 24),
+                  child: Center(
+                    child: SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  ),
+                ),
+              ),
           ],
         );
       },
