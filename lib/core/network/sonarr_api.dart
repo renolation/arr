@@ -52,6 +52,15 @@ class SonarrApi extends BaseApiService {
     return response.data as Map<String, dynamic>;
   }
 
+  /// Get episode files for a series
+  Future<List<Map<String, dynamic>>> getEpisodeFiles(int seriesId) async {
+    final response = await get('/episodeFile', queryParameters: {'seriesId': seriesId});
+    if (response.data is List) {
+      return List<Map<String, dynamic>>.from(response.data);
+    }
+    return [];
+  }
+
   /// Get calendar (upcoming episodes)
   Future<List<Map<String, dynamic>>> getCalendar({
     DateTime? start,

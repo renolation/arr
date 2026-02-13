@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../domain/entities/media_item.dart';
 import '../../../../main.dart';
+import '../pages/media_detail_page.dart';
 
 /// Card widget for displaying a media item - Matching HTML design
 class MediaCard extends StatelessWidget {
@@ -53,21 +54,22 @@ class MediaCard extends StatelessWidget {
                   ),
                 ),
                 // Quality badge at top right
-                if (mediaItem.quality != null)
-                  Positioned(
-                    top: 6,
-                    right: 6,
-                    child: _Badge(
-                      label: mediaItem.quality!,
-                      backgroundColor: Colors.black.withOpacity(0.8),
-                      textColor: Colors.white,
-                      borderColor: Colors.white.withOpacity(0.1),
-                    ),
-                  ),
+                // if (mediaItem.quality != null)
+                //   Positioned(
+                //     top: 6,
+                //     right: 6,
+                //     child: _Badge(
+                //       label: mediaItem.quality!,
+                //       backgroundColor: Colors.black.withOpacity(0.8),
+                //       textColor: Colors.white,
+                //       borderColor: Colors.white.withOpacity(0.1),
+                //     ),
+                //   ),
                 // Status badge at top right (below quality if present)
                 if (!isMissing)
                   Positioned(
-                    top: mediaItem.quality != null ? 28 : 6,
+                    // top: mediaItem.quality != null ? 28 : 6,
+                    top: 6,
                     right: 6,
                     child: _buildStatusBadge(),
                   ),
@@ -210,7 +212,12 @@ class MediaCard extends StatelessWidget {
   }
 
   void _onCardTap(BuildContext context) {
-    // TODO: Navigate to detail
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => MediaDetailPage(mediaItem: mediaItem),
+      ),
+    );
   }
 }
 
