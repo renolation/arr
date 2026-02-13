@@ -1,55 +1,345 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import '../../../../main.dart';
+import '../../../../core/network/api_providers.dart';
 
-/// Section displaying upcoming/airing shows
-class AiringSection extends StatelessWidget {
+/// Provider that fetches calendar from all configured Sonarr + Radarr services
+final calendarProvider = FutureProvider<List<_CalendarItem>>((ref) async {
+  final sonarrApis = await ref.watch(allSonarrApisProvider.future);
+  final radarrApis = await ref.watch(allRadarrApisProvider.future);
+
+  final now = DateTime.now();
+  final start = now.subtract(const Duration(days: 1));
+  final end = now.add(const Duration(days: 30));
+
+  final items = <_CalendarItem>[];
+
+  // Fetch from all Sonarr instances
+  for (final (_, api) in sonarrApis) {
+    try {
+      final data = await api.getCalendar(start: start, end: end);
+      for (final ep in data) {
+        items.add(_CalendarItem.fromSonarr(ep));
+      }
+    } catch (_) {}
+  }
+
+  // Fetch from all Radarr instances
+  for (final (_, api) in radarrApis) {
+    try {
+      final data = await api.getCalendar(start: start, end: end);
+      for (final movie in data) {
+        items.add(_CalendarItem.fromRadarr(movie));
+      }
+    } catch (_) {}
+  }
+
+  // Sort by date
+  items.sort((a, b) => a.date.compareTo(b.date));
+  return items;
+});
+
+/// Section displaying upcoming/airing shows and movies
+class AiringSection extends ConsumerWidget {
   const AiringSection({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // TODO: Fetch actual airing data from providers
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final calendarAsync = ref.watch(calendarProvider);
+
+    return calendarAsync.when(
+      data: (items) {
+        if (items.isEmpty) {
+          return _buildEmpty(context);
+        }
+        return SizedBox(
+          height: 200,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            itemCount: items.length,
+            separatorBuilder: (_, __) => const SizedBox(width: 12),
+            itemBuilder: (context, index) => _CalendarCard(item: items[index]),
+          ),
+        );
+      },
+      loading: () => const SizedBox(
+        height: 200,
+        child: Center(
+          child: SizedBox(
+            width: 20,
+            height: 20,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+        ),
+      ),
+      error: (_, __) => _buildEmpty(context),
+    );
+  }
+
+  Widget _buildEmpty(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+        ),
+      ),
+      child: Center(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.play_circle_outline,
-                  size: 20,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  'Coming Soon',
-                  style: Theme.of(context).textTheme.titleSmall,
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            const Center(
-              child: Padding(
-                padding: EdgeInsets.all(24.0),
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.calendar_today_outlined,
-                      size: 48,
-                      color: Colors.grey,
-                    ),
-                    SizedBox(height: 12),
-                    Text(
-                      'No upcoming episodes',
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                  ],
-                ),
+            Icon(Icons.calendar_today_outlined, size: 32,
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2)),
+            const SizedBox(height: 8),
+            Text(
+              'Nothing coming up',
+              style: TextStyle(
+                fontSize: 13,
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Calendar card for a single upcoming item
+class _CalendarCard extends StatelessWidget {
+  final _CalendarItem item;
+
+  const _CalendarCard({required this.item});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 120,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Poster with date badge
+          Expanded(
+            child: Stack(
+              children: [
+                Container(
+                  width: 120,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+                    ),
+                  ),
+                  clipBehavior: Clip.antiAlias,
+                  child: item.posterUrl != null
+                      ? CachedNetworkImage(
+                          imageUrl: item.posterUrl!,
+                          fit: BoxFit.cover,
+                          fadeInDuration: Duration.zero,
+                          fadeOutDuration: Duration.zero,
+                          memCacheWidth: 200,
+                          placeholder: (_, __) => Container(
+                            color: Theme.of(context).colorScheme.surface,
+                          ),
+                          errorWidget: (_, __, ___) => _placeholder(context),
+                        )
+                      : _placeholder(context),
+                ),
+                // Date badge
+                Positioned(
+                  top: 6,
+                  left: 6,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: _dateBadgeColor,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      _dateBadgeText,
+                      style: const TextStyle(
+                        fontSize: 9,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+                // Has file indicator
+                if (item.hasFile)
+                  Positioned(
+                    top: 6,
+                    right: 6,
+                    child: Container(
+                      width: 18,
+                      height: 18,
+                      decoration: BoxDecoration(
+                        color: AppColors.accentGreen,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 1.5),
+                      ),
+                      child: const Icon(Icons.check, size: 10, color: Colors.white),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
+          // Title
+          Text(
+            item.title,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              height: 1.2,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const SizedBox(height: 2),
+          // Subtitle
+          Text(
+            item.subtitle,
+            style: TextStyle(
+              fontSize: 11,
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _placeholder(BuildContext context) {
+    return Container(
+      color: Theme.of(context).colorScheme.surface,
+      child: Center(
+        child: Icon(
+          item.isMovie ? Icons.movie_outlined : Icons.tv_outlined,
+          size: 28,
+          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.15),
+        ),
+      ),
+    );
+  }
+
+  String get _dateBadgeText {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final itemDay = DateTime(item.date.year, item.date.month, item.date.day);
+    final diff = itemDay.difference(today).inDays;
+
+    if (diff < 0) return 'AIRED';
+    if (diff == 0) return 'TODAY';
+    if (diff == 1) return 'TMRW';
+
+    final weekdays = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+    if (diff <= 6) return weekdays[item.date.weekday - 1];
+
+    final months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
+        'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+    return '${months[item.date.month - 1]} ${item.date.day}';
+  }
+
+  Color get _dateBadgeColor {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final itemDay = DateTime(item.date.year, item.date.month, item.date.day);
+    final diff = itemDay.difference(today).inDays;
+
+    if (diff < 0) return Colors.grey;
+    if (diff == 0) return AppColors.accentGreen;
+    if (diff <= 2) return AppColors.primary;
+    return Colors.blueGrey;
+  }
+}
+
+/// Internal model for calendar items from both Sonarr and Radarr
+class _CalendarItem {
+  final String title;
+  final String subtitle;
+  final String? posterUrl;
+  final DateTime date;
+  final bool hasFile;
+  final bool isMovie;
+
+  const _CalendarItem({
+    required this.title,
+    required this.subtitle,
+    this.posterUrl,
+    required this.date,
+    this.hasFile = false,
+    this.isMovie = false,
+  });
+
+  factory _CalendarItem.fromSonarr(Map<String, dynamic> ep) {
+    final series = ep['series'] as Map<String, dynamic>?;
+    final seriesTitle = series?['title'] as String? ?? ep['title'] as String? ?? '';
+    final seasonNum = ep['seasonNumber'] as int? ?? 0;
+    final episodeNum = ep['episodeNumber'] as int? ?? 0;
+    final episodeTitle = ep['title'] as String? ?? '';
+
+    // Get poster from series images
+    String? posterUrl;
+    final images = series?['images'] as List?;
+    if (images != null) {
+      for (final img in images) {
+        if (img is Map && img['coverType'] == 'poster') {
+          posterUrl = img['remoteUrl'] as String? ?? img['url'] as String?;
+          break;
+        }
+      }
+    }
+
+    final airDateStr = ep['airDateUtc'] as String? ?? ep['airDate'] as String? ?? '';
+    final airDate = DateTime.tryParse(airDateStr) ?? DateTime.now();
+
+    return _CalendarItem(
+      title: seriesTitle,
+      subtitle: 'S${seasonNum.toString().padLeft(2, '0')}E${episodeNum.toString().padLeft(2, '0')} $episodeTitle',
+      posterUrl: posterUrl,
+      date: airDate,
+      hasFile: ep['hasFile'] as bool? ?? false,
+      isMovie: false,
+    );
+  }
+
+  factory _CalendarItem.fromRadarr(Map<String, dynamic> movie) {
+    final title = movie['title'] as String? ?? '';
+    final year = movie['year'] as int?;
+
+    // Get poster from images
+    String? posterUrl;
+    final images = movie['images'] as List?;
+    if (images != null) {
+      for (final img in images) {
+        if (img is Map && img['coverType'] == 'poster') {
+          posterUrl = img['remoteUrl'] as String? ?? img['url'] as String?;
+          break;
+        }
+      }
+    }
+
+    // Use physical or digital release date, or inCinemas
+    final dateStr = movie['physicalRelease'] as String? ??
+        movie['digitalRelease'] as String? ??
+        movie['inCinemas'] as String? ??
+        '';
+    final date = DateTime.tryParse(dateStr) ?? DateTime.now();
+
+    final hasFile = movie['hasFile'] as bool? ?? false;
+
+    return _CalendarItem(
+      title: title,
+      subtitle: 'Movie${year != null ? ' \u2022 $year' : ''}',
+      posterUrl: posterUrl,
+      date: date,
+      hasFile: hasFile,
+      isMovie: true,
     );
   }
 }

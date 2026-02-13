@@ -4,7 +4,6 @@ import 'package:arr/features/overview/presentation/pages/overview_page.dart';
 import 'package:arr/features/library/presentation/pages/library_page.dart';
 import 'package:arr/features/requests/presentation/pages/requests_page.dart';
 import 'package:arr/features/activity/presentation/pages/activity_page.dart';
-import 'package:arr/features/settings/presentation/pages/settings_page.dart';
 
 /// App router configuration using go_router
 class AppRouter {
@@ -63,17 +62,6 @@ class AppRouter {
                 pageBuilder: (context, state) => const MaterialPage(
                   key: ValueKey('activity'),
                   child: ActivityPage(),
-                ),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: settingsPath,
-                pageBuilder: (context, state) => const MaterialPage(
-                  key: ValueKey('settings'),
-                  child: SettingsPage(),
                 ),
               ),
             ],
@@ -139,11 +127,6 @@ class ScaffoldWithNavBar extends StatelessWidget {
             icon: Icon(Icons.download_outlined),
             selectedIcon: Icon(Icons.download),
             label: 'Activity',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.settings_outlined),
-            selectedIcon: Icon(Icons.settings),
-            label: 'Settings',
           ),
         ],
       ),

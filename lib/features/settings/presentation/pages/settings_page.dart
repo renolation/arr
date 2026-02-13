@@ -112,64 +112,40 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     final servicesAsync = ref.watch(allServicesProvider);
 
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Header with Add button
-            Padding(
-              padding: const EdgeInsets.fromLTRB(24, 24, 16, 8),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Service Settings',
-                          style: theme.textTheme.headlineMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: -0.5,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Configure your media server connections.',
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onSurface.withOpacity(0.6),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  PopupMenuButton<_ServiceTypeInfo>(
-                    icon: Icon(
-                      Icons.add,
-                      color: theme.colorScheme.primary,
-                      size: 28,
-                    ),
-                    tooltip: 'Add service',
-                    onSelected: (info) => _showAddServiceDialog(info),
-                    itemBuilder: (context) => _supportedServices.map((info) {
-                      return PopupMenuItem<_ServiceTypeInfo>(
-                        value: info,
-                        child: Row(
-                          children: [
-                            Icon(info.icon, size: 20),
-                            const SizedBox(width: 12),
-                            Text(info.label),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text('Settings'),
+        actions: [
+          PopupMenuButton<_ServiceTypeInfo>(
+            icon: Icon(
+              Icons.add,
+              color: theme.colorScheme.primary,
+              size: 28,
             ),
-
-            const SizedBox(height: 16),
-
-            // Content
-            Expanded(
+            tooltip: 'Add service',
+            onSelected: (info) => _showAddServiceDialog(info),
+            itemBuilder: (context) => _supportedServices.map((info) {
+              return PopupMenuItem<_ServiceTypeInfo>(
+                value: info,
+                child: Row(
+                  children: [
+                    Icon(info.icon, size: 20),
+                    const SizedBox(width: 12),
+                    Text(info.label),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          // Content
+          Expanded(
               child: servicesAsync.when(
                 data: (services) {
                   if (services.isEmpty) {
@@ -305,7 +281,6 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
             ),
           ],
         ),
-      ),
     );
   }
 

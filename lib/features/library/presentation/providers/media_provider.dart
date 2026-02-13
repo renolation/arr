@@ -208,6 +208,9 @@ class UnifiedLibraryNotifier extends AsyncNotifier<List<MediaItem>> {
   /// Errors from individual services (partial failure info)
   List<String> get errors => _errors;
 
+  /// All media items (unfiltered) for stats/overview use
+  List<MediaItem> get allMedia => List.unmodifiable(_allMedia);
+
   @override
   Future<List<MediaItem>> build() async {
     // Watch the filter so we rebuild when it changes
