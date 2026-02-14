@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/network/sonarr_api.dart';
 import '../../../../core/network/radarr_api.dart';
 import '../../../../core/network/overseerr_api.dart';
+import '../../../../core/theme/theme_provider.dart';
+import '../../../../main.dart';
 import '../../domain/entities/service_config.dart';
 import '../providers/service_provider.dart';
 
@@ -149,10 +151,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               child: servicesAsync.when(
                 data: (services) {
                   if (services.isEmpty) {
-                    return Center(
+                    return SingleChildScrollView(
                       child: Column(
-                        mainAxisSize: MainAxisSize.min,
                         children: [
+                          const SizedBox(height: 64),
                           Icon(
                             Icons.dns_outlined,
                             size: 64,
@@ -172,6 +174,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                               color: isDark ? Colors.grey.shade500 : Colors.grey.shade500,
                             ),
                           ),
+                          const SizedBox(height: 32),
+                          _ThemeSection(),
+                          const SizedBox(height: 32),
                         ],
                       ),
                     );
@@ -202,6 +207,11 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                             }),
                           ),
                         ),
+
+                        const SizedBox(height: 16),
+
+                        // Theme Section
+                        _ThemeSection(),
 
                         const SizedBox(height: 16),
 
@@ -366,6 +376,137 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   void _resetConfiguration() {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Configuration reset')),
+    );
+  }
+}
+
+/// Theme selection section
+class _ThemeSection extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentTheme = ref.watch(themeProvider);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'APPEARANCE',
+            style: TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1,
+              color: isDark
+                  ? AppColors.textSecondaryDark
+                  : AppColors.textSecondaryLight,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Container(
+            decoration: BoxDecoration(
+              color: isDark ? AppColors.cardDark : Colors.white,
+              border: Border.all(
+                color: isDark ? AppColors.borderDark : AppColors.borderLight,
+              ),
+            ),
+            child: Column(
+              children: [
+                _ThemeOption(
+                  label: 'Dark',
+                  icon: Icons.dark_mode_outlined,
+                  isSelected: currentTheme == AppThemeMode.dark,
+                  onTap: () => ref.read(themeProvider.notifier).setTheme(AppThemeMode.dark),
+                  showBorder: true,
+                ),
+                _ThemeOption(
+                  label: 'Light',
+                  icon: Icons.light_mode_outlined,
+                  isSelected: currentTheme == AppThemeMode.light,
+                  onTap: () => ref.read(themeProvider.notifier).setTheme(AppThemeMode.light),
+                  showBorder: true,
+                ),
+                _ThemeOption(
+                  label: 'System',
+                  icon: Icons.settings_brightness_outlined,
+                  isSelected: currentTheme == AppThemeMode.system,
+                  onTap: () => ref.read(themeProvider.notifier).setTheme(AppThemeMode.system),
+                  showBorder: false,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ThemeOption extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  final bool isSelected;
+  final VoidCallback onTap;
+  final bool showBorder;
+
+  const _ThemeOption({
+    required this.label,
+    required this.icon,
+    required this.isSelected,
+    required this.onTap,
+    required this.showBorder,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        decoration: BoxDecoration(
+          border: showBorder
+              ? Border(
+                  bottom: BorderSide(
+                    color: isDark ? AppColors.borderDark : AppColors.borderLight,
+                  ),
+                )
+              : null,
+        ),
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              size: 20,
+              color: isSelected
+                  ? AppColors.primary
+                  : (isDark
+                      ? AppColors.textSecondaryDark
+                      : AppColors.textSecondaryLight),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                label,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                  color: isDark
+                      ? AppColors.textPrimaryDark
+                      : AppColors.textPrimaryLight,
+                ),
+              ),
+            ),
+            if (isSelected)
+              const Icon(
+                Icons.check,
+                size: 20,
+                color: AppColors.primary,
+              ),
+          ],
+        ),
+      ),
     );
   }
 }

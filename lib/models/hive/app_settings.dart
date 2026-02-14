@@ -78,8 +78,17 @@ class AppSettings extends HiveObject {
   @HiveField(22)
   final DateTime? lastUpdated;
 
+  @HiveField(23)
+  final List<String> filterMediaTypes; // ['movie', 'series']
+
+  @HiveField(24)
+  final List<String> filterStatuses; // ['continuing', 'downloaded', 'downloading', 'missing']
+
+  @HiveField(25)
+  final List<String> filterServiceTypes; // ['sonarr', 'radarr']
+
   AppSettings({
-    this.themeMode = 'system',
+    this.themeMode = 'dark',
     this.useDynamicTheme = true,
     this.accentColor,
     this.enableNotifications = true,
@@ -102,6 +111,9 @@ class AppSettings extends HiveObject {
     this.enableHapticFeedback = true,
     this.enableDebugMode = false,
     DateTime? lastUpdated,
+    this.filterMediaTypes = const [],
+    this.filterStatuses = const [],
+    this.filterServiceTypes = const [],
   }) : lastUpdated = lastUpdated ?? DateTime.now();
 
   /// Get default settings
@@ -133,13 +145,16 @@ class AppSettings extends HiveObject {
       'enableHapticFeedback': enableHapticFeedback,
       'enableDebugMode': enableDebugMode,
       'lastUpdated': lastUpdated?.toIso8601String(),
+      'filterMediaTypes': filterMediaTypes,
+      'filterStatuses': filterStatuses,
+      'filterServiceTypes': filterServiceTypes,
     };
   }
 
   /// Create from JSON
   factory AppSettings.fromJson(Map<String, dynamic> json) {
     return AppSettings(
-      themeMode: json['themeMode'] as String? ?? 'system',
+      themeMode: json['themeMode'] as String? ?? 'dark',
       useDynamicTheme: json['useDynamicTheme'] as bool? ?? true,
       accentColor: json['accentColor'] as String?,
       enableNotifications: json['enableNotifications'] as bool? ?? true,
@@ -165,6 +180,9 @@ class AppSettings extends HiveObject {
       lastUpdated: json['lastUpdated'] != null
           ? DateTime.parse(json['lastUpdated'] as String)
           : null,
+      filterMediaTypes: (json['filterMediaTypes'] as List?)?.cast<String>() ?? const [],
+      filterStatuses: (json['filterStatuses'] as List?)?.cast<String>() ?? const [],
+      filterServiceTypes: (json['filterServiceTypes'] as List?)?.cast<String>() ?? const [],
     );
   }
 
@@ -193,6 +211,9 @@ class AppSettings extends HiveObject {
     bool? enableHapticFeedback,
     bool? enableDebugMode,
     DateTime? lastUpdated,
+    List<String>? filterMediaTypes,
+    List<String>? filterStatuses,
+    List<String>? filterServiceTypes,
   }) {
     return AppSettings(
       themeMode: themeMode ?? this.themeMode,
@@ -221,6 +242,9 @@ class AppSettings extends HiveObject {
           enableHapticFeedback ?? this.enableHapticFeedback,
       enableDebugMode: enableDebugMode ?? this.enableDebugMode,
       lastUpdated: lastUpdated ?? DateTime.now(),
+      filterMediaTypes: filterMediaTypes ?? this.filterMediaTypes,
+      filterStatuses: filterStatuses ?? this.filterStatuses,
+      filterServiceTypes: filterServiceTypes ?? this.filterServiceTypes,
     );
   }
 }

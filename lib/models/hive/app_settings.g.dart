@@ -40,13 +40,16 @@ class AppSettingsAdapter extends TypeAdapter<AppSettings> {
       enableHapticFeedback: fields[20] as bool,
       enableDebugMode: fields[21] as bool,
       lastUpdated: fields[22] as DateTime?,
+      filterMediaTypes: (fields[23] as List).cast<String>(),
+      filterStatuses: (fields[24] as List).cast<String>(),
+      filterServiceTypes: (fields[25] as List).cast<String>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, AppSettings obj) {
     writer
-      ..writeByte(23)
+      ..writeByte(26)
       ..writeByte(0)
       ..write(obj.themeMode)
       ..writeByte(1)
@@ -92,7 +95,13 @@ class AppSettingsAdapter extends TypeAdapter<AppSettings> {
       ..writeByte(21)
       ..write(obj.enableDebugMode)
       ..writeByte(22)
-      ..write(obj.lastUpdated);
+      ..write(obj.lastUpdated)
+      ..writeByte(23)
+      ..write(obj.filterMediaTypes)
+      ..writeByte(24)
+      ..write(obj.filterStatuses)
+      ..writeByte(25)
+      ..write(obj.filterServiceTypes);
   }
 
   @override

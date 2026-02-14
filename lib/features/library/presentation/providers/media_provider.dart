@@ -1,6 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive/hive.dart';
+import 'package:arr/models/hive/app_settings.dart';
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/network/api_providers.dart';
+import '../../../../core/theme/theme_provider.dart';
 import '../../data/datasources/media_remote_datasource.dart';
 import '../../data/repositories/media_repository.dart';
 import '../../domain/entities/media_item.dart';
@@ -197,8 +200,139 @@ final searchResultsProvider = FutureProvider<List<MediaItem>>((ref) async {
   }
 });
 
-/// Provider for selected media type filter (null = All)
-final mediaTypeFilterProvider = StateProvider<MediaType?>((ref) => null);
+/// Sort field options for library
+enum SortField { title, year, rating }
+
+/// Library filter state
+class LibraryFilter {
+  final Set<MediaType> mediaTypes;
+  final Set<MediaStatus> statuses;
+  final Set<String> serviceTypes; // 'sonarr' or 'radarr'
+
+  const LibraryFilter({
+    this.mediaTypes = const {},
+    this.statuses = const {},
+    this.serviceTypes = const {},
+  });
+
+  bool get isActive =>
+      mediaTypes.isNotEmpty || statuses.isNotEmpty || serviceTypes.isNotEmpty;
+
+  LibraryFilter copyWith({
+    Set<MediaType>? mediaTypes,
+    Set<MediaStatus>? statuses,
+    Set<String>? serviceTypes,
+  }) {
+    return LibraryFilter(
+      mediaTypes: mediaTypes ?? this.mediaTypes,
+      statuses: statuses ?? this.statuses,
+      serviceTypes: serviceTypes ?? this.serviceTypes,
+    );
+  }
+}
+
+/// Library sort state
+class LibrarySort {
+  final SortField field;
+  final bool ascending;
+
+  const LibrarySort({this.field = SortField.title, this.ascending = true});
+
+  LibrarySort copyWith({SortField? field, bool? ascending}) {
+    return LibrarySort(
+      field: field ?? this.field,
+      ascending: ascending ?? this.ascending,
+    );
+  }
+}
+
+/// Provider for library filter state (persisted to Hive settings)
+final libraryFilterProvider = StateNotifierProvider<LibraryFilterNotifier, LibraryFilter>((ref) {
+  final settingsBox = ref.watch(settingsBoxProvider);
+  return LibraryFilterNotifier(settingsBox);
+});
+
+class LibraryFilterNotifier extends StateNotifier<LibraryFilter> {
+  static const _key = 'app_settings';
+  final Box<AppSettings> _settingsBox;
+
+  LibraryFilterNotifier(this._settingsBox) : super(const LibraryFilter()) {
+    _loadFromSettings();
+  }
+
+  void _loadFromSettings() {
+    final settings = _settingsBox.get(_key);
+    if (settings == null) return;
+    state = LibraryFilter(
+      mediaTypes: settings.filterMediaTypes
+          .map((s) => MediaType.values.firstWhere((e) => e.name == s, orElse: () => MediaType.movie))
+          .whereType<MediaType>()
+          .toSet(),
+      statuses: settings.filterStatuses
+          .map((s) => MediaStatus.values.firstWhere((e) => e.name == s, orElse: () => MediaStatus.continuing))
+          .whereType<MediaStatus>()
+          .toSet(),
+      serviceTypes: settings.filterServiceTypes.toSet(),
+    );
+  }
+
+  void _saveToSettings() {
+    final current = _settingsBox.get(_key) ?? AppSettings.defaultSettings;
+    final updated = current.copyWith(
+      filterMediaTypes: state.mediaTypes.map((e) => e.name).toList(),
+      filterStatuses: state.statuses.map((e) => e.name).toList(),
+      filterServiceTypes: state.serviceTypes.toList(),
+    );
+    _settingsBox.put(_key, updated);
+  }
+
+  set filter(LibraryFilter value) {
+    state = value;
+    _saveToSettings();
+  }
+}
+
+/// Provider for library sort state (persisted to Hive settings)
+final librarySortProvider = StateNotifierProvider<LibrarySortNotifier, LibrarySort>((ref) {
+  final settingsBox = ref.watch(settingsBoxProvider);
+  return LibrarySortNotifier(settingsBox);
+});
+
+class LibrarySortNotifier extends StateNotifier<LibrarySort> {
+  static const _key = 'app_settings';
+  final Box<AppSettings> _settingsBox;
+
+  LibrarySortNotifier(this._settingsBox) : super(const LibrarySort()) {
+    _loadFromSettings();
+  }
+
+  void _loadFromSettings() {
+    final settings = _settingsBox.get(_key);
+    if (settings == null) return;
+    final field = SortField.values.firstWhere(
+      (e) => e.name == settings.sortBy,
+      orElse: () => SortField.title,
+    );
+    state = LibrarySort(
+      field: field,
+      ascending: settings.sortOrder == 'asc',
+    );
+  }
+
+  void _saveToSettings() {
+    final current = _settingsBox.get(_key) ?? AppSettings.defaultSettings;
+    final updated = current.copyWith(
+      sortBy: state.field.name,
+      sortOrder: state.ascending ? 'asc' : 'desc',
+    );
+    _settingsBox.put(_key, updated);
+  }
+
+  set sort(LibrarySort value) {
+    state = value;
+    _saveToSettings();
+  }
+}
 
 /// Unified library notifier - fetches from ALL configured service instances
 class UnifiedLibraryNotifier extends AsyncNotifier<List<MediaItem>> {
@@ -213,14 +347,15 @@ class UnifiedLibraryNotifier extends AsyncNotifier<List<MediaItem>> {
 
   @override
   Future<List<MediaItem>> build() async {
-    // Watch the filter so we rebuild when it changes
-    ref.watch(mediaTypeFilterProvider);
+    // Watch filter and sort so we rebuild when they change
+    ref.watch(libraryFilterProvider);
+    ref.watch(librarySortProvider);
 
-    // Only re-fetch if cache is empty (filter changes reuse cache)
+    // Only re-fetch if cache is empty (filter/sort changes reuse cache)
     if (_allMedia.isEmpty) {
       await _fetchAll();
     }
-    return _applyFilter();
+    return _applyFilterAndSort();
   }
 
   Future<void> _fetchAll() async {
@@ -276,10 +411,45 @@ class UnifiedLibraryNotifier extends AsyncNotifier<List<MediaItem>> {
     }
   }
 
-  List<MediaItem> _applyFilter() {
-    final filter = ref.read(mediaTypeFilterProvider);
-    if (filter == null) return List.unmodifiable(_allMedia);
-    return _allMedia.where((item) => item.type == filter).toList();
+  List<MediaItem> _applyFilterAndSort() {
+    final filter = ref.read(libraryFilterProvider);
+    final sort = ref.read(librarySortProvider);
+
+    var result = List<MediaItem>.from(_allMedia);
+
+    // Apply media type filter
+    if (filter.mediaTypes.isNotEmpty) {
+      result = result.where((item) => filter.mediaTypes.contains(item.type)).toList();
+    }
+
+    // Apply status filter
+    if (filter.statuses.isNotEmpty) {
+      result = result.where((item) => filter.statuses.contains(item.status)).toList();
+    }
+
+    // Apply service type filter (match serviceKey prefix: 'sonarr' or 'radarr')
+    if (filter.serviceTypes.isNotEmpty) {
+      result = result.where((item) {
+        final key = item.serviceKey?.toLowerCase() ?? '';
+        return filter.serviceTypes.any((st) => key.startsWith(st.toLowerCase()));
+      }).toList();
+    }
+
+    // Apply sort
+    result.sort((a, b) {
+      int cmp;
+      switch (sort.field) {
+        case SortField.title:
+          cmp = a.title.toLowerCase().compareTo(b.title.toLowerCase());
+        case SortField.year:
+          cmp = (a.year ?? 0).compareTo(b.year ?? 0);
+        case SortField.rating:
+          cmp = (a.rating ?? 0).compareTo(b.rating ?? 0);
+      }
+      return sort.ascending ? cmp : -cmp;
+    });
+
+    return result;
   }
 
   /// Force refresh from all services

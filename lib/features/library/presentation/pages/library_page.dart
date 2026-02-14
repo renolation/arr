@@ -3,9 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../main.dart';
 import '../../../../core/widgets/loading_indicator.dart';
 import '../../../../core/widgets/error_widget.dart';
-import '../../domain/entities/media_item.dart';
 import '../providers/media_provider.dart';
+import '../widgets/filter_bottom_sheet.dart';
 import '../widgets/media_grid.dart';
+import '../widgets/sort_bottom_sheet.dart';
 
 /// Library page - Matching library.html design
 class LibraryPage extends ConsumerStatefulWidget {
@@ -24,105 +25,116 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
     super.dispose();
   }
 
+  void _showFilterSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => const FilterBottomSheet(),
+    );
+  }
+
+  void _showSortSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => const SortBottomSheet(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final mediaType = ref.watch(mediaTypeFilterProvider);
+    final filter = ref.watch(libraryFilterProvider);
     final libraryAsync = ref.watch(unifiedLibraryProvider);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
-          // Search header
+          // Search header with filter & sort icons
           SliverAppBar(
             pinned: true,
             elevation: 0,
-            backgroundColor: Theme.of(context).brightness == Brightness.dark
+            backgroundColor: isDark
                 ? AppColors.backgroundDark.withOpacity(0.95)
                 : AppColors.backgroundLight.withOpacity(0.95),
-            title: Container(
-              height: 42,
-              decoration: BoxDecoration(
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? AppColors.surfaceDark
-                    : AppColors.backgroundLight,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search collection...',
-                  hintStyle: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
-                    fontSize: 14,
-                  ),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    size: 20,
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                ),
-              ),
-            ),
-          ),
-          // Filter chips
-          SliverToBoxAdapter(
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(24, 16, 24, 16),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+            title: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 42,
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? AppColors.surfaceDark
+                          : AppColors.backgroundLight,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Search collection...',
+                        hintStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                          fontSize: 14,
+                        ),
+                        prefixIcon: Icon(
+                          Icons.search,
+                          size: 20,
+                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
+                const SizedBox(width: 8),
+                // Filter icon with active indicator
+                Stack(
                   children: [
-                    _FilterChip(
-                      label: 'All',
-                      isSelected: mediaType == null,
-                      onTap: () {
-                        ref.read(mediaTypeFilterProvider.notifier).state = null;
-                      },
+                    IconButton(
+                      onPressed: _showFilterSheet,
+                      icon: Icon(
+                        Icons.tune_outlined,
+                        size: 22,
+                        color: filter.isActive
+                            ? AppColors.primary
+                            : Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                      ),
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
                     ),
-                    const SizedBox(width: 8),
-                    _FilterChip(
-                      label: 'Movies',
-                      isSelected: mediaType == MediaType.movie,
-                      onTap: () {
-                        ref.read(mediaTypeFilterProvider.notifier).state = MediaType.movie;
-                      },
-                    ),
-                    const SizedBox(width: 8),
-                    _FilterChip(
-                      label: 'TV Shows',
-                      isSelected: mediaType == MediaType.series,
-                      onTap: () {
-                        ref.read(mediaTypeFilterProvider.notifier).state = MediaType.series;
-                      },
-                    ),
-                    const SizedBox(width: 8),
-                    _FilterChip(
-                      label: 'Missing',
-                      icon: true,
-                      isSelected: false,
-                      onTap: () {},
-                    ),
-                    const SizedBox(width: 8),
-                    _FilterChip(
-                      label: 'Monitored',
-                      isSelected: false,
-                      onTap: () {},
-                    ),
+                    if (filter.isActive)
+                      Positioned(
+                        top: 4,
+                        right: 4,
+                        child: Container(
+                          width: 8,
+                          height: 8,
+                          decoration: const BoxDecoration(
+                            color: AppColors.primary,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ),
                   ],
                 ),
-              ),
+                // Sort icon
+                IconButton(
+                  onPressed: _showSortSheet,
+                  icon: Icon(
+                    Icons.swap_vert_outlined,
+                    size: 22,
+                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                  ),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
+                ),
+              ],
             ),
           ),
           // Content
@@ -132,7 +144,7 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
               data: (mediaItems) {
                 if (mediaItems.isEmpty) {
                   return SliverToBoxAdapter(
-                    child: _buildEmptyState(context, mediaType),
+                    child: _buildEmptyState(context),
                   );
                 }
                 return SliverToBoxAdapter(
@@ -161,19 +173,14 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
     );
   }
 
-  Widget _buildEmptyState(BuildContext context, MediaType? mediaType) {
-    final icon = mediaType == MediaType.series
-        ? Icons.tv_outlined
-        : mediaType == MediaType.movie
-            ? Icons.movie_outlined
-            : Icons.video_library_outlined;
+  Widget _buildEmptyState(BuildContext context) {
     return SizedBox(
       height: 500,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
-            icon,
+            Icons.video_library_outlined,
             size: 64,
             color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
           ),
@@ -185,77 +192,6 @@ class _LibraryPageState extends ConsumerState<LibraryPage> {
                 ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _FilterChip extends StatelessWidget {
-  final String label;
-  final bool isSelected;
-  final bool icon;
-  final VoidCallback onTap;
-
-  const _FilterChip({
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
-    this.icon = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(9999),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? (Theme.of(context).brightness == Brightness.dark
-                  ? AppColors.backgroundDark
-                  : AppColors.textPrimaryLight)
-              : (Theme.of(context).brightness == Brightness.dark
-                  ? AppColors.surfaceDark
-                  : AppColors.backgroundLight),
-          borderRadius: BorderRadius.circular(9999),
-          border: Border.all(
-            color: isSelected
-                ? Colors.transparent
-                : (Theme.of(context).brightness == Brightness.dark
-                    ? AppColors.borderDark
-                    : AppColors.borderLight),
-          ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (icon) ...[
-              Container(
-                width: 6,
-                height: 6,
-                decoration: const BoxDecoration(
-                  color: AppColors.accentRed,
-                  shape: BoxShape.circle,
-                ),
-              ),
-              const SizedBox(width: 6),
-            ],
-            Text(
-              label.toUpperCase(),
-              style: TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 0.5,
-                color: isSelected
-                    ? (Theme.of(context).brightness == Brightness.dark
-                        ? AppColors.backgroundDark
-                        : AppColors.backgroundLight)
-                    : Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
