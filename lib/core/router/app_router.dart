@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:arr/features/overview/presentation/pages/overview_page.dart';
+import 'package:arr/features/calendar/presentation/pages/calendar_page.dart';
 import 'package:arr/features/library/presentation/pages/library_page.dart';
 import 'package:arr/features/requests/presentation/pages/requests_page.dart';
 import 'package:arr/features/activity/presentation/pages/activity_page.dart';
@@ -8,6 +9,7 @@ import 'package:arr/features/activity/presentation/pages/activity_page.dart';
 /// App router configuration using go_router
 class AppRouter {
   static const String overviewPath = '/overview';
+  static const String calendarPath = '/calendar';
   static const String libraryPath = '/library';
   static const String requestsPath = '/requests';
   static const String activityPath = '/activity';
@@ -29,6 +31,17 @@ class AppRouter {
                 pageBuilder: (context, state) => const MaterialPage(
                   key: ValueKey('overview'),
                   child: OverviewPage(),
+                ),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: calendarPath,
+                pageBuilder: (context, state) => const MaterialPage(
+                  key: ValueKey('calendar'),
+                  child: CalendarPage(),
                 ),
               ),
             ],
@@ -112,6 +125,11 @@ class ScaffoldWithNavBar extends StatelessWidget {
             icon: Icon(Icons.dashboard_outlined),
             selectedIcon: Icon(Icons.dashboard),
             label: 'Overview',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.calendar_today_outlined),
+            selectedIcon: Icon(Icons.calendar_today),
+            label: 'Calendar',
           ),
           NavigationDestination(
             icon: Icon(Icons.collections_bookmark_outlined),

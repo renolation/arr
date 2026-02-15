@@ -155,14 +155,21 @@ class OverviewPage extends ConsumerWidget {
   }
 }
 
-/// Card showing stats for a single service
-class _ServiceStatsCard extends StatelessWidget {
+/// Expandable card showing stats for a single service
+class _ServiceStatsCard extends StatefulWidget {
   final ServiceStats stats;
 
   const _ServiceStatsCard({required this.stats});
 
+  @override
+  State<_ServiceStatsCard> createState() => _ServiceStatsCardState();
+}
+
+class _ServiceStatsCardState extends State<_ServiceStatsCard> {
+  bool _isExpanded = false;
+
   IconData get _serviceIcon {
-    switch (stats.serviceType) {
+    switch (widget.stats.serviceType) {
       case ServiceType.sonarr:
         return Icons.tv_outlined;
       case ServiceType.radarr:
@@ -176,10 +183,10 @@ class _ServiceStatsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final stats = widget.stats;
     final isSeries = stats.serviceType == ServiceType.sonarr;
 
     return Container(
-      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
@@ -188,92 +195,125 @@ class _ServiceStatsCard extends StatelessWidget {
         ),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header: icon + name + online badge
-          Row(
-            children: [
-              Icon(_serviceIcon, size: 22,
-                  color: Theme.of(context).colorScheme.primary),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  stats.serviceName,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+          // Header (always visible) - tap to expand/collapse
+          InkWell(
+            onTap: () => setState(() => _isExpanded = !_isExpanded),
+            borderRadius: BorderRadius.circular(12),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Icon(_serviceIcon, size: 22,
+                      color: Theme.of(context).colorScheme.primary),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      stats.serviceName,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(
-                  color: AppColors.accentGreen.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: 6,
-                      height: 6,
-                      decoration: const BoxDecoration(
-                        color: AppColors.accentGreen,
-                        shape: BoxShape.circle,
-                      ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: AppColors.accentGreen.withOpacity(0.15),
+                      borderRadius: BorderRadius.circular(6),
                     ),
-                    const SizedBox(width: 5),
-                    const Text(
-                      'Online',
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.accentGreen,
-                      ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 6,
+                          height: 6,
+                          decoration: const BoxDecoration(
+                            color: AppColors.accentGreen,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        const Text(
+                          'Online',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.accentGreen,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(width: 8),
+                  AnimatedRotation(
+                    turns: _isExpanded ? 0.5 : 0,
+                    duration: const Duration(milliseconds: 200),
+                    child: Icon(
+                      Icons.keyboard_arrow_down,
+                      size: 20,
+                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-          const SizedBox(height: 16),
-
-          // Stats grid (2 columns)
-          Row(
-            children: [
-              Expanded(
-                child: _StatItem(
-                  label: stats.itemLabel,
-                  value: '${stats.totalItems}',
-                ),
+          // Expandable stats section
+          AnimatedCrossFade(
+            firstChild: const SizedBox.shrink(),
+            secondChild: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+              child: Column(
+                children: [
+                  Divider(
+                    height: 1,
+                    color: Theme.of(context).colorScheme.outline.withOpacity(0.15),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _StatItem(
+                          label: stats.itemLabel,
+                          value: '${stats.totalItems}',
+                        ),
+                      ),
+                      Expanded(
+                        child: _StatItem(
+                          label: isSeries ? 'Episodes' : 'Files',
+                          value: isSeries
+                              ? '${stats.episodeFiles}/${stats.totalEpisodes}'
+                              : '${stats.withFiles}',
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _StatItem(
+                          label: 'Size on Disk',
+                          value: stats.formattedSize,
+                        ),
+                      ),
+                      Expanded(
+                        child: _StatItem(
+                          label: 'Missing',
+                          value: '${stats.missing}',
+                          valueColor: stats.missing > 0 ? AppColors.accentRed : null,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              Expanded(
-                child: _StatItem(
-                  label: isSeries ? 'Episodes' : 'Files',
-                  value: isSeries
-                      ? '${stats.episodeFiles}/${stats.totalEpisodes}'
-                      : '${stats.withFiles}',
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Row(
-            children: [
-              Expanded(
-                child: _StatItem(
-                  label: 'Size on Disk',
-                  value: stats.formattedSize,
-                ),
-              ),
-              Expanded(
-                child: _StatItem(
-                  label: 'Missing',
-                  value: '${stats.missing}',
-                  valueColor: stats.missing > 0 ? AppColors.accentRed : null,
-                ),
-              ),
-            ],
+            ),
+            crossFadeState: _isExpanded
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
+            duration: const Duration(milliseconds: 200),
           ),
         ],
       ),

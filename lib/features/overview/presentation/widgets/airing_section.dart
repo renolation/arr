@@ -2,43 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../main.dart';
-import '../../../../core/network/api_providers.dart';
-
-/// Provider that fetches calendar from all configured Sonarr + Radarr services
-final calendarProvider = FutureProvider<List<_CalendarItem>>((ref) async {
-  final sonarrApis = await ref.watch(allSonarrApisProvider.future);
-  final radarrApis = await ref.watch(allRadarrApisProvider.future);
-
-  final now = DateTime.now();
-  final start = now.subtract(const Duration(days: 1));
-  final end = now.add(const Duration(days: 30));
-
-  final items = <_CalendarItem>[];
-
-  // Fetch from all Sonarr instances
-  for (final (_, api) in sonarrApis) {
-    try {
-      final data = await api.getCalendar(start: start, end: end);
-      for (final ep in data) {
-        items.add(_CalendarItem.fromSonarr(ep));
-      }
-    } catch (_) {}
-  }
-
-  // Fetch from all Radarr instances
-  for (final (_, api) in radarrApis) {
-    try {
-      final data = await api.getCalendar(start: start, end: end);
-      for (final movie in data) {
-        items.add(_CalendarItem.fromRadarr(movie));
-      }
-    } catch (_) {}
-  }
-
-  // Sort by date
-  items.sort((a, b) => a.date.compareTo(b.date));
-  return items;
-});
+import '../../../calendar/domain/entities/calendar_item.dart';
+import '../../../calendar/presentation/providers/calendar_provider.dart';
 
 /// Section displaying upcoming/airing shows and movies
 class AiringSection extends ConsumerWidget {
@@ -46,7 +11,7 @@ class AiringSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final calendarAsync = ref.watch(calendarProvider);
+    final calendarAsync = ref.watch(defaultCalendarProvider);
 
     return calendarAsync.when(
       data: (items) {
@@ -109,7 +74,7 @@ class AiringSection extends ConsumerWidget {
 
 /// Calendar card for a single upcoming item
 class _CalendarCard extends StatelessWidget {
-  final _CalendarItem item;
+  final CalendarItem item;
 
   const _CalendarCard({required this.item});
 
@@ -255,91 +220,5 @@ class _CalendarCard extends StatelessWidget {
     if (diff == 0) return AppColors.accentGreen;
     if (diff <= 2) return AppColors.primary;
     return Colors.blueGrey;
-  }
-}
-
-/// Internal model for calendar items from both Sonarr and Radarr
-class _CalendarItem {
-  final String title;
-  final String subtitle;
-  final String? posterUrl;
-  final DateTime date;
-  final bool hasFile;
-  final bool isMovie;
-
-  const _CalendarItem({
-    required this.title,
-    required this.subtitle,
-    this.posterUrl,
-    required this.date,
-    this.hasFile = false,
-    this.isMovie = false,
-  });
-
-  factory _CalendarItem.fromSonarr(Map<String, dynamic> ep) {
-    final series = ep['series'] as Map<String, dynamic>?;
-    final seriesTitle = series?['title'] as String? ?? ep['title'] as String? ?? '';
-    final seasonNum = ep['seasonNumber'] as int? ?? 0;
-    final episodeNum = ep['episodeNumber'] as int? ?? 0;
-    final episodeTitle = ep['title'] as String? ?? '';
-
-    // Get poster from series images
-    String? posterUrl;
-    final images = series?['images'] as List?;
-    if (images != null) {
-      for (final img in images) {
-        if (img is Map && img['coverType'] == 'poster') {
-          posterUrl = img['remoteUrl'] as String? ?? img['url'] as String?;
-          break;
-        }
-      }
-    }
-
-    final airDateStr = ep['airDateUtc'] as String? ?? ep['airDate'] as String? ?? '';
-    final airDate = DateTime.tryParse(airDateStr) ?? DateTime.now();
-
-    return _CalendarItem(
-      title: seriesTitle,
-      subtitle: 'S${seasonNum.toString().padLeft(2, '0')}E${episodeNum.toString().padLeft(2, '0')} $episodeTitle',
-      posterUrl: posterUrl,
-      date: airDate,
-      hasFile: ep['hasFile'] as bool? ?? false,
-      isMovie: false,
-    );
-  }
-
-  factory _CalendarItem.fromRadarr(Map<String, dynamic> movie) {
-    final title = movie['title'] as String? ?? '';
-    final year = movie['year'] as int?;
-
-    // Get poster from images
-    String? posterUrl;
-    final images = movie['images'] as List?;
-    if (images != null) {
-      for (final img in images) {
-        if (img is Map && img['coverType'] == 'poster') {
-          posterUrl = img['remoteUrl'] as String? ?? img['url'] as String?;
-          break;
-        }
-      }
-    }
-
-    // Use physical or digital release date, or inCinemas
-    final dateStr = movie['physicalRelease'] as String? ??
-        movie['digitalRelease'] as String? ??
-        movie['inCinemas'] as String? ??
-        '';
-    final date = DateTime.tryParse(dateStr) ?? DateTime.now();
-
-    final hasFile = movie['hasFile'] as bool? ?? false;
-
-    return _CalendarItem(
-      title: title,
-      subtitle: 'Movie${year != null ? ' \u2022 $year' : ''}',
-      posterUrl: posterUrl,
-      date: date,
-      hasFile: hasFile,
-      isMovie: true,
-    );
   }
 }
